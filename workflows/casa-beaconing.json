@@ -1,8 +1,8 @@
 {
-  "name": "CASA Sub-Workflow - Auth Anomaly Investigation",
+  "name": "CASA Sub-Workflow - Beaconing Investigation",
   "nodes": [
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000001",
+      "id": "c3d4e5f6-3333-4000-8000-000000000001",
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
@@ -13,160 +13,125 @@
       "parameters": {}
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000002",
-      "name": "LogAnalyst Auth",
+      "id": "c3d4e5f6-3333-4000-8000-000000000002",
+      "name": "NetworkAnalyst Beaconing",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         500,
-        200
+        300
       ],
       "parameters": {
         "method": "POST",
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on authentication anomalies. Check for: Windows Event IDs 4625/4771/4768, credential stuffing patterns, impossible travel indicators, brute force timing patterns, privilege escalation sequences. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on beaconing detection. Perform: periodicity scoring with jitter analysis, check common C2 intervals (30s, 60s, 300s, 600s, 3600s), DNS anomaly detection (high-entropy domains, TXT queries, unusual lengths), JA3/JA3S fingerprint analysis. Investigation context: ' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000003",
-      "name": "NetworkAnalyst Auth",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        500,
-        450
-      ],
-      "parameters": {
-        "method": "POST",
-        "url": "http://ollama:11434/api/generate",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on authentication-related network patterns. Check for: unusual source IPs, VPN anomalies, geolocation inconsistencies, authentication protocol deviations. Investigation context: ' + $json.query, stream: false }) }}",
-        "options": {
-          "timeout": 180000000
-        }
-      }
-    },
-    {
-      "id": "b2c3d4e5-2222-4000-8000-000000000004",
-      "name": "Merge Auth Analysts",
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3,
-      "position": [
-        750,
-        325
-      ],
-      "parameters": {
-        "mode": "combine",
-        "combinationMode": "mergeByPosition",
-        "options": {}
-      }
-    },
-    {
-      "id": "b2c3d4e5-2222-4000-8000-000000000007",
+      "id": "c3d4e5f6-3333-4000-8000-000000000005",
       "name": "MITRE Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        850,
-        325
+        600,
+        300
       ],
       "parameters": {
         "jsCode": "// MITRE ATT&CK Lookup Node for n8n\n// Paste this code into an n8n Code node\n// Reads MITRE ATT&CK techniques from JSON and matches against analyst findings\n\nconst fs = require('fs');\n\n// Read the MITRE ATT&CK techniques database\nconst techniquesData = JSON.parse(\n  fs.readFileSync('/home/node/assets/mitre-attack-techniques.json', 'utf8')\n);\n\n// Get analyst findings from upstream nodes\nconst inputData = $input.all();\nconst findings = inputData.map(item => {\n  // Handle both direct response text and structured objects\n  if (typeof item.json === 'string') return item.json;\n  if (item.json.response) return item.json.response;\n  return JSON.stringify(item.json);\n}).join(' ');\n\n// Get investigation type if available (for boosting relevant tactics)\n// Get investigation_type from the workflow trigger (not from Ollama response, which strips it)\nlet investigationType = 'general';\ntry {\n  investigationType = $('Execute Workflow Trigger').first().json.investigation_type || 'general';\n} catch (e) {\n  // Fallback: check immediate input (works if data was passed through)\n  investigationType = $input.first().json.investigation_type || 'general';\n}\n\n// Investigation-type-specific tactic boosting\nconst tacticBoosts = {\n  'auth_anomaly': ['Credential Access', 'Initial Access', 'Privilege Escalation', 'Persistence'],\n  'beaconing': ['Command and Control', 'Exfiltration', 'Defense Evasion'],\n  'exfiltration': ['Exfiltration', 'Collection', 'Command and Control'],\n  'lateral_movement': ['Lateral Movement', 'Discovery', 'Credential Access', 'Execution'],\n  'general': []\n};\n\nconst boostedTactics = tacticBoosts[investigationType] || [];\n\n// Normalize text for keyword matching\nfunction normalizeText(text) {\n  return text.toLowerCase()\n    .replace(/[^a-z0-9\\s\\-\\.]/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\n// Extract meaningful terms from findings\nconst normalizedFindings = normalizeText(findings);\nconst findingsTerms = normalizedFindings.split(' ').filter(t => t.length > 2);\n\n// Score each technique against the findings\nconst scoredTechniques = techniquesData.map(technique => {\n  let score = 0;\n\n  // Keyword matching\n  for (const keyword of technique.keywords) {\n    const normalizedKeyword = keyword.toLowerCase();\n    // Check if the keyword (which may be multi-word) appears in findings\n    if (normalizedFindings.includes(normalizedKeyword)) {\n      score += normalizedKeyword.split(' ').length; // Multi-word matches score higher\n    }\n  }\n\n  // Tactic boosting for investigation type\n  if (boostedTactics.length > 0) {\n    const tacticOverlap = technique.tactics.filter(t => boostedTactics.includes(t));\n    score += tacticOverlap.length * 0.5; // Boost by 0.5 per matching tactic\n  }\n\n  // Name matching (technique name appears in findings)\n  if (normalizedFindings.includes(technique.name.toLowerCase())) {\n    score += 3;\n  }\n\n  // ID matching (technique ID explicitly mentioned)\n  if (normalizedFindings.includes(technique.id.toLowerCase())) {\n    score += 5;\n  }\n\n  return {\n    id: technique.id,\n    name: technique.name,\n    tactics: technique.tactics,\n    description: technique.description,\n    detection: technique.detection,\n    score: score\n  };\n}).filter(t => t.score > 0);\n\n// Sort by score descending, take top 10\nscoredTechniques.sort((a, b) => b.score - a.score);\nconst topTechniques = scoredTechniques.slice(0, 10);\n\n// Build output\nreturn [{\n  json: {\n    techniques: topTechniques,\n    technique_count: topTechniques.length,\n    investigation_type: investigationType,\n    total_techniques_scanned: techniquesData.length,\n    // Pass through the original findings for downstream nodes\n    analyst_findings: findings\n  }\n}];\n"
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000008",
+      "id": "c3d4e5f6-3333-4000-8000-000000000006",
       "name": "NIST CSF Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        950,
-        325
+        700,
+        300
       ],
       "parameters": {
         "jsCode": "// NIST CSF 2.0 Mapping Node for n8n\n// Paste this code into an n8n Code node\n// Maps analyst findings to NIST CSF 2.0 functions and categories\n\nconst fs = require('fs');\n\n// Read the NIST CSF 2.0 framework data\nconst csfData = JSON.parse(\n  fs.readFileSync('/home/node/assets/nist-csf-2.0.json', 'utf8')\n);\n\n// Get findings from upstream (MITRE Lookup node passes analyst_findings through)\nconst inputData = $input.first().json;\nconst findings = inputData.analyst_findings || JSON.stringify(inputData);\nconst techniques = inputData.techniques || [];\n\n// Normalize text for matching\nconst normalizedFindings = findings.toLowerCase()\n  .replace(/[^a-z0-9\\s\\-\\.]/g, ' ')\n  .replace(/\\s+/g, ' ')\n  .trim();\n\n// Score each CSF category against findings\nconst mappings = [];\n\nfor (const func of csfData.functions) {\n  for (const category of func.categories) {\n    let score = 0;\n\n    // Keyword matching against findings\n    for (const keyword of (category.keywords || [])) {\n      if (normalizedFindings.includes(keyword.toLowerCase())) {\n        score += 1;\n      }\n    }\n\n    // Category name matching\n    if (normalizedFindings.includes(category.name.toLowerCase())) {\n      score += 2;\n    }\n\n    // Boost based on MITRE technique tactics \u2192 CSF function correlation\n    // DE (Detect) correlates with Discovery, Initial Access detection\n    // RS (Respond) correlates with incident-related findings\n    // PR (Protect) correlates with prevention-related findings\n    const tacticToCsf = {\n      'Initial Access': ['DE', 'PR'],\n      'Execution': ['DE', 'PR'],\n      'Persistence': ['DE', 'PR'],\n      'Privilege Escalation': ['DE', 'PR', 'GV'],\n      'Defense Evasion': ['DE'],\n      'Credential Access': ['DE', 'PR', 'ID'],\n      'Discovery': ['DE'],\n      'Lateral Movement': ['DE', 'RS'],\n      'Collection': ['DE', 'PR'],\n      'Command and Control': ['DE', 'RS'],\n      'Exfiltration': ['DE', 'RS', 'RC'],\n      'Impact': ['RS', 'RC']\n    };\n\n    for (const technique of techniques) {\n      for (const tactic of technique.tactics) {\n        const correlatedFunctions = tacticToCsf[tactic] || [];\n        if (correlatedFunctions.includes(func.id)) {\n          score += 0.5;\n        }\n      }\n    }\n\n    if (score > 0) {\n      mappings.push({\n        function_id: func.id,\n        function_name: func.name,\n        category_id: category.id,\n        category_name: category.name,\n        description: category.description,\n        score: score,\n        relevant_subcategories: (category.subcategories || [])\n          .map(sc => ({ id: sc.id, description: sc.description }))\n      });\n    }\n  }\n}\n\n// Sort by score, take top matches\nmappings.sort((a, b) => b.score - a.score);\nconst topMappings = mappings.slice(0, 8);\n\n// Group by function for cleaner output\nconst byFunction = {};\nfor (const m of topMappings) {\n  if (!byFunction[m.function_id]) {\n    byFunction[m.function_id] = {\n      function_id: m.function_id,\n      function_name: m.function_name,\n      categories: []\n    };\n  }\n  byFunction[m.function_id].categories.push({\n    category_id: m.category_id,\n    category_name: m.category_name,\n    description: m.description,\n    relevant_subcategories: m.relevant_subcategories.slice(0, 3)\n  });\n}\n\nreturn [{\n  json: {\n    nist_csf_mappings: Object.values(byFunction),\n    total_mappings: topMappings.length,\n    // Pass through upstream data for downstream nodes\n    techniques: techniques,\n    analyst_findings: findings\n  }\n}];\n"
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000005",
+      "id": "c3d4e5f6-3333-4000-8000-000000000003",
       "name": "PurpleTeamMapper",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1100,
-        325
+        850,
+        300
       ],
       "parameters": {
         "method": "POST",
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-purple-mapper', prompt: 'Validate and refine these pre-matched MITRE ATT&CK techniques and NIST CSF mappings against the authentication anomaly findings. Pre-matched MITRE techniques: ' + JSON.stringify($('MITRE Lookup').item.json.techniques) + ' NIST CSF mappings: ' + JSON.stringify($('NIST CSF Mapper').item.json.nist_csf_mappings) + ' Analysis findings: ' + $('MITRE Lookup').item.json.analyst_findings, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-purple-mapper', prompt: 'Validate and refine these pre-matched MITRE ATT&CK techniques and NIST CSF mappings against the beaconing analysis findings. Pre-matched MITRE techniques: ' + JSON.stringify($('MITRE Lookup').item.json.techniques) + ' NIST CSF mappings: ' + JSON.stringify($('NIST CSF Mapper').item.json.nist_csf_mappings) + ' Analysis findings: ' + $('MITRE Lookup').item.json.analyst_findings, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000006",
+      "id": "c3d4e5f6-3333-4000-8000-000000000004",
       "name": "Synthesizer",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1350,
-        325
+        1050,
+        300
       ],
       "parameters": {
         "method": "POST",
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-synthesizer', prompt: 'Synthesize this authentication anomaly investigation into a comprehensive report. Include: executive summary, authentication anomaly findings, network correlation findings, MITRE ATT&CK mappings, risk assessment (critical/high/medium/low), and prioritized remediation steps. All findings: ' + ($json.response || JSON.stringify($json)), stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-synthesizer', prompt: 'Synthesize this beaconing investigation into a comprehensive report. Include: executive summary, beaconing pattern analysis (intervals, jitter, confidence score), DNS anomaly findings, JA3/JA3S analysis, MITRE ATT&CK mappings, risk assessment, potential C2 framework identification, and prioritized response actions. All findings: ' + ($json.response || JSON.stringify($json)), stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000009",
+      "id": "c3d4e5f6-3333-4000-8000-000000000007",
       "name": "Report Formatter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1550,
-        325
+        1250,
+        300
       ],
       "parameters": {
         "jsCode": "// NIST SP 800-92 Aligned Report Formatter for n8n\n// Paste this code into an n8n Code node\n// Takes synthesizer output + MITRE + NIST + CIS Controls + CAR coverage data\n// and produces standardized investigation report\n//\n// v2.0.0 \u2014 Added CIS Controls v8.1.2 and MITRE CAR analytic coverage sections\n\n// Gather data from upstream nodes\nconst synthesizerOutput = $input.first().json;\n\nlet techniques      = [];\nlet nistMappings    = [];\nlet cisMappings     = [];\nlet cisQuickWins    = [];\nlet coverageGaps    = [];\nlet lowCoverage     = [];\nlet analystFindings = '';\nlet investigationType = 'general';\nlet originalQuery   = '';\n\ntry {\n  const mitreData     = $('MITRE Lookup').first().json;\n  techniques          = mitreData.techniques        || [];\n  analystFindings     = mitreData.analyst_findings  || '';\n  investigationType   = mitreData.investigation_type || 'general';\n} catch (e) {\n  techniques = synthesizerOutput.techniques || [];\n}\n\n// Safety: if MITRE Lookup still says 'general', check the workflow trigger directly\nif (investigationType === 'general') {\n  try {\n    const triggerType = $('Execute Workflow Trigger').first().json.investigation_type;\n    if (triggerType && triggerType !== 'general') {\n      investigationType = triggerType;\n    }\n  } catch (e) {\n    // Trigger reference failed \u2014 keep 'general'\n  }\n}\n\ntry {\n  const carData  = $('CAR Coverage Lookup').first().json;\n  techniques     = carData.techniques    || techniques;  // enriched with coverage\n  coverageGaps   = carData.coverage_gaps || [];\n  lowCoverage    = carData.low_coverage  || [];\n  analystFindings = carData.analyst_findings || analystFindings;\n} catch (e) {\n  // CAR node may not be in pipeline yet \u2014 degrade gracefully\n}\n\ntry {\n  const nistData = $('NIST CSF Mapper').first().json;\n  nistMappings   = nistData.nist_csf_mappings || [];\n} catch (e) {\n  nistMappings = synthesizerOutput.nist_csf_mappings || [];\n}\n\ntry {\n  const cisData  = $('CIS Controls Mapper').first().json;\n  cisMappings    = cisData.cis_mappings    || [];\n  cisQuickWins   = cisData.cis_quick_wins  || [];\n} catch (e) {\n  // CIS node may not be in pipeline yet \u2014 degrade gracefully\n}\n\n// Get query from the workflow trigger \u2014 DO NOT reference $('Webhook Trigger')\n// which doesn't exist in sub-workflows and causes the entire try to throw\ntry {\n  originalQuery = $('Execute Workflow Trigger').first().json.query || '';\n} catch (e) {\n  originalQuery = '';\n}\nif (!originalQuery) {\n  originalQuery = synthesizerOutput.query || 'N/A';\n}\n\n// Extract synthesizer response text\nconst synthResponse = synthesizerOutput.response || JSON.stringify(synthesizerOutput);\n\n// \u2500\u2500 Helper Functions \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nfunction extractRiskLevel(text) {\n  const n = text.toLowerCase();\n  if (n.includes('critical')) return 'CRITICAL';\n  if (n.includes('high risk') || n.includes('high severity')) return 'HIGH';\n  if (n.includes('medium risk') || n.includes('medium severity') || n.includes('moderate')) return 'MEDIUM';\n  if (n.includes('low risk') || n.includes('low severity')) return 'LOW';\n  return 'MEDIUM';\n}\n\nfunction extractConfidence(text) {\n  const n = text.toLowerCase();\n  if (n.includes('high confidence')) return 'HIGH';\n  if (n.includes('low confidence')) return 'LOW';\n  return 'MEDIUM';\n}\n\nfunction formatMitreMappings(techs) {\n  if (!techs || techs.length === 0) return '| No specific MITRE ATT&CK techniques identified.';\n  return techs.map(t => {\n    const covLine = t.coverage\n      ? `|   Coverage: CAR=${t.coverage.car} Sigma=${t.coverage.sigma} ES_SIEM=${t.coverage.es_siem} Splunk=${t.coverage.splunk} Total=${t.coverage.total}`\n      : '';\n    return [\n      `| ${t.id} | ${t.name} | ${(t.tactics || []).join(', ')} |`,\n      `|   Description: ${t.description || ''}`,\n      `|   Detection: ${t.detection || ''}`,\n      covLine,\n    ].filter(Boolean).join('\\n');\n  }).join('\\n');\n}\n\nfunction formatNistMappings(mappings) {\n  if (!mappings || mappings.length === 0) return '| No specific NIST CSF 2.0 mappings identified.';\n  return mappings.map(func => {\n    const cats = (func.categories || []).map(cat => {\n      const subs = (cat.relevant_subcategories || [])\n        .slice(0, 3)\n        .map(s => `|     - ${s.id}: ${s.description}`)\n        .join('\\n');\n      return `|   ${cat.category_id} - ${cat.category_name}\\n|     ${cat.description}${subs ? '\\n' + subs : ''}`;\n    }).join('\\n');\n    return `| ${func.function_id} (${func.function_name}):\\n${cats}`;\n  }).join('\\n\\n');\n}\n\nfunction formatDetectionGaps(techs, gaps, low) {\n  const lines = ['| Based on identified techniques, the following detection capabilities should be verified:'];\n\n  for (const t of techs.slice(0, 5)) {\n    lines.push(`| - ${t.id} (${t.name}): ${t.detection || 'See MITRE ATT&CK for detection guidance'}`);\n  }\n\n  if (gaps && gaps.length > 0) {\n    lines.push('|');\n    lines.push(`| \u26a0\ufe0f  ZERO-COVERAGE TECHNIQUES (${gaps.length}) \u2014 no community detection rules exist:`);\n    for (const g of gaps) {\n      lines.push(`|   \u26a0\ufe0f  ${g.id} (${g.name}): CAR=0 Sigma=0 ES SIEM=0 Splunk=0 \u2014 custom detection rules required`);\n    }\n  }\n\n  if (low && low.length > 0) {\n    lines.push('|');\n    lines.push(`| \u26a0\ufe0f  LOW-COVERAGE TECHNIQUES (${low.length}) \u2014 very few community detections (total < 5):`);\n    for (const l of low) {\n      lines.push(`|   ${l.id} (${l.name}): Total=${l.coverage.total} (CAR=${l.coverage.car} Sigma=${l.coverage.sigma})`);\n    }\n  }\n\n  return lines.join('\\n');\n}\n\nfunction formatAnalyticCoverage(techs) {\n  if (!techs || !techs.some(t => t.coverage)) {\n    return '| CAR analytic coverage data not available for this pipeline run.';\n  }\n  const lines = ['| Analytic coverage per identified technique (CAR / Sigma / ES SIEM / Splunk):'];\n  for (const t of techs) {\n    if (!t.coverage) continue;\n    const total   = t.coverage.total;\n    const flag    = total === 0 ? ' \u26a0\ufe0f  NO DETECTIONS' : total < 5 ? ' \u26a0\ufe0f  LOW COVERAGE' : '';\n    lines.push(`| ${t.id} (${t.name}): CAR=${t.coverage.car} Sigma=${t.coverage.sigma} ES SIEM=${t.coverage.es_siem} Splunk=${t.coverage.splunk} \u2014 Total: ${total}${flag}`);\n  }\n  return lines.join('\\n');\n}\n\nfunction formatCisControls(mappings, quickWins) {\n  const lines = [];\n\n  if (quickWins && quickWins.length > 0) {\n    lines.push('| Quick Wins \u2014 Implementation Group 1 (applicable to all organizations):');\n    for (const sg of quickWins) {\n      const igs = (sg.implementation_groups || ['IG1']).join('/');\n      lines.push(`|   [${sg.id}] ${sg.title} [${igs}] \u2014 CIS Control ${sg.control_id}: ${sg.control_title}`);\n    }\n  }\n\n  if (mappings && mappings.length > 0) {\n    lines.push('|');\n    lines.push('| Recommended controls by CIS Control number:');\n    for (const ctrl of mappings) {\n      lines.push(`| CIS Control ${ctrl.control_id} \u2014 ${ctrl.control_title}:`);\n      for (const sg of (ctrl.safeguards || [])) {\n        const igs = (sg.implementation_groups || []).join('/');\n        const fn  = sg.security_function ? ` [${sg.security_function}]` : '';\n        lines.push(`|   [${sg.id}] ${sg.title} [${igs}]${fn}`);\n\n      }\n    }\n  }\n\n  if (lines.length === 0) {\n    return '| CIS Controls mapping not available for this pipeline run.';\n  }\n\n  return lines.join('\\n');\n}\n\n// \u2500\u2500 Report Assembly \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nconst typeDisplayNames = {\n  'auth_anomaly':              'Authentication Anomaly Investigation',\n  'beaconing':                 'Beaconing / C2 Communication Investigation',\n  'exfiltration':              'Data Exfiltration Investigation',\n  'lateral_movement':          'Lateral Movement Investigation',\n  'privilege_escalation':      'Privilege Escalation Investigation',\n  'persistence':               'Persistence Mechanism Investigation',\n  'ransomware':                'Ransomware Incident Investigation',\n  'insider_threat':            'Insider Threat Investigation',\n  'vulnerability_exploitation':'Vulnerability Exploitation Investigation',\n  'general':                   'General Security Investigation',\n};\n\nconst riskLevel  = extractRiskLevel(synthResponse);\nconst confidence = extractConfidence(synthResponse);\nconst timestamp  = new Date().toISOString();\n\nconst report = `\n================================================================================\nNIST SP 800-92 ALIGNED INVESTIGATION REPORT\nGenerated: ${timestamp}\nFrameworks: MITRE ATT&CK | NIST CSF 2.0 | CIS Controls v8.1.2 | MITRE CAR Coverage\n================================================================================\n\n1. EXECUTIVE SUMMARY\n--------------------------------------------------------------------------------\n| Query: ${originalQuery}\n| Investigation Type: ${typeDisplayNames[investigationType] || investigationType}\n| Risk Level: ${riskLevel}\n| Confidence: ${confidence}\n| MITRE Techniques Identified: ${techniques.length}\n| NIST CSF Functions Mapped: ${nistMappings.length}\n| CIS Controls Recommended: ${cisMappings.length} controls, ${cisQuickWins.length} quick wins\n| Detection Coverage Gaps: ${coverageGaps.length} techniques with zero detections\n|\n| Summary:\n${synthResponse.split('\\n').slice(0, 5).map(l => '| ' + l).join('\\n')}\n\n2. INCIDENT CLASSIFICATION (NIST CSF 2.0)\n--------------------------------------------------------------------------------\n${formatNistMappings(nistMappings)}\n\n3. TECHNICAL FINDINGS\n--------------------------------------------------------------------------------\n${synthResponse.split('\\n').map(l => '| ' + l).join('\\n')}\n\n4. MITRE ATT&CK MAPPING\n--------------------------------------------------------------------------------\n${formatMitreMappings(techniques)}\n\n5. DETECTION GAPS & RECOMMENDATIONS\n--------------------------------------------------------------------------------\n${formatDetectionGaps(techniques, coverageGaps, lowCoverage)}\n\n5.5 ANALYTIC COVERAGE (MITRE CAR / Sigma / ES SIEM / Splunk)\n--------------------------------------------------------------------------------\n${formatAnalyticCoverage(techniques)}\n\n5.6 CIS CONTROLS v8.1.2 RECOMMENDATIONS\n--------------------------------------------------------------------------------\n${formatCisControls(cisMappings, cisQuickWins)}\n\n6. RECOMMENDED ACTIONS\n--------------------------------------------------------------------------------\n| Priority actions based on risk level (${riskLevel}):\n| [See detailed recommendations in Technical Findings section above]\n| [See CIS Controls quick wins in Section 5.6 for implementation guidance]\n\n7. CONFIDENCE ASSESSMENT\n--------------------------------------------------------------------------------\n| Overall Confidence: ${confidence}\n| Techniques Matched: ${techniques.length} (deterministic lookup against MITRE ATT&CK database)\n| NIST Functions Covered: ${nistMappings.map(m => m.function_id).join(', ') || 'None'}\n| CIS Controls Matched: ${cisMappings.map(c => 'CIS-' + c.control_id).join(', ') || 'None'}\n| Coverage Gaps Identified: ${coverageGaps.length} techniques with no community detections\n| Data Gaps: [See analyst findings for specific data gap notes]\n\n8. EVIDENCE CHAIN\n--------------------------------------------------------------------------------\n| Investigation Flow:\n| 1. Query received and classified as: ${investigationType}\n| 2. Routed to specialized analyst agents\n| 3. Findings matched against ${techniques.length > 0 ? techniques.length : 'N/A'} MITRE ATT&CK techniques\n| 4. Detection coverage enriched from MITRE CAR analytic coverage dataset\n| 5. Mapped to ${nistMappings.length} NIST CSF 2.0 function areas\n| 6. Mapped to ${cisMappings.length} CIS Controls v8.1.2 control groups\n| 7. Purple team validation and synthesis completed\n| 8. Report generated per NIST SP 800-92 guidelines\n\n================================================================================\nEND OF REPORT | CASA CyberAnalysis System | ${timestamp}\n================================================================================\n`.trim();\n\nreturn [{\n  json: {\n    status: 'complete',\n    investigation_report: report,\n    risk_level: riskLevel,\n    confidence: confidence,\n    mitre_techniques:    techniques.map(t => ({ id: t.id, name: t.name, tactics: t.tactics, description: t.description || '', detection: t.detection || '', coverage: t.coverage || null })),\n    nist_csf_functions:  nistMappings.map(m => m.function_id),\n    cis_controls:        cisMappings.map(c => ({ control_id: c.control_id, control_title: c.control_title })),\n    coverage_gaps:       coverageGaps.map(g => g.id),\n    query:               originalQuery,\n    investigation_type:  investigationType,\n    timestamp:           timestamp,\n  }\n}];\n"
       }
     },
     {
-      "id": "casa-car-lookup-nomaly-investigation",
+      "id": "casa-car-lookup-coning-investigation",
       "name": "CAR Coverage Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        890,
-        325
+        640,
+        300
       ],
       "parameters": {
         "jsCode": "const fs = require('fs');\nconst coverageData = JSON.parse(\n  fs.readFileSync('/home/node/assets/car-analytic-coverage.json', 'utf8')\n);\nconst coverageMap = new Map();\nfor (const tech of coverageData.techniques) {\n  coverageMap.set(tech.id, tech.coverage);\n}\nconst inputData = $input.first().json;\nconst techniques        = inputData.techniques        || [];\nconst investigationType = inputData.investigation_type || 'general';\nconst analystFindings   = inputData.analyst_findings   || '';\n\nconst enrichedTechniques = techniques.map(t => {\n  const coverage = coverageMap.get(t.id) || { car: 0, sigma: 0, es_siem: 0, splunk: 0, total: 0 };\n  return { ...t, coverage };\n});\n\nconst coverageGaps = enrichedTechniques.filter(t => t.coverage.total === 0).map(t => ({\n  id: t.id, name: t.name, tactics: t.tactics, coverage: t.coverage,\n}));\n\nconst lowCoverage = enrichedTechniques.filter(t => t.coverage.total > 0 && t.coverage.total < 5).map(t => ({\n  id: t.id, name: t.name, tactics: t.tactics, coverage: t.coverage,\n}));\n\nreturn [{\n  json: {\n    techniques: enrichedTechniques,\n    coverage_gaps: coverageGaps,\n    low_coverage: lowCoverage,\n    coverage_db_version: coverageData.version,\n    investigation_type: investigationType,\n    analyst_findings: analystFindings,\n    technique_count: techniques.length,\n  }\n}];"
       }
     },
     {
-      "id": "casa-cis-mapper-nomaly-investigation",
+      "id": "casa-cis-mapper-coning-investigation",
       "name": "CIS Controls Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1050,
-        325
+        800,
+        300
       ],
       "parameters": {
         "jsCode": "const fs = require('fs');\n\n// Load CIS Controls data\nconst cisData = JSON.parse(\n  fs.readFileSync('/home/node/assets/cis-controls-v8.1.2.json', 'utf8')\n);\n\n// Load technique-to-controls deterministic mapping\nlet techniqueMap = {};\ntry {\n  const mapData = JSON.parse(\n    fs.readFileSync('/home/node/assets/mitre-to-controls-map.json', 'utf8')\n  );\n  for (const m of mapData.mappings) {\n    techniqueMap[m.technique_id] = {\n      cis_safeguards: m.cis_safeguards,\n      nist_csf_categories: m.nist_csf_categories\n    };\n  }\n} catch (e) {\n  // Mapping file not available \u2014 fall back to keyword-only matching\n}\n\nconst inputData = $input.first().json;\nconst findings     = inputData.analyst_findings  || JSON.stringify(inputData);\nconst techniques   = inputData.techniques        || [];\nconst nistMappings = inputData.nist_csf_mappings || [];\nconst coverageGaps = inputData.coverage_gaps     || [];\nconst lowCoverage  = inputData.low_coverage      || [];\n\n// \u2500\u2500 Step 1: Deterministic mapping from identified techniques \u2500\u2500\n// This is the PRIMARY source \u2014 directly maps MITRE techniques to CIS safeguards\nconst techniqueMatchedSafeguards = new Set();\n\nfor (const tech of techniques) {\n  const mapping = techniqueMap[tech.id];\n  if (mapping) {\n    for (const sgId of mapping.cis_safeguards) {\n      techniqueMatchedSafeguards.add(sgId);\n    }\n  }\n}\n\n// \u2500\u2500 Step 2: Keyword supplement for additional coverage \u2500\u2500\nconst normalizedFindings = findings.toLowerCase()\n  .replace(/[^a-z0-9\\s\\-\\.]/g, ' ').replace(/\\s+/g, ' ').trim();\n\nconst tacticToCisFunction = {\n  'Initial Access': ['Protect'], 'Execution': ['Protect', 'Detect'],\n  'Persistence': ['Protect', 'Detect'], 'Privilege Escalation': ['Protect', 'Identify'],\n  'Defense Evasion': ['Detect', 'Protect'], 'Credential Access': ['Protect', 'Identify'],\n  'Discovery': ['Identify', 'Detect'], 'Lateral Movement': ['Protect', 'Detect'],\n  'Collection': ['Protect', 'Detect'], 'Command and Control': ['Detect', 'Respond'],\n  'Exfiltration': ['Detect', 'Respond', 'Protect'], 'Impact': ['Respond', 'Recover'],\n};\nconst observedTactics = new Set();\nfor (const tech of techniques) for (const tactic of (tech.tactics || [])) observedTactics.add(tactic);\n\n// \u2500\u2500 Step 3: Score safeguards \u2500\u2500\nconst safeguardScores = [];\nfor (const control of cisData.controls) {\n  for (const sg of control.safeguards) {\n    let score = 0;\n    let matchSource = [];\n\n    // Deterministic technique mapping (highest weight)\n    if (techniqueMatchedSafeguards.has(sg.id)) {\n      score += 5;\n      matchSource.push('technique-map');\n    }\n\n    // Keyword matching (supplement)\n    for (const kw of (sg.keywords || [])) {\n      if (normalizedFindings.includes(kw.toLowerCase())) score += 1;\n    }\n    if (normalizedFindings.includes(sg.title.toLowerCase())) score += 2;\n\n    // Tactic-function correlation\n    const secFunc = sg.security_function || '';\n    for (const tactic of observedTactics) {\n      const fns = tacticToCisFunction[tactic] || [];\n      if (fns.some(f => f.toLowerCase() === secFunc.toLowerCase())) score += 0.5;\n    }\n\n    // Coverage gap boost\n    if (coverageGaps.length > 0 && secFunc.toLowerCase() === 'detect') {\n      score += coverageGaps.length * 0.25;\n    }\n\n    if (score > 0) {\n      safeguardScores.push({\n        control_id: control.id, control_title: control.title,\n        safeguard_id: sg.id, safeguard_title: sg.title, description: sg.description,\n        asset_type: sg.asset_type, security_function: sg.security_function,\n        nist_csf_function: sg.nist_csf_function, implementation_groups: sg.implementation_groups,\n        score, match_source: matchSource,\n      });\n    }\n  }\n}\n\nsafeguardScores.sort((a, b) => b.score - a.score);\nconst topSafeguards = safeguardScores.slice(0, 15);\nconst byControl = {};\nfor (const sg of topSafeguards) {\n  if (!byControl[sg.control_id]) {\n    byControl[sg.control_id] = {\n      control_id: sg.control_id, control_title: sg.control_title, safeguards: []\n    };\n  }\n  byControl[sg.control_id].safeguards.push({\n    id: sg.safeguard_id, title: sg.safeguard_title,\n    description: sg.description, asset_type: sg.asset_type,\n    security_function: sg.security_function,\n    nist_csf_function: sg.nist_csf_function,\n    implementation_groups: sg.implementation_groups\n  });\n}\nconst cisMappings = Object.values(byControl).sort((a, b) => a.control_id - b.control_id);\nconst quickWins = topSafeguards\n  .filter(sg => sg.implementation_groups.includes('IG1'))\n  .slice(0, 6)\n  .map(sg => ({\n    id: sg.safeguard_id, title: sg.safeguard_title,\n    control_id: sg.control_id, control_title: sg.control_title,\n    security_function: sg.security_function,\n    implementation_groups: sg.implementation_groups\n  }));\n\nreturn [{ json: {\n  cis_mappings: cisMappings,\n  cis_quick_wins: quickWins,\n  cis_safeguard_count: topSafeguards.length,\n  technique_mapped_count: techniqueMatchedSafeguards.size,\n  techniques, nist_csf_mappings: nistMappings,\n  analyst_findings: findings,\n  coverage_gaps: coverageGaps, low_coverage: lowCoverage,\n}}];"
@@ -178,41 +143,14 @@
       "main": [
         [
           {
-            "node": "LogAnalyst Auth",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "NetworkAnalyst Auth",
+            "node": "NetworkAnalyst Beaconing",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "LogAnalyst Auth": {
-      "main": [
-        [
-          {
-            "node": "Merge Auth Analysts",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "NetworkAnalyst Auth": {
-      "main": [
-        [
-          {
-            "node": "Merge Auth Analysts",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Merge Auth Analysts": {
+    "NetworkAnalyst Beaconing": {
       "main": [
         [
           {

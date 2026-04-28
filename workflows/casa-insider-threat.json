@@ -1,8 +1,8 @@
 {
-  "name": "CASA Sub-Workflow - Auth Anomaly Investigation",
+  "name": "CASA Insider Threat",
   "nodes": [
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000001",
+      "id": "3ef8d391-c496-4908-bf1d-72f2de6e32a4",
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
@@ -13,8 +13,8 @@
       "parameters": {}
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000002",
-      "name": "LogAnalyst Auth",
+      "id": "7fd1a51a-a71a-4cc2-9663-d50fbd5e881c",
+      "name": "LogAnalyst Insider",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -26,15 +26,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on authentication anomalies. Check for: Windows Event IDs 4625/4771/4768, credential stuffing patterns, impossible travel indicators, brute force timing patterns, privilege escalation sequences. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on insider threat indicators. Check for: unusual file access patterns (mass downloads from file shares, accessing files outside normal role), after-hours/off-hours authentication (2AM-5AM activity), email forwarding rule creation, access to resources outside normal job function, policy violations (USB device connections via Event ID 6416, unauthorized application usage), account sharing indicators (simultaneous sessions from different locations), activity spikes before resignation/termination dates, privilege abuse patterns, bulk print jobs, clipboard/screenshot activity.' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000003",
-      "name": "NetworkAnalyst Auth",
+      "id": "3529a305-5c22-4c18-9097-0bafbd512753",
+      "name": "NetworkAnalyst Insider",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -46,15 +46,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on authentication-related network patterns. Check for: unusual source IPs, VPN anomalies, geolocation inconsistencies, authentication protocol deviations. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on insider threat network patterns. Check for: data staging to personal cloud services (Google Drive, Dropbox, OneDrive, personal email domains), unusual upload volumes compared to baseline, connections to competing organizations or recruitment sites, personal VPN usage from corporate endpoints, shadow IT services (unauthorized SaaS), encrypted channels to non-business destinations, DNS queries to personal domains, large outbound transfers during off-hours, Airdrop/Bluetooth transfer indicators.' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000004",
-      "name": "Merge Auth Analysts",
+      "id": "88c9a277-e354-4fee-8c68-6cea8261e2c5",
+      "name": "Merge Insider Analysts",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
@@ -68,7 +68,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000007",
+      "id": "01b86ae7-9503-4164-b396-8592f1f64c1d",
       "name": "MITRE Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -81,7 +81,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000008",
+      "id": "05374137-0ba5-4f1a-b33e-f0b0a65ff7d9",
       "name": "NIST CSF Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -94,7 +94,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000005",
+      "id": "2742b606-10f0-4bf2-b61f-2ccbc7d4ff49",
       "name": "PurpleTeamMapper",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -114,7 +114,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000006",
+      "id": "0be464ea-62ca-4c92-a2c3-97b4eb47eb86",
       "name": "Synthesizer",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -134,7 +134,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000009",
+      "id": "d4010232-638e-4e39-98cf-70c12cb29373",
       "name": "Report Formatter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -147,7 +147,7 @@
       }
     },
     {
-      "id": "casa-car-lookup-nomaly-investigation",
+      "id": "d2e1c5a3-a866-4e7a-8f47-967cd8bf2386",
       "name": "CAR Coverage Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -160,7 +160,7 @@
       }
     },
     {
-      "id": "casa-cis-mapper-nomaly-investigation",
+      "id": "274d944d-48a2-424c-9bdf-b885ed5f99d7",
       "name": "CIS Controls Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -178,41 +178,41 @@
       "main": [
         [
           {
-            "node": "LogAnalyst Auth",
+            "node": "LogAnalyst Insider",
             "type": "main",
             "index": 0
           },
           {
-            "node": "NetworkAnalyst Auth",
+            "node": "NetworkAnalyst Insider",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "LogAnalyst Auth": {
+    "LogAnalyst Insider": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge Insider Analysts",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "NetworkAnalyst Auth": {
+    "NetworkAnalyst Insider": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge Insider Analysts",
             "type": "main",
             "index": 1
           }
         ]
       ]
     },
-    "Merge Auth Analysts": {
+    "Merge Insider Analysts": {
       "main": [
         [
           {

@@ -1,8 +1,8 @@
 {
-  "name": "CASA Sub-Workflow - Auth Anomaly Investigation",
+  "name": "CASA Sub-Workflow - Lateral Movement Investigation",
   "nodes": [
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000001",
+      "id": "e5f6a7b8-5555-4000-8000-000000000001",
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
@@ -13,8 +13,8 @@
       "parameters": {}
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000002",
-      "name": "LogAnalyst Auth",
+      "id": "e5f6a7b8-5555-4000-8000-000000000002",
+      "name": "LogAnalyst Lateral",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -26,15 +26,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on authentication anomalies. Check for: Windows Event IDs 4625/4771/4768, credential stuffing patterns, impossible travel indicators, brute force timing patterns, privilege escalation sequences. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on lateral movement indicators in logs. Check for: credential reuse across systems, pass-the-hash/ticket patterns, remote service creation (Event ID 7045), scheduled task creation, WMI/PowerShell remoting, authentication chains across multiple hosts. Investigation context: ' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000003",
-      "name": "NetworkAnalyst Auth",
+      "id": "e5f6a7b8-5555-4000-8000-000000000003",
+      "name": "NetworkAnalyst Lateral",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -46,15 +46,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on authentication-related network patterns. Check for: unusual source IPs, VPN anomalies, geolocation inconsistencies, authentication protocol deviations. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on lateral movement network patterns. Check for: east-west traffic anomalies, SMB/RPC lateral spread, unusual internal port scanning, RDP/SSH to unusual internal targets, admin share access patterns. Investigation context: ' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000004",
-      "name": "Merge Auth Analysts",
+      "id": "e5f6a7b8-5555-4000-8000-000000000004",
+      "name": "Merge Lateral Analysts",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
@@ -68,7 +68,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000007",
+      "id": "e5f6a7b8-5555-4000-8000-000000000007",
       "name": "MITRE Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -81,7 +81,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000008",
+      "id": "e5f6a7b8-5555-4000-8000-000000000008",
       "name": "NIST CSF Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -94,7 +94,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000005",
+      "id": "e5f6a7b8-5555-4000-8000-000000000005",
       "name": "PurpleTeamMapper",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -107,14 +107,14 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-purple-mapper', prompt: 'Validate and refine these pre-matched MITRE ATT&CK techniques and NIST CSF mappings against the authentication anomaly findings. Pre-matched MITRE techniques: ' + JSON.stringify($('MITRE Lookup').item.json.techniques) + ' NIST CSF mappings: ' + JSON.stringify($('NIST CSF Mapper').item.json.nist_csf_mappings) + ' Analysis findings: ' + $('MITRE Lookup').item.json.analyst_findings, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-purple-mapper', prompt: 'Validate and refine these pre-matched MITRE ATT&CK techniques and NIST CSF mappings against the lateral movement analysis findings. Pre-matched MITRE techniques: ' + JSON.stringify($('MITRE Lookup').item.json.techniques) + ' NIST CSF mappings: ' + JSON.stringify($('NIST CSF Mapper').item.json.nist_csf_mappings) + ' Analysis findings: ' + $('MITRE Lookup').item.json.analyst_findings, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000006",
+      "id": "e5f6a7b8-5555-4000-8000-000000000006",
       "name": "Synthesizer",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -127,14 +127,14 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-synthesizer', prompt: 'Synthesize this authentication anomaly investigation into a comprehensive report. Include: executive summary, authentication anomaly findings, network correlation findings, MITRE ATT&CK mappings, risk assessment (critical/high/medium/low), and prioritized remediation steps. All findings: ' + ($json.response || JSON.stringify($json)), stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-synthesizer', prompt: 'Synthesize this lateral movement investigation into a comprehensive report. Include: executive summary, log-based lateral movement indicators, network-based lateral movement patterns, attack path visualization (source to destination chain), MITRE ATT&CK mappings, risk assessment with blast radius estimation, and prioritized containment and remediation steps including network segmentation recommendations. All findings: ' + ($json.response || JSON.stringify($json)), stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000009",
+      "id": "e5f6a7b8-5555-4000-8000-000000000009",
       "name": "Report Formatter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -147,7 +147,7 @@
       }
     },
     {
-      "id": "casa-car-lookup-nomaly-investigation",
+      "id": "casa-car-lookup-vement-investigation",
       "name": "CAR Coverage Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -160,7 +160,7 @@
       }
     },
     {
-      "id": "casa-cis-mapper-nomaly-investigation",
+      "id": "casa-cis-mapper-vement-investigation",
       "name": "CIS Controls Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -178,41 +178,41 @@
       "main": [
         [
           {
-            "node": "LogAnalyst Auth",
+            "node": "LogAnalyst Lateral",
             "type": "main",
             "index": 0
           },
           {
-            "node": "NetworkAnalyst Auth",
+            "node": "NetworkAnalyst Lateral",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "LogAnalyst Auth": {
+    "LogAnalyst Lateral": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge Lateral Analysts",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "NetworkAnalyst Auth": {
+    "NetworkAnalyst Lateral": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge Lateral Analysts",
             "type": "main",
             "index": 1
           }
         ]
       ]
     },
-    "Merge Auth Analysts": {
+    "Merge Lateral Analysts": {
       "main": [
         [
           {

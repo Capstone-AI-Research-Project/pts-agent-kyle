@@ -1,8 +1,8 @@
 {
-  "name": "CASA Sub-Workflow - Auth Anomaly Investigation",
+  "name": "CASA Persistence",
   "nodes": [
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000001",
+      "id": "30e3f93e-3e73-489b-bae0-deebef5daf73",
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
@@ -13,8 +13,8 @@
       "parameters": {}
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000002",
-      "name": "LogAnalyst Auth",
+      "id": "99418f3b-f242-42ab-aa47-b7ab3bea95b2",
+      "name": "LogAnalyst Persist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -26,15 +26,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on authentication anomalies. Check for: Windows Event IDs 4625/4771/4768, credential stuffing patterns, impossible travel indicators, brute force timing patterns, privilege escalation sequences. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on persistence mechanism indicators. Check for: Registry Run/RunOnce key modifications, Event ID 7045 (service installed), Event ID 4698 (scheduled task created), startup folder changes, WMI event subscription creation, Group Policy modification, DLL side-loading, COM object hijacking, boot/logon autostart execution, crontab modifications, systemd service creation, at job scheduling. Look for Sysmon Events 12/13 (Registry Create/Modify) targeting autostart locations, and Event 11 (File Created) in startup directories.' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000003",
-      "name": "NetworkAnalyst Auth",
+      "id": "1be2bcd7-8399-427a-aa5f-7037b68b67d0",
+      "name": "NetworkAnalyst Persist",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -46,15 +46,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on authentication-related network patterns. Check for: unusual source IPs, VPN anomalies, geolocation inconsistencies, authentication protocol deviations. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on persistence-related network patterns. Check for: recurring C2 connections that survive reboots (same destination before and after restart), DNS-based persistence (dynamic DNS updates, DNS beaconing), backdoor listener ports (unusual LISTEN states on non-standard ports), web shells (unusual HTTP POST patterns to internal servers, PHP/ASPX files in web directories), implant check-in patterns after system restart.' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000004",
-      "name": "Merge Auth Analysts",
+      "id": "be36af6d-18c0-463a-8842-60d3c804bd55",
+      "name": "Merge Persist Analysts",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
@@ -68,7 +68,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000007",
+      "id": "01aa048b-44c7-4a16-b884-92ce74c82559",
       "name": "MITRE Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -81,7 +81,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000008",
+      "id": "f5ad54bd-f8db-438a-bc2a-8def644a8edb",
       "name": "NIST CSF Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -94,7 +94,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000005",
+      "id": "bfec5814-b33e-40e3-9fe7-1ecdd54d0ee3",
       "name": "PurpleTeamMapper",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -114,7 +114,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000006",
+      "id": "4cb5e6b2-c189-4770-bf09-122acccce89d",
       "name": "Synthesizer",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -134,7 +134,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000009",
+      "id": "0de39eb9-d1b6-4a3a-9f4f-a5170d277c34",
       "name": "Report Formatter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -147,7 +147,7 @@
       }
     },
     {
-      "id": "casa-car-lookup-nomaly-investigation",
+      "id": "33bcc19a-18e9-4c67-96d7-bad28a278dbb",
       "name": "CAR Coverage Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -160,7 +160,7 @@
       }
     },
     {
-      "id": "casa-cis-mapper-nomaly-investigation",
+      "id": "bb58fbda-125c-4aa5-bf67-96d8512dd7e5",
       "name": "CIS Controls Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -178,41 +178,41 @@
       "main": [
         [
           {
-            "node": "LogAnalyst Auth",
+            "node": "LogAnalyst Persist",
             "type": "main",
             "index": 0
           },
           {
-            "node": "NetworkAnalyst Auth",
+            "node": "NetworkAnalyst Persist",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "LogAnalyst Auth": {
+    "LogAnalyst Persist": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge Persist Analysts",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "NetworkAnalyst Auth": {
+    "NetworkAnalyst Persist": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge Persist Analysts",
             "type": "main",
             "index": 1
           }
         ]
       ]
     },
-    "Merge Auth Analysts": {
+    "Merge Persist Analysts": {
       "main": [
         [
           {

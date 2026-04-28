@@ -1,0 +1,267 @@
+{
+  "name": "CASA Master v2 - CyberAnalysis Investigation Router",
+  "nodes": [
+    {
+      "id": "a1b2c3d4-1111-4000-8000-000000000001",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ],
+      "parameters": {
+        "path": "casa-investigate",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "casa-investigate-webhook"
+    },
+    {
+      "id": "log-preprocessor-node-001",
+      "name": "Log Preprocessor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        375,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// CASA Log Content Preprocessor\n// Detects JSON network log data in the query and extracts attack indicators.\n// Produces a concise log_summary for the Router LLM and an attack_indicators\n// array for the Investigation Scanner keyword matching.\n// Prevents large JSON files from overflowing the Router's 4096-token context window.\n\nconst body = $input.first().json;\nconst rawQuery = body.body?.query || '';\n\n// Indicator types produced by filter_casa.py — these map to investigation types\nconst KNOWN_INDICATORS = [\n  'HIGH_VOLUME',       // vulnerability_exploitation\n  'SYN_FLOOD_PATTERN', // vulnerability_exploitation\n  'TTL_VARIANCE',      // vulnerability_exploitation\n  'SLOW_DOS_PATTERN',  // vulnerability_exploitation\n  'EPHEMERAL_SRC',     // vulnerability_exploitation\n  'BEACONING_PATTERN', // beaconing\n  'LARGE_TRANSFER',    // exfiltration\n  'PORT_SCAN_SOURCE',  // lateral_movement\n  'MANY_RESETS'        // lateral_movement\n];\n\nconst foundIndicators = new Set();\nlet captureInfo = null;\nlet logSummary = null;\n\n// Quick detection: is there JSON log data in the query?\nconst hasLogData = rawQuery.includes('\"capture_summary\"') ||\n                   (rawQuery.includes('\"indicators\"') && rawQuery.includes('\"flows\"'));\n\nif (hasLogData) {\n  // Extract indicator types by direct substring search (avoids JSON.parse on huge strings)\n  for (const ind of KNOWN_INDICATORS) {\n    if (rawQuery.includes('\"' + ind)) {\n      foundIndicators.add(ind);\n    }\n  }\n\n  // Extract capture_summary metadata\n  const srcMatch = rawQuery.match(/\"source_file\"\\s*:\\s*\"([^\"]+)\"/);\n  const flagMatch = rawQuery.match(/\"flagged_flows\"\\s*:\\s*(\\d+)/);\n  const totalMatch = rawQuery.match(/\"total_unique_flows_found\"\\s*:\\s*(\\d+)/);\n\n  if (srcMatch || flagMatch) {\n    captureInfo = {\n      source_file: srcMatch ? srcMatch[1] : 'unknown',\n      flagged_flows: flagMatch ? parseInt(flagMatch[1]) : 0,\n      total_flows: totalMatch ? parseInt(totalMatch[1]) : 0\n    };\n  }\n\n  if (foundIndicators.size > 0) {\n    const indList = Array.from(foundIndicators).join(', ');\n    const statsNote = captureInfo\n      ? ` [${captureInfo.flagged_flows}/${captureInfo.total_flows} flows flagged]`\n      : '';\n    logSummary = `Network log${statsNote}. Attack indicators: ${indList}`;\n  } else {\n    logSummary = 'Network capture log detected (no flagged indicators found)';\n  }\n}\n\n// Build a concise query for the Router LLM.\n// Truncates raw query to avoid overwhelming the model context window,\n// then appends the extracted indicator summary.\nlet routerQuery = rawQuery;\nif (logSummary) {\n  const textPart = rawQuery.substring(0, 300);\n  const truncated = rawQuery.length > 300 ? textPart + ' [log data omitted]' : textPart;\n  routerQuery = truncated + '\\n\\nLog data summary: ' + logSummary;\n}\n\nreturn [{\n  json: {\n    ...body,\n    body: {\n      ...(body.body || {}),\n      query: routerQuery\n    },\n    original_query: rawQuery,\n    log_summary: logSummary,\n    attack_indicators: Array.from(foundIndicators),\n    has_log_data: hasLogData && foundIndicators.size > 0,\n    capture_info: captureInfo\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "a1b2c3d4-1111-4000-8000-000000000002",
+      "name": "Router",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-router', prompt: 'You are a cybersecurity investigation router. Analyze this query and respond with ONLY a JSON object (no extra text) containing: domain (log, network, mixed) and investigation_type. Choose investigation_type from: auth_anomaly, beaconing, exfiltration, lateral_movement, privilege_escalation, persistence, ransomware, insider_threat, vulnerability_exploitation. If attack indicators are listed, classify accordingly: PORT_SCAN_SOURCE→lateral_movement, BEACONING_PATTERN→beaconing, SYN_FLOOD_PATTERN or HIGH_VOLUME or TTL_VARIANCE or SLOW_DOS_PATTERN→vulnerability_exploitation, LARGE_TRANSFER→exfiltration, MANY_RESETS→lateral_movement. Query: ' + $json.body.query, stream: false }) }}",
+        "options": {
+          "timeout": 180000000
+        }
+      }
+    },
+    {
+      "id": "a1b2c3d4-1111-4000-8000-000000000003",
+      "name": "Parse Router Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        750,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nconst VALID_TYPES = [\n  'auth_anomaly', 'beaconing', 'exfiltration', 'lateral_movement',\n  'privilege_escalation', 'persistence', 'ransomware',\n  'insider_threat', 'vulnerability_exploitation'\n];\n\nconst TYPE_KEYWORDS = {\n  'auth_anomaly': ['failed login', 'brute force', 'credential', 'password', 'ssh login', 'authentication', '4625', '4624', 'logon failure'],\n  'beaconing': ['beacon', 'c2', 'c&c', 'command and control', 'periodic', 'every 60', 'every 30', 'interval', 'callback', 'dns tunnel'],\n  'exfiltration': ['exfiltration', 'exfil', 'data theft', 'large transfer', 'upload', 'google drive', 'dns txt', 'data leak'],\n  'lateral_movement': ['lateral', 'pass-the-hash', 'psexec', 'rdp', 'smb', 'credential reuse', 'east-west', 'pivot'],\n  'privilege_escalation': ['privilege escalation', 'privesc', 'uac bypass', 'token', 'setuid', 'sudo abuse', 'dll injection'],\n  'persistence': ['persistence', 'registry run', 'scheduled task', 'service creation', 'backdoor', 'cron', 'autostart'],\n  'ransomware': ['ransomware', 'ransom', 'encrypt', 'shadow copy', 'vssadmin', 'bcdedit', 'bitcoin'],\n  'insider_threat': ['insider', 'policy violation', 'after hours', 'data hoarding', 'personal cloud', 'unauthorized access'],\n  'vulnerability_exploitation': ['exploit', 'cve', 'vulnerability', 'sql injection', 'xss', 'rce', 'web shell', 'buffer overflow']\n};\n\nfor (const item of items) {\n  let domain = 'mixed';\n  let investigation_type = 'general';\n  const responseText = (item.json.response || '').trim();\n  const query = ($('Webhook Trigger').item.json.body?.query || '').toLowerCase();\n  \n  try {\n    let cleaned = responseText\n      .replace(/```json\\s*/gi, '')\n      .replace(/```\\s*/g, '')\n      .replace(/^[^{]*/, '')\n      .replace(/}[^}]*$/, '}');\n    \n    const parsed = JSON.parse(cleaned);\n    domain = parsed.domain || 'mixed';\n    investigation_type = parsed.investigation_type || 'general';\n    \n    if (!VALID_TYPES.includes(investigation_type) && investigation_type !== 'general') {\n      const normalized = investigation_type.toLowerCase().replace(/-/g, '_');\n      const match = VALID_TYPES.find(t => t === normalized || normalized.includes(t) || t.includes(normalized));\n      investigation_type = match || 'general';\n    }\n  } catch (e) {\n    let bestType = 'general';\n    let bestScore = 0;\n    const searchText = query + ' ' + responseText.toLowerCase();\n    \n    for (const [type, keywords] of Object.entries(TYPE_KEYWORDS)) {\n      let score = 0;\n      for (const kw of keywords) {\n        if (searchText.includes(kw)) score++;\n      }\n      if (score > bestScore) {\n        bestScore = score;\n        bestType = type;\n      }\n    }\n    \n    if (bestScore > 0) {\n      investigation_type = bestType;\n      if (['beaconing'].includes(bestType)) domain = 'network';\n      else if (['auth_anomaly', 'persistence', 'privilege_escalation'].includes(bestType)) domain = 'log';\n      else domain = 'mixed';\n    }\n  }\n  \n  const logPrep = $('Log Preprocessor').first().json;\n  results.push({\n    json: {\n      query: logPrep.original_query || $('Webhook Trigger').item.json.body?.query || '',\n      domain: domain,\n      investigation_type: investigation_type,\n      router_raw: responseText,\n      attack_indicators: logPrep.attack_indicators || [],\n      has_log_data: logPrep.has_log_data || false,\n      log_summary: logPrep.log_summary || null\n    }\n  });\n}\n\nreturn results;"
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// CASA Investigation Scanner v2\n// Replaces the Switch node. Determines which sub-workflows to run.\n//\n// Uses the Router LLM's classification as the PRIMARY type,\n// then scans keywords to find ADDITIONAL relevant types.\n// Outputs one item per investigation type to execute.\n//\n// This is the ONLY path to sub-workflows \u2014 no more dual-path race.\n\nconst input = $input.first().json;\nconst routerType = (input.investigation_type || 'general').toLowerCase();\nconst query = (input.query || '').toLowerCase();\n// Pre-extracted attack indicators from Log Preprocessor (e.g. PORT_SCAN_SOURCE, BEACONING_PATTERN)\nconst attackIndicators = (input.attack_indicators || []).map(i => i.toLowerCase());\n// Combined search text: full query text + extracted indicator keywords\nconst searchText = query + ' ' + attackIndicators.join(' ');\n\n// Keyword definitions for each investigation type\nconst investigationKeywords = {\n  auth_anomaly: [\n    'failed login', 'login fail', 'authentication fail', 'invalid password',\n    'brute force', 'credential stuff', 'account lockout', 'locked out',\n    'invalid user', 'unknown user', 'logon failure', 'ssh login',\n    'failed ssh', 'rdp login', 'kerberos', 'ntlm', 'password spray',\n    'mfa', 'multi-factor', '4625', '4624', '4771', '4776',\n    'pam_unix', 'sshd', 'accepted publickey', 'accepted password',\n    'failed password', 'invalid credentials', 'unauthorized access',\n    'root login', 'sudo', 'su:', 'authentication error',\n    'access denied', 'permission denied', 'logon type',\n    '4740', '4720', '4726', '4728', '4732', 'account locked', 'login attempt', 'failed attempt', 'auth fail', 'authentication bypass', 'credential dump', 'credential harvest', 'golden ticket', 'kerberos ticket', 'dcsync', 'ntlm hash', 'impossible travel', 'pass the hash', 'pth'\n  ],\n  beaconing: [\n    'beacon', 'c2', 'c&c', 'command and control', 'callback',\n    'periodic', 'interval', 'heartbeat', 'dns tunnel', 'dns query',\n    'domain age', 'newly registered', 'dga', 'domain generation',\n    'jitter', 'sleep', 'implant', 'cobalt strike', 'metasploit',\n    'reverse shell', 'outbound connection', 'suspicious domain',\n    'external ip', 'known bad', 'threat intel', 'ioc',\n    'every 60 seconds', 'every 30 seconds', 'regular interval',\n    'nslookup', 'dns request', 'txt record', 'encoded dns',\n    'beaconing_pattern', 'avg_interval', 'base64', 'base64 encoding', 'keepalive', 'keep-alive', 'remote access tool', 'anydesk', 'teamviewer', 'certutil', 'bitsadmin', 'fast flux', 'domain fronting', 'non-standard port', 'unusual port', 'http beacon', 'http tunnel', 'protocol tunnel', 'protocol tunneling'\n  ],\n  exfiltration: [\n    'exfiltration', 'exfil', 'data theft', 'data leak', 'data loss',\n    'large transfer', 'upload', 'google drive', 'dropbox', 'onedrive',\n    'mega.nz', 'file share', 'bulk download', 'after hours',\n    'off hours', 'unusual hour', '2am', '3am', '4am',\n    'staging', 'archive', 'compress', 'zip', 'rar', '7z',\n    'encrypted channel', 'outbound', 'egress', 'dlp',\n    'sensitive file', 'confidential', 'proprietary', 'intellectual property',\n    'usb', 'removable media', 'cloud storage', 'personal email',\n    'large volume', 'bandwidth spike', 'data ratio',\n    'large_transfer', 'ftp', 'sftp', 'ftp-data', 'smtp', 'data staging', 'stage data', 'staging folder', 'email harvesting', 'mail forwarding', 'mailbox', 'dns exfiltration', 'txt record', 'encrypted archive', 'screenshot', 'screen capture', 'clipboard', 'keylogger', 'network share data', 'mapped drive'\n  ],\n  lateral_movement: [\n    'lateral', 'east-west', 'pivot', 'pass-the-hash', 'pass the hash',\n    'pth', 'pass-the-ticket', 'overpass', 'psexec', 'wmic', 'wmi',\n    'winrm', 'powershell remote', 'smb', 'admin share', 'ipc$',\n    'c$', 'admin$', 'remote desktop', 'rdp', 'ssh to', 'ssh from',\n    'credential reuse', 'same credential', 'multiple host',\n    'multiple server', 'spread', 'moved to', 'hopping',\n    'internal scan', 'port scan', 'network scan', 'nmap',\n    'service enumeration', 'net view', 'net use',\n    '4648', '4624 type 3', 'type 10', 'remote logon',\n    'port_scan_source', 'many_resets', 'netbios', 'msrpc', 'mimikatz', 'bloodhound', 'sharphound', 'crackmapexec', 'impacket', 'dcom', 'mstsc', 'ntlm hash', 'overpass the hash', '3389', '445', '5985', '5986', 'session takeover', 'session hijack', 'vnc', 'mmc', 'scp'\n  ],\n  privilege_escalation: [\n    'privilege escalation', 'privesc', 'uac bypass', 'uac',\n    'token manipulation', 'token impersonation', 'setuid', 'suid',\n    'sudo abuse', 'sudo', 'dll injection', 'dll hijack',\n    'service exploit', 'named pipe', 'potato', 'juicy',\n    'special privileges', '4672', '4673', '4674',\n    'elevated process', 'admin token', 'runas',\n    'access token', 'impersonate', 'security descriptor',\n    'kernel exploit', 'local exploit', 'elevation of privilege', 'elevation', 'group policy', 'gpo', 'code injection', 'process injection', 'thread injection', 'process hollowing', 'eventvwr', 'fodhelper', 'golden ticket', 'silver ticket', 'kerberoast', 'asreproast', 'ntlm relay', 'relay attack', 'trust modification', 'setgid', 'privilege abuse'\n  ],\n  persistence: [\n    'persistence', 'registry run', 'registry key', 'run key',\n    'scheduled task', 'schtasks', 'service creation', 'new service',\n    'backdoor', 'cron', 'crontab', 'autostart', 'startup folder',\n    'boot record', 'bootkit', 'implant', 'web shell',\n    'account creation', 'hidden account', 'ssh key',\n    '7045', '4697', 'service install',\n    'rootkit', 'dll hijacking', 'dll side-loading', 'dll sideloading', 'launchd', 'ld_preload', 'dylib', 'bits', 'bits job', 'at job', 'add user', 'net user', 'useradd', 'lnk file', 'shortcut modification', 'path interception', 'mbr', 'uefi', 'event triggered', 'hkcu run', 'hklm run'\n  ],\n  ransomware: [\n    'ransomware', 'ransom', 'encrypt', 'encrypted', '.encrypted',\n    'shadow copy', 'vssadmin', 'bcdedit', 'wbadmin', 'bitcoin',\n    'ransom note', 'decrypt', 'recovery disabled',\n    'file rename', 'mass rename', 'crypto', 'locker',\n    'lockbit', 'ryuk', 'conti', 'revil', 'blackcat', 'alphv', 'cl0p', 'wiper', 'wipe disk', 'restore point', 'double extortion', 'data leak site', 'backup deletion', 'monero', 'file extension'\n  ],\n  insider_threat: [\n    'insider', 'policy violation', 'after hours', 'off hours',\n    'data hoarding', 'personal cloud', 'unauthorized access',\n    'resignation', 'departing employee', 'competitor',\n    'need to know', 'outside scope', 'bulk copy', 'usb',\n    'print', 'printing', 'printscreen', 'forwarding rule', 'inbox rule', 'email forwarding', 'terminated', 'contractor', 'classified', 'confidential', 'unusual access pattern', 'anomalous access', 'vdi', 'virtual desktop', 'solicitation'\n  ],\n  vulnerability_exploitation: [\n    'exploit', 'cve', 'vulnerability', 'sql injection', 'sqli',\n    'xss', 'rce', 'remote code execution', 'web shell',\n    'buffer overflow', 'command injection', 'deserialization',\n    'upload vulnerability', 'lfi', 'rfi', 'path traversal',\n    'scanning campaign', '500 error', 'aspx', 'jsp',\n    'dos', 'ddos', 'denial of service', 'slowloris', 'slow http',\n    'goldeneye', 'golden eye', 'hulk', 'r-u-dead-yet', 'rudy',\n    'http flood', 'syn flood', 'connection exhaustion', 'slow_dos_pattern',\n    'application layer attack', 'resource exhaustion', 'keep-alive attack',\n    'service disruption', 'high_volume', 'syn_flood_pattern',\n    'ttl_variance', 'ephemeral_src', 'shellcode', 'meterpreter', 'payload delivery', 'nikto', 'gobuster', 'ffuf', 'nuclei', 'exploit kit', 'exploit chain', 'log4j', 'log4shell', 'proxyshell', 'proxylogon', 'xxe', 'ssti', 'csrf', 'arbitrary code', 'memory corruption'\n  ]\n};\n\n// Step 1: Always include the Router LLM's classification (if valid)\nconst matchedTypes = new Map();\nconst validTypes = Object.keys(investigationKeywords);\n\nif (validTypes.includes(routerType)) {\n  matchedTypes.set(routerType, {\n    count: 100,  // High priority \u2014 LLM classified this\n    keywords: ['[Router LLM classification]'],\n    source: 'router'\n  });\n}\n\n// Step 2: Scan query for additional keyword matches\nfor (const [type, keywords] of Object.entries(investigationKeywords)) {\n  let matchCount = 0;\n  const matchedKeywords = [];\n\n  for (const keyword of keywords) {\n    if (searchText.includes(keyword)) {\n      matchCount++;\n      matchedKeywords.push(keyword);\n    }\n  }\n\n  if (matchCount > 0 && !matchedTypes.has(type)) {\n    matchedTypes.set(type, {\n      count: matchCount,\n      keywords: matchedKeywords,\n      source: 'keyword'\n    });\n  } else if (matchCount > 0 && matchedTypes.has(type)) {\n    // Augment the Router's classification with keyword evidence\n    const existing = matchedTypes.get(type);\n    existing.count += matchCount;\n    existing.keywords.push(...matchedKeywords);\n  }\n}\n\n// Step 3: Build output items\nconst outputItems = [];\nconst types = Array.from(matchedTypes.keys());\n\nif (types.length === 0) {\n  // No Router classification and no keywords \u2014 default to auth_anomaly\n  outputItems.push({\n    json: {\n      query: input.query,\n      domain: input.domain || 'mixed',\n      investigation_type: 'auth_anomaly',\n      scan_mode: 'default_fallback',\n      matched_types: ['auth_anomaly'],\n      total_matches: 1,\n      scan_note: 'No classification or keywords matched \u2014 running default auth_anomaly analysis'\n    }\n  });\n} else {\n  for (const type of types) {\n    const info = matchedTypes.get(type);\n    outputItems.push({\n      json: {\n        query: input.query,\n        domain: input.domain || 'mixed',\n        investigation_type: type,\n        scan_mode: info.source === 'router' ? 'router_classified' : 'keyword_matched',\n        matched_types: types,\n        keyword_matches: info.keywords,\n        match_count: info.count,\n        total_matches: types.length,\n        scan_note: `${types.length} investigation path(s): ${types.join(', ')}`\n      }\n    });\n  }\n}\n\nreturn outputItems;\n",
+        "mode": "runOnceForAllItems"
+      },
+      "id": "80b2debc-f1ae-4e1e-995c-bbba6e9657f0",
+      "name": "Investigation Scanner",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ {\"auth_anomaly\": \"xrthIEYN9VJXHKDK\", \"beaconing\": \"UunAKNrgbTN5Aczt\", \"exfiltration\": \"SvYHfUD0NORPbTwr\", \"lateral_movement\": \"yDy35R2WLGL4cHJi\", \"privilege_escalation\": \"REPLACE_WITH_ACTUAL_ID\", \"persistence\": \"REPLACE_WITH_ACTUAL_ID\", \"ransomware\": \"REPLACE_WITH_ACTUAL_ID\", \"insider_threat\": \"REPLACE_WITH_ACTUAL_ID\", \"vulnerability_exploitation\": \"REPLACE_WITH_ACTUAL_ID\"}[$json.investigation_type] }}",
+          "mode": "id"
+        }
+      },
+      "id": "5322f88d-44cf-4431-bc84-7b67164e6ee5",
+      "name": "Dynamic Sub-Workflow Router",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        1300,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// CASA Results Collector & Merger v2\n// Collects ALL sub-workflow results and merges into a unified data structure.\n// This is the ONLY node that feeds the Overseer.\n\nconst items = $input.all();\nconst timestamp = new Date().toISOString();\n\nconst reports = [];\nconst allTechniques = [];\nconst allNistFunctions = [];\nconst allCisControls = [];\nconst allCoverageGaps = [];\nconst investigationTypes = [];\nlet originalQuery = '';\nlet highestRisk = 'LOW';\n\nconst riskOrder = { 'LOW': 0, 'MEDIUM': 1, 'HIGH': 2, 'CRITICAL': 3 };\n\nfor (const item of items) {\n  const data = item.json;\n\n  if (data.investigation_report) {\n    reports.push({\n      type: data.investigation_type || 'unknown',\n      report: data.investigation_report,\n      risk_level: data.risk_level || 'MEDIUM',\n      confidence: data.confidence || 'MEDIUM'\n    });\n    investigationTypes.push(data.investigation_type || 'unknown');\n\n    if ((riskOrder[data.risk_level] || 0) > (riskOrder[highestRisk] || 0)) {\n      highestRisk = data.risk_level;\n    }\n  }\n\n  // Deduplicate MITRE techniques by ID\n  if (data.mitre_techniques) {\n    for (const t of data.mitre_techniques) {\n      if (!allTechniques.find(e => e.id === t.id)) {\n        allTechniques.push(t);\n      }\n    }\n  }\n\n  // Deduplicate NIST functions\n  if (data.nist_csf_functions) {\n    for (const f of data.nist_csf_functions) {\n      if (!allNistFunctions.includes(f)) {\n        allNistFunctions.push(f);\n      }\n    }\n  }\n\n  // Deduplicate CIS controls\n  if (data.cis_controls) {\n    for (const c of data.cis_controls) {\n      if (!allCisControls.find(e => e.control_id === c.control_id)) {\n        allCisControls.push(c);\n      }\n    }\n  }\n\n  if (data.coverage_gaps) {\n    for (const g of data.coverage_gaps) {\n      if (!allCoverageGaps.includes(g)) {\n        allCoverageGaps.push(g);\n      }\n    }\n  }\n\n  if (data.query && !originalQuery) {\n    originalQuery = data.query;\n  }\n}\n\n// Build a structured payload for the Overseer\nconst payload = {\n  reports_count: reports.length,\n  investigation_types: investigationTypes,\n  highest_risk: highestRisk,\n  original_query: originalQuery,\n  combined_techniques_count: allTechniques.length,\n  combined_nist_functions: allNistFunctions,\n  combined_cis_controls_count: allCisControls.length,\n  coverage_gaps_count: allCoverageGaps.length,\n  // Full data for the Overseer\n  reports: reports,\n  mitre_techniques: allTechniques,\n  nist_csf_functions: allNistFunctions,\n  cis_controls: allCisControls,\n  coverage_gaps: allCoverageGaps,\n  query: originalQuery,\n  timestamp: timestamp\n};\n\nreturn [{ json: payload }];\n",
+        "mode": "runOnceForAllItems"
+      },
+      "id": "ef6d9195-e9d3-46b7-9cdc-04e34fa80715",
+      "name": "Results Collector",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1600,
+        300
+      ]
+    },
+    {
+      "id": "casa-overseer-llm-node",
+      "name": "Overseer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1900,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-overseer', prompt: 'You are the CASA Overseer \u2014 the final analyst who reviews all investigation findings and produces the definitive report for a human security analyst.\\n\\nYou have received ' + $json.reports_count + ' investigation report(s) from specialized analysis paths: ' + $json.investigation_types.join(', ') + '.\\n\\nYour job:\\n1. Identify the MOST CRITICAL findings across all reports \u2014 do not repeat boilerplate\\n2. Cross-correlate findings: if multiple paths found related indicators, connect them into an attack narrative\\n3. Highlight any CONTRADICTIONS between reports (different risk assessments, conflicting conclusions)\\n4. Produce a UNIFIED executive summary that a SOC analyst can act on immediately\\n5. Prioritize the top 5 actionable recommendations across all reports\\n6. If log data was provided, reference SPECIFIC log entries, timestamps, IPs, usernames, and event IDs\\n\\nOverall Risk: ' + $json.highest_risk + '\\nMITRE Techniques (combined): ' + $json.combined_techniques_count + '\\nNIST Functions: ' + $json.combined_nist_functions.join(', ') + '\\nCIS Controls: ' + $json.combined_cis_controls_count + '\\n\\nOriginal analyst query: ' + $json.original_query + '\\n\\n--- BEGIN SUB-WORKFLOW REPORTS ---\\n' + $json.reports.map((r, i) => 'REPORT ' + (i+1) + ' [' + r.type.toUpperCase() + ' | Risk: ' + r.risk_level + ']:\\n' + r.report).join('\\n\\n--- NEXT REPORT ---\\n') + '\\n--- END SUB-WORKFLOW REPORTS ---', stream: false }) }}",
+        "options": {
+          "timeout": 180000000
+        }
+      }
+    },
+    {
+      "id": "casa-overseer-report-formatter",
+      "name": "Final Report Formatter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        300
+      ],
+      "parameters": {
+        "jsCode": "// CASA Final Report Formatter \u2014 Overseer Output\n// Combines the Overseer's synthesis with structured data from the Results Collector\n\nconst overseerResponse = $input.first().json.response || '';\nconst collectorData = $('Results Collector').first().json;\n\nconst timestamp = new Date().toISOString();\nconst query = collectorData.original_query || collectorData.query || 'N/A';\nconst types = collectorData.investigation_types || [];\nconst highestRisk = collectorData.highest_risk || 'MEDIUM';\nconst techniques = collectorData.mitre_techniques || [];\nconst nistFunctions = collectorData.combined_nist_functions || collectorData.nist_csf_functions || [];\nconst cisControls = collectorData.cis_controls || [];\nconst coverageGaps = collectorData.coverage_gaps || [];\nconst reportsCount = collectorData.reports_count || 0;\n\n// Risk and confidence from overseer text\nfunction extractRisk(text) {\n  const n = text.toLowerCase();\n  if (n.includes('critical')) return 'CRITICAL';\n  if (n.includes('high risk') || n.includes('high severity')) return 'HIGH';\n  if (n.includes('medium risk') || n.includes('moderate')) return 'MEDIUM';\n  if (n.includes('low risk')) return 'LOW';\n  return highestRisk; // Use the collected highest risk as default\n}\n\nfunction extractConfidence(text) {\n  const n = text.toLowerCase();\n  if (n.includes('high confidence')) return 'HIGH';\n  if (n.includes('low confidence')) return 'LOW';\n  return 'MEDIUM';\n}\n\nconst riskLevel = extractRisk(overseerResponse);\nconst confidence = extractConfidence(overseerResponse);\n\n// Format MITRE techniques\nfunction formatMitre(techs) {\n  if (!techs || techs.length === 0) return '| No MITRE ATT&CK techniques identified.';\n  return techs.map(t => {\n    const covLine = t.coverage\n      ? `|   Coverage: CAR=${t.coverage.car} Sigma=${t.coverage.sigma} ES_SIEM=${t.coverage.es_siem} Splunk=${t.coverage.splunk} Total=${t.coverage.total}`\n      : '';\n    return [\n      `| ${t.id} | ${t.name} | ${(t.tactics || []).join(', ')} |`,\n      `|   Description: ${t.description || ''}`,\n      `|   Detection: ${t.detection || ''}`,\n      covLine,\n    ].filter(Boolean).join('\\n');\n  }).join('\\n');\n}\n\n// Format NIST CSF sections from sub-reports\nfunction extractNistSections() {\n  const reports = collectorData.reports || [];\n  const sections = new Set();\n  for (const r of reports) {\n    // Extract NIST sections from individual reports\n    const nistMatch = r.report.match(/2\\. INCIDENT CLASSIFICATION[\\s\\S]*?(?=3\\. TECHNICAL)/m);\n    if (nistMatch) sections.add(nistMatch[0].trim());\n  }\n  if (sections.size === 0) return '| See individual sub-workflow reports for NIST CSF mappings.';\n  // Return the most comprehensive one (longest)\n  return Array.from(sections).sort((a, b) => b.length - a.length)[0];\n}\n\n// Format CIS Controls from sub-reports\nfunction extractCisSections() {\n  const reports = collectorData.reports || [];\n  const sections = new Set();\n  for (const r of reports) {\n    const cisMatch = r.report.match(/5\\.6 CIS CONTROLS[\\s\\S]*?(?=6\\. RECOMMENDED)/m);\n    if (cisMatch) sections.add(cisMatch[0].trim());\n  }\n  if (sections.size === 0) return '| See individual sub-workflow reports for CIS Controls.';\n  return Array.from(sections).sort((a, b) => b.length - a.length)[0];\n}\n\n// Build the unified report\nconst typeNames = {\n  'auth_anomaly': 'Authentication Anomaly',\n  'beaconing': 'Beaconing / C2',\n  'exfiltration': 'Data Exfiltration',\n  'lateral_movement': 'Lateral Movement',\n  'privilege_escalation': 'Privilege Escalation',\n  'persistence': 'Persistence',\n  'ransomware': 'Ransomware',\n  'insider_threat': 'Insider Threat',\n  'vulnerability_exploitation': 'Vulnerability Exploitation',\n  'general': 'General Security'\n};\n\nconst analysisMode = reportsCount > 1\n  ? `Comprehensive (${reportsCount} investigation paths analyzed: ${types.map(t => typeNames[t] || t).join(', ')})`\n  : `Focused (${typeNames[types[0]] || types[0] || 'General'} investigation)`;\n\nconst report = `\n================================================================================\nCASA INVESTIGATION REPORT \u2014 OVERSEER SYNTHESIS\nGenerated: ${timestamp}\nFrameworks: MITRE ATT&CK | NIST CSF 2.0 | CIS Controls v8.1.2 | MITRE CAR\n================================================================================\n\n1. EXECUTIVE SUMMARY\n--------------------------------------------------------------------------------\n| Query: ${query}\n| Analysis Mode: ${analysisMode}\n| Overall Risk Level: ${riskLevel}\n| Confidence: ${confidence}\n| MITRE Techniques (combined): ${techniques.length}\n| NIST CSF Functions: ${nistFunctions.join(', ') || 'N/A'}\n| CIS Controls: ${cisControls.length}\n| Coverage Gaps: ${coverageGaps.length}\n\n2. OVERSEER ANALYSIS\n--------------------------------------------------------------------------------\n${overseerResponse.split('\\n').map(l => '| ' + l).join('\\n')}\n\n3. MITRE ATT&CK MAPPING (Combined)\n--------------------------------------------------------------------------------\n${formatMitre(techniques)}\n\n4. NIST CSF 2.0 CLASSIFICATION\n--------------------------------------------------------------------------------\n${extractNistSections()}\n\n5. CIS CONTROLS v8.1.2 RECOMMENDATIONS\n--------------------------------------------------------------------------------\n${extractCisSections()}\n\n6. EVIDENCE CHAIN\n--------------------------------------------------------------------------------\n| Investigation Flow:\n| 1. Query received and routed through CASA Investigation Scanner\n| 2. ${reportsCount} investigation path(s) identified: ${types.join(', ')}\n| 3. Each path ran specialized analysts \u2192 MITRE \u2192 NIST \u2192 CIS \u2192 PurpleTeam \u2192 Synthesizer\n| 4. ${techniques.length} unique MITRE ATT&CK techniques identified across all paths\n| 5. Results collected and deduplicated by Results Collector\n| 6. Overseer performed cross-correlation and synthesis\n| 7. Final report generated\n\n================================================================================\nEND OF REPORT | CASA CyberAnalysis System \u2014 Overseer Synthesis | ${timestamp}\n================================================================================\n`.trim();\n\nreturn [{\n  json: {\n    status: 'complete',\n    investigation_report: report,\n    risk_level: riskLevel,\n    confidence: confidence,\n    mitre_techniques: techniques,\n    nist_csf_functions: nistFunctions,\n    cis_controls: cisControls,\n    coverage_gaps: coverageGaps,\n    query: query,\n    investigation_type: types.length > 1 ? 'comprehensive' : (types[0] || 'general'),\n    investigation_types_analyzed: types,\n    reports_merged: reportsCount,\n    timestamp: timestamp\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "a1b2c3d4-1111-4000-8000-000000000018",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2500,
+        300
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { status: $json.status || 'complete', investigation_report: $json.investigation_report || $json.response, risk_level: $json.risk_level, confidence: $json.confidence, mitre_techniques: $json.mitre_techniques, nist_csf_functions: $json.nist_csf_functions, query: $json.query, investigation_type: $json.investigation_type, investigation_types_analyzed: $json.investigation_types_analyzed, reports_merged: $json.reports_merged, timestamp: $json.timestamp } }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Log Preprocessor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Preprocessor": {
+      "main": [
+        [
+          {
+            "node": "Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Router": {
+      "main": [
+        [
+          {
+            "node": "Parse Router Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Router Output": {
+      "main": [
+        [
+          {
+            "node": "Investigation Scanner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Investigation Scanner": {
+      "main": [
+        [
+          {
+            "node": "Dynamic Sub-Workflow Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dynamic Sub-Workflow Router": {
+      "main": [
+        [
+          {
+            "node": "Results Collector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Results Collector": {
+      "main": [
+        [
+          {
+            "node": "Overseer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Overseer": {
+      "main": [
+        [
+          {
+            "node": "Final Report Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Report Formatter": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

@@ -1,8 +1,8 @@
 {
-  "name": "CASA Sub-Workflow - Auth Anomaly Investigation",
+  "name": "CASA Ransomware",
   "nodes": [
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000001",
+      "id": "62099fa2-f663-4aed-8fc4-378660fb4cae",
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
@@ -13,8 +13,8 @@
       "parameters": {}
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000002",
-      "name": "LogAnalyst Auth",
+      "id": "4437f307-1403-499c-9db8-ad69c3e90ce5",
+      "name": "LogAnalyst Ransom",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -26,15 +26,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on authentication anomalies. Check for: Windows Event IDs 4625/4771/4768, credential stuffing patterns, impossible travel indicators, brute force timing patterns, privilege escalation sequences. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on ransomware indicators. Check for: mass file modification events (high volume of file writes with high entropy), volume shadow copy deletion (vssadmin delete shadows, wmic shadowcopy delete), bcdedit /set recoveryenabled no, suspicious PowerShell (Invoke-Expression, encoded commands, -NoProfile -ExecutionPolicy Bypass, downloading payloads), process injection patterns, Event ID 1102 (audit log cleared), Sysmon Event 11 (mass file creation with unusual extensions like .encrypted, .locked, .crypto). Look for rapid file rename operations and ransom note file creation (README.txt, HOW_TO_DECRYPT).' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000003",
-      "name": "NetworkAnalyst Auth",
+      "id": "8396ad05-e28f-471e-8373-23fc47d127e0",
+      "name": "NetworkAnalyst Ransom",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -46,15 +46,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on authentication-related network patterns. Check for: unusual source IPs, VPN anomalies, geolocation inconsistencies, authentication protocol deviations. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on ransomware network patterns. Check for: C2 beacon activity preceding encryption events (timeline correlation), Tor/I2P connections (.onion addresses), cryptocurrency wallet address communications, ransom note delivery mechanisms, large-scale SMB file access followed by rename/modify patterns (network-based encryption), connections to paste sites or file-sharing services for ransom note distribution, data exfiltration preceding encryption (double extortion indicator).' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000004",
-      "name": "Merge Auth Analysts",
+      "id": "390dd28d-3248-4e2c-ae46-096bf2c8607f",
+      "name": "Merge Ransom Analysts",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
@@ -68,7 +68,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000007",
+      "id": "916d35ce-29f9-4c40-bed1-6dae97605021",
       "name": "MITRE Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -81,7 +81,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000008",
+      "id": "d8cf4770-bf19-4b7f-9e29-95c0922e4df1",
       "name": "NIST CSF Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -94,7 +94,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000005",
+      "id": "e69fd86a-fea6-41df-899f-666ab2b40833",
       "name": "PurpleTeamMapper",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -114,7 +114,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000006",
+      "id": "a929afb6-02aa-4254-a1bc-18e112936b01",
       "name": "Synthesizer",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -134,7 +134,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000009",
+      "id": "d074034a-7784-4548-adfa-bfc591e24cd6",
       "name": "Report Formatter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -147,7 +147,7 @@
       }
     },
     {
-      "id": "casa-car-lookup-nomaly-investigation",
+      "id": "1194dfbc-d0bc-476c-adea-25455e6bc3ab",
       "name": "CAR Coverage Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -160,7 +160,7 @@
       }
     },
     {
-      "id": "casa-cis-mapper-nomaly-investigation",
+      "id": "6f0e8b25-cf77-4c3f-853f-ffb92e37f3b2",
       "name": "CIS Controls Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -178,41 +178,41 @@
       "main": [
         [
           {
-            "node": "LogAnalyst Auth",
+            "node": "LogAnalyst Ransom",
             "type": "main",
             "index": 0
           },
           {
-            "node": "NetworkAnalyst Auth",
+            "node": "NetworkAnalyst Ransom",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "LogAnalyst Auth": {
+    "LogAnalyst Ransom": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge Ransom Analysts",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "NetworkAnalyst Auth": {
+    "NetworkAnalyst Ransom": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge Ransom Analysts",
             "type": "main",
             "index": 1
           }
         ]
       ]
     },
-    "Merge Auth Analysts": {
+    "Merge Ransom Analysts": {
       "main": [
         [
           {

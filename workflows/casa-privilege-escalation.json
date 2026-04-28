@@ -1,8 +1,8 @@
 {
-  "name": "CASA Sub-Workflow - Auth Anomaly Investigation",
+  "name": "CASA Privilege Escalation",
   "nodes": [
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000001",
+      "id": "85b37a91-d1df-4772-876f-7b373750be34",
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
@@ -13,8 +13,8 @@
       "parameters": {}
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000002",
-      "name": "LogAnalyst Auth",
+      "id": "51498807-ec08-4c6a-bd09-38639bfd84b9",
+      "name": "LogAnalyst PrivEsc",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -26,15 +26,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on authentication anomalies. Check for: Windows Event IDs 4625/4771/4768, credential stuffing patterns, impossible travel indicators, brute force timing patterns, privilege escalation sequences. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-log-analyst', prompt: 'Focus on privilege escalation indicators. Check for: Windows Event IDs 4672 (special privileges assigned), 4688 (process creation with elevated token), 4648 (explicit credential logon), UAC bypass patterns, token impersonation, DLL injection, named pipe impersonation, sudo/su abuse, setuid/suid changes, runas usage, access token manipulation, scheduled task with SYSTEM privileges. Look for Sysmon Event 8 (CreateRemoteThread) indicating process injection, and Event 1 showing suspicious parent-child process chains (e.g., cmd.exe spawned by a service).' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000003",
-      "name": "NetworkAnalyst Auth",
+      "id": "cc82b28c-66d2-48ff-b221-71ecc0c21896",
+      "name": "NetworkAnalyst PrivEsc",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -46,15 +46,15 @@
         "url": "http://ollama:11434/api/generate",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on authentication-related network patterns. Check for: unusual source IPs, VPN anomalies, geolocation inconsistencies, authentication protocol deviations. Investigation context: ' + $json.query, stream: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'casa-network-analyst', prompt: 'Focus on privilege escalation network patterns. Check for: remote admin tool connections (PsExec, WMIC), unusual SMB service creation, RPC calls indicating remote service manipulation, connections to known exploit delivery infrastructure, post-exploitation framework traffic (Cobalt Strike, Metasploit), unusual named pipe traffic over SMB, unexpected admin share access patterns.' + $json.query, stream: false }) }}",
         "options": {
           "timeout": 180000000
         }
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000004",
-      "name": "Merge Auth Analysts",
+      "id": "9266402b-116c-4588-988e-8cec28cf1465",
+      "name": "Merge PrivEsc Analysts",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
@@ -68,7 +68,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000007",
+      "id": "bffb3451-55da-4f09-9ff1-9efd2869ec79",
       "name": "MITRE Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -81,7 +81,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000008",
+      "id": "77586844-b888-4032-af68-cb735c4d60bd",
       "name": "NIST CSF Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -94,7 +94,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000005",
+      "id": "0f329fe0-bce2-4209-a491-b8095ba46169",
       "name": "PurpleTeamMapper",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -114,7 +114,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000006",
+      "id": "e36704fc-676d-43a5-9fed-0b222a1a6c53",
       "name": "Synthesizer",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -134,7 +134,7 @@
       }
     },
     {
-      "id": "b2c3d4e5-2222-4000-8000-000000000009",
+      "id": "49f557b2-5b8b-45d4-9a2b-888c3134bb2f",
       "name": "Report Formatter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -147,7 +147,7 @@
       }
     },
     {
-      "id": "casa-car-lookup-nomaly-investigation",
+      "id": "64dd6c1d-6a45-4649-87b4-5fca6ad2845c",
       "name": "CAR Coverage Lookup",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -160,7 +160,7 @@
       }
     },
     {
-      "id": "casa-cis-mapper-nomaly-investigation",
+      "id": "c8bd9478-554c-4184-bbce-62ec9d60bab9",
       "name": "CIS Controls Mapper",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -178,41 +178,41 @@
       "main": [
         [
           {
-            "node": "LogAnalyst Auth",
+            "node": "LogAnalyst PrivEsc",
             "type": "main",
             "index": 0
           },
           {
-            "node": "NetworkAnalyst Auth",
+            "node": "NetworkAnalyst PrivEsc",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "LogAnalyst Auth": {
+    "LogAnalyst PrivEsc": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge PrivEsc Analysts",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "NetworkAnalyst Auth": {
+    "NetworkAnalyst PrivEsc": {
       "main": [
         [
           {
-            "node": "Merge Auth Analysts",
+            "node": "Merge PrivEsc Analysts",
             "type": "main",
             "index": 1
           }
         ]
       ]
     },
-    "Merge Auth Analysts": {
+    "Merge PrivEsc Analysts": {
       "main": [
         [
           {
