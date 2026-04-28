@@ -1,0 +1,110 @@
+# Beaconing Network Log — DVPD-CASE-2026-0315
+# Source: Zeek DNS/HTTP logs (SENSOR-INT01) + Suricata IDS (IDS-INT01) + Firewall (FW-EDGE01)
+# Time window: 2026-03-15T12:00:00Z to 2026-03-15T16:05:00Z
+# Infected host: WS-FIN04 (10.0.2.35) — suspected cobalt strike beacon
+# Note: periodic outbound connection pattern with ~60s interval detected
+
+# --- Normal DNS baseline ---
+2026-03-15T12:00:12Z proto=udp src=10.0.2.34 dst=10.0.1.2 sport=51001 dport=53 action=allowed query=www.google.com qtype=A response=142.250.80.4 device=SENSOR-INT01 dns request
+2026-03-15T12:00:18Z proto=udp src=10.0.2.36 dst=10.0.1.2 sport=51002 dport=53 action=allowed query=outlook.office365.com qtype=A response=52.96.166.130 device=SENSOR-INT01 dns request
+2026-03-15T12:00:25Z proto=udp src=10.0.2.40 dst=10.0.1.2 sport=51003 dport=53 action=allowed query=login.microsoft.com qtype=A response=20.190.159.0 device=SENSOR-INT01 dns request
+2026-03-15T12:00:33Z proto=udp src=10.0.2.41 dst=10.0.1.2 sport=51004 dport=53 action=allowed query=github.com qtype=A response=140.82.121.3 device=SENSOR-INT01 dns request
+
+# --- First beacon callback — suspicious domain, outbound connection ---
+2026-03-15T12:01:00Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51100 dport=53 action=allowed query=cdn-static.update-srv-ms.com qtype=A response=192.0.2.200 device=SENSOR-INT01 dns request suspicious domain
+2026-03-15T12:01:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49300 dport=443 action=allowed bytes_out=245 bytes_in=68 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon
+
+# --- Normal web traffic ---
+2026-03-15T12:01:15Z proto=tcp src=10.0.2.34 dst=142.250.80.4 sport=49400 dport=443 action=allowed bytes_out=1820 bytes_in=34500 duration=1.1s rule=default-allow device=FW-EDGE01
+2026-03-15T12:01:22Z proto=udp src=10.0.2.36 dst=10.0.1.2 sport=51005 dport=53 action=allowed query=teams.microsoft.com qtype=A response=52.112.120.10 device=SENSOR-INT01 dns request
+
+# --- Second beacon — 60s interval ---
+2026-03-15T12:01:59Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51101 dport=53 action=allowed query=cdn-static.update-srv-ms.com qtype=A response=192.0.2.200 device=SENSOR-INT01 dns request suspicious domain
+2026-03-15T12:02:00Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49301 dport=443 action=allowed bytes_out=248 bytes_in=72 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s
+
+# --- DGA-style dns request queries (domain generation algorithm) ---
+2026-03-15T12:02:30Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51102 dport=53 action=allowed query=xk7vtqp2a.suspicious-domain-cdn.net qtype=A response=NXDOMAIN device=SENSOR-INT01 dns request
+2026-03-15T12:02:31Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51103 dport=53 action=allowed query=m3bqf9wlz.suspicious-domain-cdn.net qtype=A response=NXDOMAIN device=SENSOR-INT01 dns request
+2026-03-15T12:02:32Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51104 dport=53 action=allowed query=aw2ynx8rc.suspicious-domain-cdn.net qtype=A response=NXDOMAIN device=SENSOR-INT01 dns request
+
+# --- Third beacon — ~61s interval ---
+2026-03-15T12:03:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49302 dport=443 action=allowed bytes_out=252 bytes_in=70 duration=0.2s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=61s
+
+# --- Normal DNS mixed in ---
+2026-03-15T12:03:40Z proto=udp src=10.0.2.40 dst=10.0.1.2 sport=51006 dport=53 action=allowed query=www.google.com qtype=A response=142.250.80.4 device=SENSOR-INT01 dns request
+2026-03-15T12:03:55Z proto=udp src=10.0.2.34 dst=10.0.1.2 sport=51007 dport=53 action=allowed query=slack.com qtype=A response=54.192.130.100 device=SENSOR-INT01 dns request
+
+# --- Fourth beacon — ~59s interval ---
+2026-03-15T12:04:00Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49303 dport=443 action=allowed bytes_out=240 bytes_in=65 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s
+
+# --- DNS TXT record queries — dns tunnel indicator ---
+2026-03-15T12:04:20Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51110 dport=53 action=allowed query=c2ctrl.update-srv-ms.com qtype=TXT response="v=B64PAYLOAD aGVsbG8gd29ybGQ=" device=SENSOR-INT01 txt record dns tunnel
+2026-03-15T12:04:45Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51111 dport=53 action=allowed query=exfil.update-srv-ms.com qtype=TXT response="v=B64PAYLOAD ZXhmaWx0cmF0aW9uIHRlc3Q=" device=SENSOR-INT01 txt record dns tunnel
+
+# --- Fifth beacon ---
+2026-03-15T12:05:02Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49304 dport=443 action=allowed bytes_out=244 bytes_in=1280 duration=0.4s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=62s
+
+# --- Suricata alert for c2 beacon pattern ---
+2026-03-15T12:05:03Z [**] [1:2027865:3] ET MALWARE Cobalt Strike Beacon Activity Detected [**] [Classification: A Network Trojan was Detected] [Priority: 1] proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49304 dport=443 device=IDS-INT01 cobalt strike c2
+
+# --- Encoded DNS subdomain queries (base64-like exfil) ---
+2026-03-15T12:06:10Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51120 dport=53 action=allowed query=dXNlcm5hbWU9a3BhdGVs.data.update-srv-ms.com qtype=A response=192.0.2.200 device=SENSOR-INT01 encoded dns subdomain
+2026-03-15T12:06:12Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51121 dport=53 action=allowed query=aG9zdG5hbWU9V1MtRklOMA.data.update-srv-ms.com qtype=A response=192.0.2.200 device=SENSOR-INT01 encoded dns subdomain
+2026-03-15T12:06:14Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51122 dport=53 action=allowed query=ZG9tYWluPUNPUlAubG9jYWw.data.update-srv-ms.com qtype=A response=192.0.2.200 device=SENSOR-INT01 encoded dns subdomain
+
+# --- Sixth beacon ---
+2026-03-15T12:06:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49305 dport=443 action=allowed bytes_out=248 bytes_in=72 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s
+
+# --- Normal traffic ---
+2026-03-15T12:08:00Z proto=tcp src=10.0.2.41 dst=140.82.121.3 sport=49500 dport=443 action=allowed bytes_out=3200 bytes_in=42100 duration=2.1s rule=default-allow device=FW-EDGE01
+2026-03-15T12:10:15Z proto=udp src=10.0.2.34 dst=10.0.1.2 sport=51008 dport=53 action=allowed query=www.microsoft.com qtype=A response=23.216.81.152 device=SENSOR-INT01 dns request
+
+# --- Seventh through twelfth beacons (continued pattern) ---
+2026-03-15T12:07:00Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49306 dport=443 action=allowed bytes_out=250 bytes_in=68 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s
+2026-03-15T12:08:02Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49307 dport=443 action=allowed bytes_out=246 bytes_in=70 duration=0.2s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=62s
+2026-03-15T12:08:59Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49308 dport=443 action=allowed bytes_out=244 bytes_in=66 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=57s
+2026-03-15T12:10:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49309 dport=443 action=allowed bytes_out=252 bytes_in=74 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=62s
+2026-03-15T12:11:00Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49310 dport=443 action=allowed bytes_out=248 bytes_in=70 duration=0.2s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s
+2026-03-15T12:12:02Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49311 dport=443 action=allowed bytes_out=246 bytes_in=68 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=62s
+
+# --- More DGA queries ---
+2026-03-15T12:15:01Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51130 dport=53 action=allowed query=qp4rj7bxn.suspicious-domain-cdn.net qtype=A response=NXDOMAIN device=SENSOR-INT01 dns request
+2026-03-15T12:15:02Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51131 dport=53 action=allowed query=yt8wkn2cv.suspicious-domain-cdn.net qtype=A response=NXDOMAIN device=SENSOR-INT01 dns request
+
+# --- Suricata alerts for dns tunnel pattern ---
+2026-03-15T12:15:03Z [**] [1:2027530:2] ET MALWARE DNS Tunneling Activity Detected [**] [Classification: Potentially Bad Traffic] [Priority: 2] proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51131 dport=53 device=IDS-INT01 dns tunnel
+
+# --- Beacon continues through afternoon ---
+2026-03-15T12:13:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49312 dport=443 action=allowed bytes_out=250 bytes_in=72 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s
+2026-03-15T12:14:00Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49313 dport=443 action=allowed bytes_out=244 bytes_in=66 duration=0.2s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s
+2026-03-15T12:15:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49314 dport=443 action=allowed bytes_out=248 bytes_in=70 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=61s
+
+# --- Normal DNS ---
+2026-03-15T12:20:10Z proto=udp src=10.0.2.40 dst=10.0.1.2 sport=51009 dport=53 action=allowed query=mail.google.com qtype=A response=142.250.80.5 device=SENSOR-INT01 dns request
+2026-03-15T12:25:33Z proto=udp src=10.0.2.36 dst=10.0.1.2 sport=51010 dport=53 action=allowed query=www.microsoft.com qtype=A response=23.216.81.152 device=SENSOR-INT01 dns request
+2026-03-15T12:30:44Z proto=udp src=10.0.2.41 dst=10.0.1.2 sport=51011 dport=53 action=allowed query=cdn.jsdelivr.net qtype=A response=104.16.87.20 device=SENSOR-INT01 dns request
+
+# --- Larger payload beacon (possible tasking received) ---
+2026-03-15T12:16:00Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49315 dport=443 action=allowed bytes_out=256 bytes_in=14200 duration=1.2s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s note="large-response-possible-tasking"
+2026-03-15T12:17:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49316 dport=443 action=allowed bytes_out=8400 bytes_in=120 duration=0.8s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=61s note="large-request-possible-exfil"
+
+# --- Additional encoded dns exfil ---
+2026-03-15T12:35:10Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51140 dport=53 action=allowed query=UGFzc3dvcmRIYXNoZXM.data.update-srv-ms.com qtype=A response=192.0.2.200 device=SENSOR-INT01 encoded dns subdomain
+2026-03-15T12:35:12Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51141 dport=53 action=allowed query=TlRMTXYyOjAxMDIwMzA0.data.update-srv-ms.com qtype=A response=192.0.2.200 device=SENSOR-INT01 encoded dns subdomain
+2026-03-15T12:35:14Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=51142 dport=53 action=allowed query=YWRtaW46JFBBU1NXT1JE.data.update-srv-ms.com qtype=A response=192.0.2.200 device=SENSOR-INT01 encoded dns subdomain
+
+# --- More beacons continuing pattern ---
+2026-03-15T12:18:00Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49317 dport=443 action=allowed bytes_out=248 bytes_in=70 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s
+2026-03-15T12:19:02Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49318 dport=443 action=allowed bytes_out=252 bytes_in=68 duration=0.2s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=62s
+2026-03-15T12:20:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=49319 dport=443 action=allowed bytes_out=244 bytes_in=72 duration=0.3s rule=default-allow device=FW-EDGE01 outbound connection beacon periodic interval=59s
+
+# --- Normal traffic close ---
+2026-03-15T15:45:22Z proto=tcp src=10.0.2.34 dst=23.216.81.152 sport=50100 dport=443 action=allowed bytes_out=4100 bytes_in=28700 duration=1.8s rule=default-allow device=FW-EDGE01
+2026-03-15T15:50:10Z proto=udp src=10.0.2.36 dst=10.0.1.2 sport=51020 dport=53 action=allowed query=google.com qtype=A response=142.250.80.4 device=SENSOR-INT01 dns request
+2026-03-15T15:55:33Z proto=udp src=10.0.2.40 dst=10.0.1.2 sport=51021 dport=53 action=allowed query=microsoft.com qtype=A response=20.236.44.162 device=SENSOR-INT01 dns request
+2026-03-15T16:00:18Z proto=tcp src=10.0.2.41 dst=140.82.121.3 sport=50200 dport=443 action=allowed bytes_out=2800 bytes_in=18400 duration=1.2s rule=default-allow device=FW-EDGE01
+
+# --- Final Suricata summary alert ---
+2026-03-15T16:00:20Z [**] [1:2027866:1] ET MALWARE Suspected C2 Beacon Pattern - Regular Interval HTTPS [**] [Classification: A Network Trojan was Detected] [Priority: 1] proto=tcp src=10.0.2.35 dst=192.0.2.200 dport=443 device=IDS-INT01 beacon_count=22 avg_interval=60.1s jitter=2.3s cobalt strike c2
+
+# END OF LOG

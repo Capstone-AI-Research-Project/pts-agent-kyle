@@ -1,0 +1,87 @@
+# Exfiltration Network Log — DVPD-CASE-2026-0315
+# Source: Firewall (FW-EDGE01) + Zeek conn/dns logs (SENSOR-INT01) + Suricata IDS (IDS-INT01)
+# Time window: 2026-03-15T14:00:00Z to 2026-03-16T04:30:00Z
+# Correlates with exfiltration-host.log — network perspective of data exfiltration
+# Compromised host: WS-FIN04 (10.0.2.35), attacker C2: 192.0.2.200
+
+# --- Normal daytime outbound web traffic (baseline) ---
+2026-03-15T14:01:22Z proto=tcp src=10.0.2.34 dst=142.250.80.4 sport=50100 dport=443 action=allowed bytes_out=3200 bytes_in=45100 duration=1.4s rule=default-allow device=FW-EDGE01
+2026-03-15T14:05:10Z proto=tcp src=10.0.2.36 dst=52.96.166.130 sport=50200 dport=443 action=allowed bytes_out=4800 bytes_in=62300 duration=2.1s rule=default-allow device=FW-EDGE01
+2026-03-15T14:10:33Z proto=tcp src=10.0.2.35 dst=142.250.80.4 sport=50300 dport=443 action=allowed bytes_out=2100 bytes_in=28400 duration=0.8s rule=default-allow device=FW-EDGE01
+2026-03-15T14:15:48Z proto=tcp src=10.0.2.40 dst=20.190.159.0 sport=50400 dport=443 action=allowed bytes_out=5200 bytes_in=71200 duration=2.4s rule=default-allow device=FW-EDGE01
+2026-03-15T14:20:55Z proto=tcp src=10.0.2.41 dst=140.82.121.3 sport=50500 dport=443 action=allowed bytes_out=3800 bytes_in=52100 duration=1.6s rule=default-allow device=FW-EDGE01
+
+# --- Normal DNS traffic ---
+2026-03-15T14:25:01Z proto=udp src=10.0.2.34 dst=10.0.1.2 sport=54001 dport=53 action=allowed query=www.google.com qtype=A response=142.250.80.4 device=SENSOR-INT01
+2026-03-15T14:25:15Z proto=udp src=10.0.2.36 dst=10.0.1.2 sport=54002 dport=53 action=allowed query=outlook.office365.com qtype=A response=52.96.166.130 device=SENSOR-INT01
+2026-03-15T14:30:22Z proto=udp src=10.0.2.40 dst=10.0.1.2 sport=54003 dport=53 action=allowed query=login.microsoftonline.com qtype=A response=20.190.159.0 device=SENSOR-INT01
+
+# --- Normal business-hours cloud storage (legitimate usage for comparison) ---
+2026-03-15T14:35:10Z proto=tcp src=10.0.2.36 dst=162.125.66.1 sport=50600 dport=443 action=allowed bytes_out=1200 bytes_in=8400 duration=0.5s rule=default-allow device=FW-EDGE01 note="dropbox-normal-sync"
+2026-03-15T14:40:22Z proto=tcp src=10.0.2.40 dst=142.250.80.10 sport=50700 dport=443 action=allowed bytes_out=2400 bytes_in=34100 duration=1.2s rule=default-allow device=FW-EDGE01 note="google-drive-normal"
+
+# --- End of business hours — traffic drops ---
+2026-03-15T17:05:33Z proto=tcp src=10.0.2.34 dst=52.96.166.130 sport=50800 dport=443 action=allowed bytes_out=1800 bytes_in=12400 duration=0.6s rule=default-allow device=FW-EDGE01
+2026-03-15T17:30:44Z proto=tcp src=10.0.1.10 dst=198.41.0.4 sport=50900 dport=53 action=allowed bytes_out=64 bytes_in=512 duration=0.1s rule=dns-allow device=FW-EDGE01
+
+# --- AFTER HOURS — attacker RDP connection ---
+2026-03-16T02:01:30Z proto=tcp src=203.0.113.42 dst=10.0.2.35 sport=46500 dport=3389 action=allowed bytes_out=8200 bytes_in=124500 duration=7822.0s rule=dmz-rdp-allow device=FW-EDGE01 note="after-hours-rdp-session"
+
+# --- SMB file transfer to staging (internal lateral — large transfer from file server) ---
+2026-03-16T02:04:00Z proto=tcp src=10.0.2.35 dst=10.0.1.50 sport=51001 dport=445 action=allowed bytes_out=2400 bytes_in=21233664 duration=12.4s rule=internal-smb-allow device=FW-EDGE01 large transfer egress note="bulk-file-copy-from-fileserver"
+
+# --- DNS queries to cloud storage services (exfiltration prep) ---
+2026-03-16T02:25:01Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=54100 dport=53 action=allowed query=mega.nz qtype=A response=89.44.169.135 device=SENSOR-INT01 note="mega.nz-lookup-after-hours"
+2026-03-16T02:25:03Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=54101 dport=53 action=allowed query=g.api.mega.co.nz qtype=A response=89.44.169.136 device=SENSOR-INT01 note="mega.nz api"
+2026-03-16T02:25:05Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=54102 dport=53 action=allowed query=www.dropbox.com qtype=A response=162.125.66.1 device=SENSOR-INT01 cloud storage dropbox
+2026-03-16T02:25:08Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=54103 dport=53 action=allowed query=content.dropboxapi.com qtype=A response=162.125.66.5 device=SENSOR-INT01 cloud storage dropbox
+2026-03-16T02:25:10Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=54104 dport=53 action=allowed query=drive.google.com qtype=A response=142.250.80.10 device=SENSOR-INT01 cloud storage google drive
+2026-03-16T02:25:12Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=54105 dport=53 action=allowed query=mail.protonmail.com qtype=A response=185.70.42.20 device=SENSOR-INT01 note="personal-email-domain"
+
+# --- Large outbound upload to mega.nz (exfiltration via cloud storage) ---
+2026-03-16T02:30:01Z proto=tcp src=10.0.2.35 dst=89.44.169.136 sport=51100 dport=443 action=allowed bytes_out=5242880 bytes_in=1240 duration=8.2s rule=default-allow device=FW-EDGE01 large transfer upload mega.nz exfiltration
+2026-03-16T02:30:12Z proto=tcp src=10.0.2.35 dst=89.44.169.136 sport=51101 dport=443 action=allowed bytes_out=5242880 bytes_in=1180 duration=7.8s rule=default-allow device=FW-EDGE01 large transfer upload mega.nz exfiltration
+2026-03-16T02:30:22Z proto=tcp src=10.0.2.35 dst=89.44.169.136 sport=51102 dport=443 action=allowed bytes_out=5242880 bytes_in=1200 duration=8.0s rule=default-allow device=FW-EDGE01 large transfer upload mega.nz exfiltration
+2026-03-16T02:30:33Z proto=tcp src=10.0.2.35 dst=89.44.169.136 sport=51103 dport=443 action=allowed bytes_out=3145728 bytes_in=1120 duration=5.1s rule=default-allow device=FW-EDGE01 large transfer upload mega.nz exfiltration
+
+# --- Suricata alert: bandwidth spike / anomalous egress ---
+2026-03-16T02:30:34Z [**] [1:2025431:2] ET POLICY Outbound Data Transfer Anomaly - High Egress Volume [**] [Classification: Potentially Bad Traffic] [Priority: 2] proto=tcp src=10.0.2.35 dst=89.44.169.136 sport=51103 dport=443 device=IDS-INT01 bandwidth spike egress exfiltration total_bytes_out=18874368
+
+# --- Secondary exfiltration channel: Dropbox upload ---
+2026-03-16T02:35:01Z proto=tcp src=10.0.2.35 dst=162.125.66.5 sport=51200 dport=443 action=allowed bytes_out=6291456 bytes_in=2400 duration=9.8s rule=default-allow device=FW-EDGE01 large transfer upload dropbox cloud storage
+2026-03-16T02:35:14Z proto=tcp src=10.0.2.35 dst=162.125.66.5 sport=51201 dport=443 action=allowed bytes_out=6291456 bytes_in=2200 duration=9.4s rule=default-allow device=FW-EDGE01 large transfer upload dropbox cloud storage
+2026-03-16T02:35:26Z proto=tcp src=10.0.2.35 dst=162.125.66.5 sport=51202 dport=443 action=allowed bytes_out=6291456 bytes_in=2100 duration=9.2s rule=default-allow device=FW-EDGE01 large transfer upload dropbox cloud storage
+
+# --- Suricata alert: known cloud storage exfiltration pattern ---
+2026-03-16T02:35:27Z [**] [1:2025432:1] ET POLICY Large File Upload to Cloud Storage - After Hours [**] [Classification: Potential Corporate Policy Violation] [Priority: 2] proto=tcp src=10.0.2.35 dst=162.125.66.5 dport=443 device=IDS-INT01 dropbox upload exfiltration total_bytes_out=18874368
+
+# --- C2 exfiltration channel (data sent to attacker infrastructure) ---
+2026-03-16T02:40:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=51300 dport=443 action=allowed bytes_out=4194304 bytes_in=340 duration=6.4s rule=default-allow device=FW-EDGE01 large transfer upload outbound c2-exfil
+2026-03-16T02:40:10Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=51301 dport=443 action=allowed bytes_out=4194304 bytes_in=280 duration=6.2s rule=default-allow device=FW-EDGE01 large transfer upload outbound c2-exfil
+2026-03-16T02:40:19Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=51302 dport=443 action=allowed bytes_out=4194304 bytes_in=310 duration=6.5s rule=default-allow device=FW-EDGE01 large transfer upload outbound c2-exfil
+2026-03-16T02:40:28Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=51303 dport=443 action=allowed bytes_out=4194304 bytes_in=290 duration=6.0s rule=default-allow device=FW-EDGE01 large transfer upload outbound c2-exfil
+2026-03-16T02:40:37Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=51304 dport=443 action=allowed bytes_out=2097152 bytes_in=260 duration=3.4s rule=default-allow device=FW-EDGE01 large transfer upload outbound c2-exfil
+
+# --- Email exfil attempt (protonmail) ---
+2026-03-16T02:50:01Z proto=tcp src=10.0.2.35 dst=185.70.42.20 sport=51400 dport=443 action=allowed bytes_out=8388608 bytes_in=4200 duration=12.8s rule=default-allow device=FW-EDGE01 large transfer upload outbound note="protonmail-attachment-upload"
+
+# --- Suricata summary alert ---
+2026-03-16T02:50:02Z [**] [1:2025440:1] ET POLICY Multiple Large Outbound Transfers - Possible Data Exfiltration [**] [Classification: Potentially Bad Traffic] [Priority: 1] proto=tcp src=10.0.2.35 device=IDS-INT01 total_egress_bytes=74973184 destination_count=4 timewindow=20min exfiltration bandwidth spike
+
+# --- DNS query to google drive for tertiary exfil path ---
+2026-03-16T03:00:01Z proto=udp src=10.0.2.35 dst=10.0.1.2 sport=54200 dport=53 action=allowed query=www.googleapis.com qtype=A response=142.250.80.42 device=SENSOR-INT01 google drive cloud storage
+2026-03-16T03:00:10Z proto=tcp src=10.0.2.35 dst=142.250.80.42 sport=51500 dport=443 action=allowed bytes_out=9437184 bytes_in=3800 duration=14.2s rule=default-allow device=FW-EDGE01 large transfer upload google drive cloud storage exfiltration
+
+# --- Beacon resumes normal pattern after exfil complete ---
+2026-03-16T03:05:00Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=51600 dport=443 action=allowed bytes_out=248 bytes_in=72 duration=0.3s rule=default-allow device=FW-EDGE01 beacon
+2026-03-16T03:06:01Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=51601 dport=443 action=allowed bytes_out=244 bytes_in=68 duration=0.2s rule=default-allow device=FW-EDGE01 beacon
+2026-03-16T03:07:00Z proto=tcp src=10.0.2.35 dst=192.0.2.200 sport=51602 dport=443 action=allowed bytes_out=252 bytes_in=70 duration=0.3s rule=default-allow device=FW-EDGE01 beacon
+
+# --- Normal early morning automated traffic ---
+2026-03-16T04:00:10Z proto=tcp src=10.0.1.10 dst=198.41.0.4 sport=52000 dport=53 action=allowed bytes_out=64 bytes_in=512 duration=0.1s rule=dns-allow device=FW-EDGE01
+2026-03-16T04:05:22Z proto=tcp src=10.0.1.30 dst=52.96.166.130 sport=52100 dport=443 action=allowed bytes_out=1400 bytes_in=9800 duration=0.4s rule=default-allow device=FW-EDGE01 note="exchange-sync"
+
+# --- RDP session terminates ---
+2026-03-16T04:15:30Z proto=tcp src=203.0.113.42 dst=10.0.2.35 sport=46500 dport=3389 action=allowed bytes_out=842100 bytes_in=3241500 duration=7822.0s rule=dmz-rdp-allow device=FW-EDGE01 connection=closed
+
+# END OF LOG

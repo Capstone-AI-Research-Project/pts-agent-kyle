@@ -1,1 +1,93 @@
+# Auth Anomaly Host Log — DVPD-CASE-2026-0315
+# Source: Windows Security Event Log (DC01.corp.local, WS-FIN04.corp.local)
+# Time window: 2026-03-15T06:00:00Z to 2026-03-15T10:15:00Z
+# Note: Credential stuffing and brute force patterns detected against multiple accounts
+# Analyst note: possible brute force campaign originating from 203.0.113.0/24 subnet
 
+# --- Normal baseline morning logins ---
+2026-03-15T06:02:14Z Host=DC01 EventID=4624 TargetUserName=svc-backup SubjectLogonId=0x3E7 LogonType=5 AuthPackage=kerberos IpAddress=10.0.1.10 Status=0x0
+2026-03-15T06:05:33Z Host=WS-FIN04 EventID=4624 TargetUserName=mwilliams SubjectLogonId=0x4A201 LogonType=2 AuthPackage=kerberos IpAddress=10.0.2.34 Status=0x0
+2026-03-15T06:08:47Z Host=DC01 EventID=4624 TargetUserName=jdoe SubjectLogonId=0x4B310 LogonType=10 AuthPackage=ntlm IpAddress=172.16.5.22 Status=0x0
+2026-03-15T06:12:01Z Host=SRV-WEB01 EventID=4624 TargetUserName=svc-iis SubjectLogonId=0x3E7 LogonType=5 AuthPackage=kerberos IpAddress=10.0.1.20 Status=0x0
+2026-03-15T06:15:19Z Host=WS-FIN04 EventID=4624 TargetUserName=kpatel SubjectLogonId=0x4C102 LogonType=2 AuthPackage=kerberos IpAddress=10.0.2.35 Status=0x0
+
+# --- Credential stuffing begins: different usernames from same external IP (203.0.113.42) ---
+2026-03-15T07:01:03Z Host=DC01 EventID=4625 TargetUserName=admin SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0xC000006D FailureReason="failed login - unknown user name or bad password"
+2026-03-15T07:01:05Z Host=DC01 EventID=4625 TargetUserName=administrator SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T07:01:08Z Host=DC01 EventID=4625 TargetUserName=jsmith SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T07:01:10Z Host=DC01 EventID=4625 TargetUserName=mwilliams SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T07:01:13Z Host=DC01 EventID=4625 TargetUserName=jdoe SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T07:01:15Z Host=DC01 EventID=4625 TargetUserName=kpatel SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T07:01:18Z Host=DC01 EventID=4625 TargetUserName=svc-sql SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T07:01:20Z Host=DC01 EventID=4625 TargetUserName=helpdesk SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0xC000006D FailureReason="failed login - failed password"
+
+# --- Normal login interleaved ---
+2026-03-15T07:04:22Z Host=WS-FIN04 EventID=4624 TargetUserName=lchen SubjectLogonId=0x4D501 LogonType=2 AuthPackage=kerberos IpAddress=10.0.2.36 Status=0x0
+2026-03-15T07:06:45Z Host=DC01 EventID=4624 TargetUserName=svc-exchange SubjectLogonId=0x3E7 LogonType=5 AuthPackage=kerberos IpAddress=10.0.1.30 Status=0x0
+
+# --- Password spray pattern: same Status code, many usernames, rapid succession from 198.51.100.15 ---
+2026-03-15T07:30:01Z Host=DC01 EventID=4625 TargetUserName=jsmith SubjectLogonId=0x0 LogonType=3 AuthPackage=ntlm IpAddress=198.51.100.15 Status=0xC000006A FailureReason="failed password"
+2026-03-15T07:30:03Z Host=DC01 EventID=4625 TargetUserName=mwilliams SubjectLogonId=0x0 LogonType=3 AuthPackage=ntlm IpAddress=198.51.100.15 Status=0xC000006A FailureReason="failed password"
+2026-03-15T07:30:05Z Host=DC01 EventID=4625 TargetUserName=jdoe SubjectLogonId=0x0 LogonType=3 AuthPackage=ntlm IpAddress=198.51.100.15 Status=0xC000006A FailureReason="failed password"
+2026-03-15T07:30:07Z Host=DC01 EventID=4625 TargetUserName=kpatel SubjectLogonId=0x0 LogonType=3 AuthPackage=ntlm IpAddress=198.51.100.15 Status=0xC000006A FailureReason="failed password"
+2026-03-15T07:30:09Z Host=DC01 EventID=4625 TargetUserName=lchen SubjectLogonId=0x0 LogonType=3 AuthPackage=ntlm IpAddress=198.51.100.15 Status=0xC000006A FailureReason="failed password"
+2026-03-15T07:30:11Z Host=DC01 EventID=4625 TargetUserName=rbrown SubjectLogonId=0x0 LogonType=3 AuthPackage=ntlm IpAddress=198.51.100.15 Status=0xC000006A FailureReason="failed password"
+2026-03-15T07:30:13Z Host=DC01 EventID=4625 TargetUserName=tgarcia SubjectLogonId=0x0 LogonType=3 AuthPackage=ntlm IpAddress=198.51.100.15 Status=0xC000006A FailureReason="failed password"
+
+# --- Brute force: same username (jsmith) from different IPs ---
+2026-03-15T08:00:02Z Host=DC01 EventID=4625 TargetUserName=jsmith SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T08:00:15Z Host=DC01 EventID=4625 TargetUserName=jsmith SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.88 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T08:00:29Z Host=DC01 EventID=4625 TargetUserName=jsmith SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=192.0.2.17 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T08:00:44Z Host=DC01 EventID=4625 TargetUserName=jsmith SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=198.51.100.201 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T08:00:58Z Host=DC01 EventID=4625 TargetUserName=jsmith SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.110 Status=0xC000006D FailureReason="failed login - failed password"
+
+# --- Account lockout triggered ---
+2026-03-15T08:01:12Z Host=DC01 EventID=4740 TargetUserName=jsmith TargetDomainName=CORP CallerComputerName=DC01 LockoutThreshold=5 LockoutDuration=30min
+2026-03-15T08:01:12Z Host=DC01 EventID=4625 TargetUserName=jsmith SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=192.0.2.44 Status=0xC0000234 FailureReason="account locked out"
+
+# --- Normal traffic continues ---
+2026-03-15T08:10:33Z Host=WS-FIN04 EventID=4624 TargetUserName=rbrown SubjectLogonId=0x4E801 LogonType=2 AuthPackage=kerberos IpAddress=10.0.2.40 Status=0x0
+2026-03-15T08:14:17Z Host=SRV-WEB01 EventID=4624 TargetUserName=svc-iis SubjectLogonId=0x3E7 LogonType=5 AuthPackage=kerberos IpAddress=10.0.1.20 Status=0x0
+2026-03-15T08:18:55Z Host=DC01 EventID=4624 TargetUserName=tgarcia SubjectLogonId=0x4F110 LogonType=2 AuthPackage=kerberos IpAddress=10.0.2.41 Status=0x0
+
+# --- Attacker pivots: successful login on kpatel after spray found weak password ---
+2026-03-15T08:32:07Z Host=DC01 EventID=4624 TargetUserName=kpatel SubjectLogonId=0x50A01 LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0x0
+2026-03-15T08:32:07Z Host=DC01 EventID=4672 TargetUserName=kpatel SubjectLogonId=0x50A01 PrivilegeList="SeDebugPrivilege SeImpersonatePrivilege SeBackupPrivilege" ElevatedToken=Yes
+
+# --- Post-compromise: lateral movement attempts from compromised account ---
+2026-03-15T08:35:22Z Host=SRV-WEB01 EventID=4625 TargetUserName=localadmin SubjectLogonId=0x0 LogonType=3 AuthPackage=ntlm IpAddress=10.0.2.35 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T08:35:40Z Host=SRV-WEB01 EventID=4624 TargetUserName=kpatel SubjectLogonId=0x51B02 LogonType=3 AuthPackage=ntlm IpAddress=10.0.2.35 Status=0x0
+2026-03-15T08:36:01Z Host=SRV-WEB01 EventID=4672 TargetUserName=kpatel SubjectLogonId=0x51B02 PrivilegeList="SeBackupPrivilege SeRestorePrivilege" ElevatedToken=Yes
+
+# --- More normal traffic ---
+2026-03-15T08:45:12Z Host=DC01 EventID=4624 TargetUserName=mwilliams SubjectLogonId=0x52C03 LogonType=3 AuthPackage=kerberos IpAddress=10.0.2.34 Status=0x0
+2026-03-15T08:52:30Z Host=WS-FIN04 EventID=4624 TargetUserName=jdoe SubjectLogonId=0x53D04 LogonType=2 AuthPackage=kerberos IpAddress=172.16.5.22 Status=0x0
+2026-03-15T09:01:44Z Host=DC01 EventID=4624 TargetUserName=svc-backup SubjectLogonId=0x3E7 LogonType=5 AuthPackage=kerberos IpAddress=10.0.1.10 Status=0x0
+
+# --- Continued brute force from secondary attacker IP block ---
+2026-03-15T09:10:02Z Host=DC01 EventID=4625 TargetUserName=rbrown SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=192.0.2.91 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T09:10:18Z Host=DC01 EventID=4625 TargetUserName=rbrown SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=192.0.2.92 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T09:10:33Z Host=DC01 EventID=4625 TargetUserName=rbrown SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=192.0.2.93 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T09:10:48Z Host=DC01 EventID=4625 TargetUserName=rbrown SubjectLogonId=0x0 LogonType=10 AuthPackage=ntlm IpAddress=192.0.2.94 Status=0xC000006D FailureReason="failed login - failed password"
+2026-03-15T09:11:01Z Host=DC01 EventID=4740 TargetUserName=rbrown TargetDomainName=CORP CallerComputerName=DC01 LockoutThreshold=5 LockoutDuration=30min
+
+# --- Kerberos ticket events ---
+2026-03-15T09:15:33Z Host=DC01 EventID=4768 TargetUserName=kpatel ServiceName=krbtgt IpAddress=203.0.113.42 TicketEncryptionType=0x12 TicketOptions=0x40810010
+2026-03-15T09:15:34Z Host=DC01 EventID=4769 TargetUserName=kpatel ServiceName=CIFS/SRV-WEB01 IpAddress=203.0.113.42 TicketEncryptionType=0x12
+2026-03-15T09:20:11Z Host=DC01 EventID=4768 TargetUserName=mwilliams ServiceName=krbtgt IpAddress=10.0.2.34 TicketEncryptionType=0x12 TicketOptions=0x40810010
+
+# --- Attacker escalates via kpatel on DC01 ---
+2026-03-15T09:30:05Z Host=DC01 EventID=4624 TargetUserName=kpatel SubjectLogonId=0x55E07 LogonType=3 AuthPackage=ntlm IpAddress=10.0.1.20 Status=0x0
+2026-03-15T09:30:06Z Host=DC01 EventID=4672 TargetUserName=kpatel SubjectLogonId=0x55E07 PrivilegeList="SeDebugPrivilege SeImpersonatePrivilege SeTcbPrivilege SeAssignPrimaryTokenPrivilege" ElevatedToken=Yes
+
+# --- Normal end-of-window activity ---
+2026-03-15T09:45:22Z Host=WS-FIN04 EventID=4624 TargetUserName=lchen SubjectLogonId=0x56F08 LogonType=2 AuthPackage=kerberos IpAddress=10.0.2.36 Status=0x0
+2026-03-15T09:50:10Z Host=DC01 EventID=4624 TargetUserName=svc-exchange SubjectLogonId=0x3E7 LogonType=5 AuthPackage=kerberos IpAddress=10.0.1.30 Status=0x0
+2026-03-15T09:55:44Z Host=SRV-WEB01 EventID=4624 TargetUserName=svc-iis SubjectLogonId=0x3E7 LogonType=5 AuthPackage=kerberos IpAddress=10.0.1.20 Status=0x0
+2026-03-15T10:01:30Z Host=DC01 EventID=4624 TargetUserName=jdoe SubjectLogonId=0x58102 LogonType=3 AuthPackage=kerberos IpAddress=172.16.5.22 Status=0x0
+2026-03-15T10:05:18Z Host=WS-FIN04 EventID=4624 TargetUserName=tgarcia SubjectLogonId=0x59203 LogonType=2 AuthPackage=kerberos IpAddress=10.0.2.41 Status=0x0
+2026-03-15T10:10:45Z Host=DC01 EventID=4624 TargetUserName=svc-sql SubjectLogonId=0x3E7 LogonType=5 AuthPackage=kerberos IpAddress=10.0.1.40 Status=0x0
+
+# --- logon type summary for analyst reference ---
+# LogonType 2 = Interactive, 3 = Network, 5 = Service, 10 = RemoteInteractive (RDP)
+# END OF LOG

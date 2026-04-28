@@ -1,0 +1,76 @@
+# =============================================================================
+# COMPREHENSIVE LOG 02: Ransomware Incident Timeline
+# Scenario: Auth compromise -> privilege escalation -> ransomware deployment
+# Expected keyword triggers: auth_anomaly, privilege_escalation, ransomware
+# =============================================================================
+
+# --- Normal baseline traffic ---
+2026-04-08T07:00:01Z host=workstation-12 src=10.0.10.12 event=http_request method=GET uri=/intranet/home status=200 bytes=8200
+Apr  8 07:00:05 dc-01 krb5kdc[500]: AS_REQ from 10.0.10.12 for user=jsmith@CORP.LOCAL — success
+1712548805.000000	conn	CID100	10.0.10.12	49200	10.0.2.10	389	tcp	ldap	0.015	512	2048	SF	-	-	-
+2026-04-08T07:01:00Z host=mail-gw src=10.0.10.12 event=smtp_send from=jsmith@corp.local to=team@corp.local subject="Weekly standup notes" status=sent
+Apr  8 07:02:00 proxy-01 squid[3000]: 10.0.10.12 TCP_MISS/200 12045 GET http://news.example.com/ - DIRECT/198.51.100.10
+
+# --- Phase 1: Brute force authentication attack ---
+# ALERT: brute force attack detected — multiple failed login attempts from 203.0.113.77
+2026-04-08T09:30:00Z host=vpn-gw src=203.0.113.77 EventID=4625 event=failed_login user=admin reason="bad password" attempt=1
+2026-04-08T09:30:02Z host=vpn-gw src=203.0.113.77 EventID=4625 event=failed_login user=admin reason="bad password" attempt=2
+2026-04-08T09:30:04Z host=vpn-gw src=203.0.113.77 EventID=4625 event=failed_login user=admin reason="bad password" attempt=3
+2026-04-08T09:30:06Z host=vpn-gw src=203.0.113.77 EventID=4625 event=failed_login user=administrator reason="bad password" attempt=4
+2026-04-08T09:30:08Z host=vpn-gw src=203.0.113.77 EventID=4625 event=failed_login user=administrator reason="bad password" attempt=5
+# ALERT: failed password threshold exceeded — 5 failures in 10 seconds from single source
+2026-04-08T09:30:10Z host=vpn-gw src=203.0.113.77 EventID=4625 event=failed_login user=svc_remote reason="bad password" attempt=6
+2026-04-08T09:30:15Z host=vpn-gw src=203.0.113.77 EventID=4625 event=failed_login user=svc_remote reason="bad password" attempt=7
+2026-04-08T09:30:20Z host=vpn-gw src=203.0.113.77 EventID=4624 event=successful_login user=svc_remote reason="valid credentials" note="brute force succeeded after 7 attempts"
+Apr  8 09:30:22 vpn-gw sshd[4100]: Accepted password for svc_remote from 203.0.113.77 port 44312 ssh2
+# ALERT: auth_anomaly — kerberos TGT requested immediately after brute force success
+2026-04-08T09:30:25Z host=dc-01 event=kerberos_tgt_request src=10.0.10.50 user=svc_remote@CORP.LOCAL status=success note="ntlm-to-kerberos transition post-compromise"
+
+# --- Normal interspersed traffic ---
+2026-04-08T09:45:00Z host=app-server-01 src=10.0.2.10 event=db_query user=webapp query="SELECT * FROM products WHERE active=1" rows=245 duration=0.03s
+1712551500.000000	conn	CID101	10.0.10.15	52300	10.0.2.10	443	tcp	ssl	0.030	1024	8192	SF	-	-	-
+Apr  8 09:50:00 print-server cupsd[600]: job 1234 queued by jsmith from 10.0.10.12
+
+# --- Phase 2: Privilege escalation ---
+# ALERT: privilege escalation detected — uac bypass and token manipulation on compromised host
+2026-04-08T10:45:00Z host=workstation-50 src=10.0.10.50 event=process_create exe=fodhelper.exe cmdline="fodhelper.exe" user=svc_remote pid=6200 note="uac bypass via fodhelper"
+2026-04-08T10:45:02Z host=workstation-50 EventID=4688 event=process_create exe=cmd.exe cmdline="cmd.exe /c whoami /priv" user=svc_remote pid=6201 parent=6200
+2026-04-08T10:45:05Z host=workstation-50 event=token_manipulation src_user=svc_remote target_token=SYSTEM method="token duplication" note="privilege escalation via token manipulation"
+2026-04-08T10:45:08Z host=workstation-50 EventID=4672 event=special_privileges_assigned user=svc_remote privileges="SeDebugPrivilege,SeImpersonatePrivilege"
+Apr  8 10:45:10 workstation-50 kernel: [warning] process 6201 running with elevated SYSTEM token — suspicious token manipulation
+2026-04-08T10:45:15Z host=workstation-50 EventID=4688 event=process_create exe=mimikatz.exe cmdline="mimikatz sekurlsa::logonpasswords" user=SYSTEM pid=6210
+2026-04-08T10:45:20Z host=workstation-50 event=credential_dump method=lsass user=SYSTEM note="domain admin credentials extracted"
+
+# --- Phase 3: Ransomware deployment ---
+# ALERT: ransomware deployment in progress — vssadmin shadow copy deletion and file encryption
+2026-04-08T12:00:00Z host=workstation-50 event=process_create exe=vssadmin.exe cmdline="vssadmin delete shadows /all /quiet" user=SYSTEM pid=7000
+Apr  8 12:00:02 workstation-50 vssadmin: shadow copy {GUID-001} deleted
+Apr  8 12:00:03 workstation-50 vssadmin: shadow copy {GUID-002} deleted
+2026-04-08T12:00:05Z host=workstation-50 event=shadow_copy_deleted count=2 note="all shadow copy volumes removed — ransomware preparation"
+2026-04-08T12:00:10Z host=workstation-50 event=process_create exe=bcdedit.exe cmdline="bcdedit /set {default} recoveryenabled No" user=SYSTEM pid=7001
+2026-04-08T12:00:15Z host=workstation-50 event=process_create exe=wbadmin.exe cmdline="wbadmin delete catalog -quiet" user=SYSTEM pid=7002
+
+# ALERT: ransomware encryption starting — encrypted files detected across network shares
+2026-04-08T12:01:00Z host=file-server-01 event=file_rename src=\\fileserver\shared\report.docx dst=\\fileserver\shared\report.docx.LOCKED user=SYSTEM
+2026-04-08T12:01:01Z host=file-server-01 event=file_rename src=\\fileserver\shared\budget.xlsx dst=\\fileserver\shared\budget.xlsx.LOCKED user=SYSTEM
+2026-04-08T12:01:02Z host=file-server-01 event=file_rename src=\\fileserver\shared\design.psd dst=\\fileserver\shared\design.psd.LOCKED user=SYSTEM
+2026-04-08T12:01:05Z host=file-server-01 event=encrypted_files count=347 extension=.LOCKED path=\\fileserver\shared\ elapsed=5s note="ransomware encrypting files rapidly"
+2026-04-08T12:01:10Z host=file-server-01 event=file_create path=\\fileserver\shared\README-UNLOCK.txt note="ransom note dropped"
+Apr  8 12:01:12 file-server-01 syslog: ransom note content: "Your files have been encrypted. Send 2.5 bitcoin to bc1q... for decryption key. Contact: darkweb-negotiation.onion"
+2026-04-08T12:01:15Z host=file-server-01 event=ransomware_indicator note="bitcoin wallet bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh referenced in ransom note"
+
+# --- Ransomware spreading to additional hosts ---
+2026-04-08T12:02:00Z host=workstation-50 src=10.0.10.50 dst=10.0.10.11 event=smb_connect share=\\10.0.10.11\C$ user=domain_admin
+2026-04-08T12:02:05Z host=workstation-11 event=process_create exe=locker.exe cmdline="locker.exe -encrypt -ext .LOCKED" user=SYSTEM pid=8000 note="ransomware binary executed on secondary host"
+2026-04-08T12:02:10Z host=workstation-11 event=encrypted_files count=128 extension=.LOCKED path=C:\Users\ elapsed=8s
+1712559730.000000	conn	CID102	10.0.10.50	49300	10.0.10.11	445	tcp	smb	5.200	890000	2048	SF	-	-	-
+
+# --- Normal traffic still flowing ---
+Apr  8 12:05:00 dns-server named[1234]: client 10.0.10.15#41235: query: smtp.corp.local IN A
+2026-04-08T12:10:00Z host=proxy-01 src=10.0.10.15 event=http_request method=GET uri=http://www.example.com/ status=200 bytes=5120
+
+# --- Incident response begins ---
+2026-04-08T12:15:00Z host=siem-01 event=alert severity=critical rule="ransomware-detected" msg="Mass file encryption detected on file-server-01 and workstation-11"
+2026-04-08T12:15:05Z host=fw-edge event=block_rule_applied src=10.0.10.50 dst=0.0.0.0/0 action=deny note="isolating compromised workstation"
+Apr  8 12:15:10 dc-01 samba[2345]: account svc_remote DISABLED by admin@CORP.LOCAL — incident response lockout
+2026-04-08T12:20:00Z host=siem-01 event=incident_created id=INC-2026-0408 severity=P1 title="Ransomware incident — auth compromise to encryption"

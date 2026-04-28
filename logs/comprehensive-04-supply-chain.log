@@ -1,0 +1,73 @@
+# =============================================================================
+# COMPREHENSIVE LOG 04: Supply Chain Compromise with C2 Beaconing
+# Scenario: Vulnerability exploitation -> C2 beaconing -> lateral movement
+# Expected keyword triggers: vulnerability_exploitation, beaconing, lateral_movement
+# =============================================================================
+
+# --- Normal baseline traffic ---
+2026-04-08T06:00:00Z host=web-app-01 src=10.0.1.10 event=http_request method=GET uri=/api/v2/health status=200 bytes=128
+Apr  8 06:00:05 dns-server named[1234]: client 10.0.1.10#41236: query: api.trusted-vendor.com IN A
+1712545205.000000	conn	CID300	10.0.1.10	51000	198.51.100.30	443	tcp	ssl	0.025	512	2048	SF	-	-	-
+2026-04-08T06:05:00Z host=proxy-01 src=10.0.1.15 event=http_request method=GET uri=http://pkg.npmjs.com/lodash status=200 bytes=450000
+Apr  8 06:10:00 mail-gw postfix/smtpd[5678]: connect from vendor-updates[198.51.100.30]
+2026-04-08T06:15:00Z host=build-server event=ci_pipeline name="nightly-build" status=success duration=340s artifacts=12
+
+# --- Phase 1: Supply chain compromise — malicious package/web shell ---
+# ALERT: vulnerability_exploitation — sql injection followed by web shell upload via compromised vendor library
+2026-04-08T08:00:00Z host=web-app-01 src=203.0.113.200 event=http_request method=POST uri=/api/v2/search status=200 bytes=89 note="sql injection in search parameter"
+2026-04-08T08:00:02Z host=web-app-01 src=203.0.113.200 event=exploit_attempt type="sql injection" payload="' UNION SELECT 1,@@version,3--" result=success
+2026-04-08T08:00:05Z host=web-app-01 event=db_query user=webapp query="UNION SELECT 1,load_file('/etc/passwd'),3" rows=1 note="cve-2025-31337 exploited in vendor ORM library"
+Apr  8 08:00:10 web-app-01 apache2[2000]: [error] ModSecurity: Warning. Pattern match "(?:union.*select|select.*from)" at ARGS:q [id "941100"] — exploit detected
+2026-04-08T08:01:00Z host=web-app-01 src=203.0.113.200 event=http_request method=PUT uri=/uploads/..%2f..%2fvar/www/html/.sys.php status=201 bytes=4500 note="web shell uploaded via path traversal"
+# ALERT: web shell deployed at /var/www/html/.sys.php — rce capability confirmed
+2026-04-08T08:01:05Z host=web-app-01 event=file_create path=/var/www/html/.sys.php hash=sha256:deadbeef01234567... user=www-data note="PHP web shell with command injection interface"
+2026-04-08T08:01:10Z host=web-app-01 src=203.0.113.200 event=http_request method=POST uri=/.sys.php status=200 bytes=312 post_data="cmd=id%3Buname+-a" note="rce via web shell — command injection confirmed"
+1712552470.000000	conn	CID301	203.0.113.200	44500	10.0.1.10	80	tcp	http	8.500	45000	8192	SF	-	-	-
+
+# --- Normal traffic interspersed ---
+2026-04-08T08:15:00Z host=app-server-02 src=10.0.2.15 event=http_request method=GET uri=/healthcheck status=200 bytes=15
+Apr  8 08:20:00 ntp-server ntpd[111]: peer 10.0.5.1 stratum 2 offset -0.001523
+1712552800.000000	conn	CID302	10.0.1.15	55200	10.0.2.10	3306	tcp	mysql	0.030	800	4096	SF	-	-	-
+
+# --- Phase 2: C2 beaconing established ---
+# ALERT: beaconing detected — periodic callbacks to suspicious domain every 60 seconds
+2026-04-08T08:30:00Z host=web-app-01 event=dns_query qname=update-check.suspicious-domain.net qtype=TXT src=10.0.1.10 note="dns tunnel — encoded C2 command in TXT response"
+2026-04-08T08:31:00Z host=web-app-01 event=dns_query qname=heartbeat.suspicious-domain.net qtype=TXT src=10.0.1.10 note="periodic beacon — 60s interval"
+2026-04-08T08:32:00Z host=web-app-01 event=dns_query qname=cmd-response.suspicious-domain.net qtype=TXT src=10.0.1.10 note="dns tunnel c2 response"
+2026-04-08T08:33:00Z host=web-app-01 event=dns_query qname=heartbeat.suspicious-domain.net qtype=TXT src=10.0.1.10 note="periodic c2 beacon"
+1712553180.000000	dns	DID300	10.0.1.10	53200	10.0.5.1	53	udp	query	TXT	heartbeat.suspicious-domain.net	0	NOERROR	-
+# ALERT: cobalt strike beacon profile detected — matching default malleable C2 profile
+2026-04-08T08:34:00Z host=ids-sensor event=alert signature="ET MALWARE Cobalt Strike Beacon Detected" src=10.0.1.10 dst=203.0.113.200 proto=tcp port=443 note="cobalt strike beacon activity"
+2026-04-08T08:35:00Z host=web-app-01 event=http_request method=GET uri=https://cdn-static.suspicious-domain.net/pixel.gif src=10.0.1.10 bytes=64 note="c2 beacon check-in via HTTP GET"
+2026-04-08T08:36:00Z host=web-app-01 event=http_request method=GET uri=https://cdn-static.suspicious-domain.net/pixel.gif src=10.0.1.10 bytes=64 note="periodic beacon — 60s interval confirmed"
+Apr  8 08:37:00 fw-edge iptables: ACCEPT OUT=eth0 SRC=10.0.1.10 DST=203.0.113.200 PROTO=TCP DPT=443 LEN=64
+2026-04-08T08:38:00Z host=proxy-01 event=ssl_connect src=10.0.1.10 dst=203.0.113.200 sni=cdn-static.suspicious-domain.net note="suspicious domain — not in corporate whitelist"
+
+# --- Normal traffic ---
+2026-04-08T09:00:00Z host=workstation-05 src=10.0.10.5 event=http_request method=GET uri=http://intranet.corp.local/ status=200 bytes=12000
+Apr  8 09:05:00 proxy-01 squid[3000]: 10.0.10.5 TCP_MISS/200 45000 GET http://stackoverflow.com/ - DIRECT/198.51.100.40
+
+# --- Phase 3: Lateral movement via SMB east-west ---
+# ALERT: lateral movement — east-west smb spread from compromised web server to internal hosts
+2026-04-08T10:00:00Z host=web-app-01 src=10.0.1.10 dst=10.0.2.15 event=smb_connect share=\\10.0.2.15\ADMIN$ user=svc_deploy status=success note="lateral movement via admin share"
+2026-04-08T10:00:05Z host=web-app-01 src=10.0.1.10 dst=10.0.2.15 event=process_create_remote exe=psexec.exe target=10.0.2.15 cmdline="psexec \\10.0.2.15 -s -c payload.exe" user=svc_deploy
+1712556005.000000	conn	CID303	10.0.1.10	49800	10.0.2.15	445	tcp	smb	2.100	125000	4096	SF	-	-	-
+2026-04-08T10:00:10Z host=app-server-02 event=process_create exe=payload.exe cmdline="payload.exe -install" user=SYSTEM pid=5500 note="malware deployed via lateral movement"
+# ALERT: credential reuse — svc_deploy hash used across 3 hosts for east-west smb lateral movement
+2026-04-08T10:01:00Z host=web-app-01 src=10.0.1.10 dst=10.0.2.16 event=smb_connect share=\\10.0.2.16\C$ user=svc_deploy status=success note="pass-the-hash credential reuse"
+2026-04-08T10:01:05Z host=web-app-01 src=10.0.1.10 dst=10.0.2.17 event=smb_connect share=\\10.0.2.17\ADMIN$ user=svc_deploy status=success
+Apr  8 10:01:10 dc-01 samba[2345]: smbd: 10.0.1.10 connected to \\10.0.2.16\C$ as svc_deploy — credential reuse across subnets
+1712556070.000000	conn	CID304	10.0.1.10	49801	10.0.2.16	445	tcp	smb	1.500	89000	2048	SF	-	-	-
+1712556075.000000	conn	CID305	10.0.1.10	49802	10.0.2.17	445	tcp	smb	1.800	95000	2048	SF	-	-	-
+
+# --- Beaconing continues from newly compromised hosts ---
+2026-04-08T10:05:00Z host=app-server-02 event=dns_query qname=heartbeat.suspicious-domain.net qtype=TXT src=10.0.2.15 note="beacon from second compromised host"
+2026-04-08T10:06:00Z host=app-server-02 event=dns_query qname=heartbeat.suspicious-domain.net qtype=TXT src=10.0.2.15 note="periodic c2 dns tunnel from 10.0.2.15"
+# ALERT: reverse shell detected from 10.0.2.16 to C2 server
+2026-04-08T10:07:00Z host=db-server-01 event=network_connect src=10.0.2.16 dst=203.0.113.200 port=4444 proto=tcp note="reverse shell callback to C2"
+
+# --- Detection and response ---
+2026-04-08T10:30:00Z host=siem-01 event=alert severity=critical rule="supply-chain-compromise" msg="Multiple hosts beaconing to suspicious-domain.net — lateral movement confirmed"
+2026-04-08T10:30:05Z host=fw-edge event=block_rule_applied dst=203.0.113.200 action=deny note="blocking C2 infrastructure"
+Apr  8 10:30:10 dns-server named[1234]: blackhole: suspicious-domain.net added to DNS sinkhole
+2026-04-08T10:35:00Z host=siem-01 event=incident_created id=INC-2026-0408-SC severity=P1 title="Supply chain compromise: web shell + C2 beaconing + lateral movement"

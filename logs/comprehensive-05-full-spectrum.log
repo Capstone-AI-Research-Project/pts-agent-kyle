@@ -1,0 +1,96 @@
+# =============================================================================
+# COMPREHENSIVE LOG 05: Full Spectrum — Kitchen Sink
+# Scenario: Indicators from 5+ categories for maximum test coverage
+# Expected keyword triggers: auth_anomaly, beaconing, exfiltration, privilege_escalation, persistence, ransomware
+# =============================================================================
+
+# --- Normal morning baseline ---
+2026-04-08T07:00:00Z host=workstation-01 src=10.0.10.1 event=logon user=agarcia EventID=4624 LogonType=2 status=success
+Apr  8 07:00:05 proxy-01 squid[3000]: 10.0.10.1 TCP_MISS/200 12000 GET http://intranet.corp.local/ - DIRECT/10.0.2.10
+1712548805.000000	conn	CID400	10.0.10.1	50100	10.0.2.10	443	tcp	ssl	0.018	1024	4096	SF	-	-	-
+2026-04-08T07:05:00Z host=mail-gw event=email_received to=agarcia@corp.local from=newsletter@vendor.com subject="Monthly digest" size=120000 status=delivered
+2026-04-08T07:10:00Z host=dns-server event=dns_query qname=www.corp.local qtype=A src=10.0.10.1 response=10.0.2.10
+
+# --- Section 1: Authentication anomalies ---
+# ALERT: auth_anomaly — brute force attack with multiple failed login attempts followed by successful login
+2026-04-08T08:00:00Z host=ssh-bastion src=203.0.113.10 EventID=4625 event=failed login user=root reason="failed password" attempt=1
+2026-04-08T08:00:02Z host=ssh-bastion src=203.0.113.10 EventID=4625 event=failed_login user=root reason="failed password" attempt=2
+2026-04-08T08:00:04Z host=ssh-bastion src=203.0.113.10 EventID=4625 event=failed_login user=admin reason="failed password" attempt=3
+2026-04-08T08:00:06Z host=ssh-bastion src=203.0.113.10 EventID=4625 event=failed_login user=admin reason="failed password" attempt=4
+Apr  8 08:00:08 ssh-bastion sshd[2200]: Failed password for admin from 203.0.113.10 port 44100 ssh2
+# ALERT: brute force succeeded — 5 failures then success from same IP
+2026-04-08T08:00:10Z host=ssh-bastion src=203.0.113.10 EventID=4624 event=successful_login user=svc_ops reason="valid credentials" note="brute force then successful login"
+Apr  8 08:00:12 ssh-bastion sshd[2201]: Accepted password for svc_ops from 203.0.113.10 port 44105 ssh2
+# ALERT: kerberos ticket requested post-compromise — ntlm relay suspected
+2026-04-08T08:00:15Z host=dc-01 event=kerberos_tgt_request src=10.0.3.5 user=svc_ops@CORP.LOCAL status=success note="ntlm-to-kerberos — auth_anomaly indicator"
+
+# --- Normal interspersed ---
+2026-04-08T08:15:00Z host=app-server-01 src=10.0.2.10 event=http_request method=GET uri=/api/status status=200 bytes=256
+1712549700.000000	conn	CID401	10.0.10.5	55300	10.0.2.10	80	tcp	http	0.012	512	2048	SF	-	-	-
+
+# --- Section 2: C2 beaconing ---
+# ALERT: beaconing detected — periodic C2 callbacks every 30 seconds to suspicious domain
+2026-04-08T09:00:00Z host=ssh-bastion event=http_connect dst=203.0.113.10 uri=https://api.evil-cdn.suspicious-domain.net/check bytes=64 note="c2 beacon check-in"
+2026-04-08T09:00:30Z host=ssh-bastion event=http_connect dst=203.0.113.10 uri=https://api.evil-cdn.suspicious-domain.net/check bytes=64 note="periodic beacon — 30s interval"
+2026-04-08T09:01:00Z host=ssh-bastion event=http_connect dst=203.0.113.10 uri=https://api.evil-cdn.suspicious-domain.net/check bytes=64 note="c2 periodic callback"
+1712552460.000000	dns	DID400	10.0.3.5	53100	10.0.5.1	53	udp	query	TXT	cmd.evil-cdn.suspicious-domain.net	0	NOERROR	-
+2026-04-08T09:01:30Z host=ssh-bastion event=dns_query qname=exfil-01.evil-cdn.suspicious-domain.net qtype=TXT src=10.0.3.5 note="dns tunnel for C2 data exfiltration"
+# ALERT: cobalt strike malleable C2 profile detected on 10.0.3.5
+2026-04-08T09:02:00Z host=ids-sensor event=alert signature="ET MALWARE Cobalt Strike Beacon" src=10.0.3.5 dst=203.0.113.10 proto=tcp port=443 note="cobalt strike beacon confirmed"
+
+# --- Section 3: Privilege escalation ---
+# ALERT: privilege escalation — sudo abuse and token manipulation on compromised bastion
+2026-04-08T09:15:00Z host=ssh-bastion event=process_create exe=/usr/bin/sudo cmdline="sudo -u root /bin/bash" user=svc_ops pid=3300 note="sudo to root — privilege escalation"
+Apr  8 09:15:02 ssh-bastion sudo: svc_ops : TTY=pts/0 ; PWD=/tmp ; USER=root ; COMMAND=/bin/bash
+2026-04-08T09:15:05Z host=ssh-bastion EventID=4672 event=special_privileges_assigned user=svc_ops privileges="SeDebugPrivilege,SeTcbPrivilege" note="privilege escalation complete"
+2026-04-08T09:15:10Z host=ssh-bastion EventID=4688 event=process_create exe=/tmp/privesc.elf cmdline="./privesc.elf --escalate" user=root pid=3305 note="local privilege escalation exploit"
+2026-04-08T09:15:15Z host=ssh-bastion event=token_manipulation src_user=svc_ops target_token=root method="ptrace injection" note="uac bypass equivalent — token manipulation on Linux"
+
+# --- Normal traffic ---
+Apr  8 09:20:00 dns-server named[1234]: client 10.0.10.3#41237: query: updates.vendor.com IN A
+2026-04-08T09:25:00Z host=proxy-01 src=10.0.10.3 event=http_request method=GET uri=http://updates.vendor.com/latest status=200 bytes=89000
+
+# --- Section 4: Persistence mechanisms ---
+# ALERT: persistence installed — cron job, scheduled task, and backdoor service created
+2026-04-08T10:00:00Z host=ssh-bastion event=cron_create user=root entry="*/5 * * * * /tmp/.hidden/beacon.sh" note="cron job persistence — runs every 5 minutes"
+Apr  8 10:00:05 ssh-bastion cron[1100]: (root) CRON: installing new crontab — persistence mechanism detected
+2026-04-08T10:00:10Z host=workstation-40 EventID=4698 event=scheduled_task_create name="SystemHealthCheck" action="C:\ProgramData\.cache\svc.exe" trigger="every 10 min" user=SYSTEM note="scheduled task persistence"
+2026-04-08T10:00:15Z host=workstation-40 EventID=7045 event=service_install name="WinDiagSvc" exe="C:\ProgramData\.cache\svc.exe" starttype=auto user=LocalSystem note="backdoor installed as Windows service"
+2026-04-08T10:00:20Z host=workstation-40 event=registry_modify key="HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" value="DiagHelper" data="C:\ProgramData\.cache\svc.exe" note="registry run key persistence"
+2026-04-08T10:00:25Z host=ssh-bastion event=file_create path=/root/.ssh/authorized_keys note="persistence — attacker SSH key added as backdoor"
+
+# --- Section 5: Data staging and exfiltration ---
+# ALERT: exfiltration — data staging and large transfer to external host after hours
+2026-04-08T21:00:00Z host=db-server-01 event=db_dump user=root database=customers output=/tmp/customers_full.sql rows=450000 size=120000000 note="staging database dump for exfiltration"
+2026-04-08T21:05:00Z host=db-server-01 event=file_create path=/tmp/exfil-package.tar.gz size=95000000 note="staging compressed exfiltration archive"
+2026-04-08T21:10:00Z host=db-server-01 event=network_connect src=10.0.2.16 dst=203.0.113.99 port=443 bytes_out=95000000 duration=180s note="large transfer to external C2 drop"
+1712685000.000000	conn	CID402	10.0.2.16	51500	203.0.113.99	443	tcp	ssl	180.500	95000000	4096	SF	-	-	-
+# ALERT: after hours exfiltration — 95 MB transferred to 203.0.113.99 at 21:10 UTC
+2026-04-08T21:10:05Z host=fw-edge event=connection src=10.0.2.16 dst=203.0.113.99 port=443 bytes_out=95000000 action=allow note="after hours large transfer — exfiltration confirmed"
+2026-04-08T21:15:00Z host=proxy-01 event=ssl_connect src=10.0.2.16 dst=203.0.113.99 sni=drop.suspicious-domain.net bytes=95000000 note="cloud storage exfiltration endpoint"
+Apr  8 21:15:05 db-server-01 auditd[900]: EXECVE argc=3 a0="rm" a1="-f" a2="/tmp/exfil-package.tar.gz" — cleanup after exfiltration
+
+# --- Normal evening traffic ---
+2026-04-08T21:30:00Z host=backup-server event=backup_job name="nightly-incremental" status=started target=tape-lib-01
+1712686200.000000	conn	CID403	10.0.4.10	60200	10.0.4.20	22	tcp	ssh	0.300	1024	2048	SF	-	-	-
+
+# --- Section 6: Ransomware deployment (next morning) ---
+# ALERT: ransomware deployment — vssadmin shadow copy deletion and mass file encryption
+2026-04-09T03:00:00Z host=file-server-01 event=process_create exe=vssadmin.exe cmdline="vssadmin delete shadows /all /quiet" user=SYSTEM pid=9000
+Apr  9 03:00:02 file-server-01 vssadmin: shadow copy {GUID-100} deleted
+Apr  9 03:00:03 file-server-01 vssadmin: shadow copy {GUID-101} deleted
+2026-04-09T03:00:05Z host=file-server-01 event=shadow_copy_deleted count=4 note="all shadow copy backups destroyed"
+2026-04-09T03:00:10Z host=file-server-01 event=process_create exe=bcdedit.exe cmdline="bcdedit /set {default} recoveryenabled No" user=SYSTEM pid=9001
+2026-04-09T03:01:00Z host=file-server-01 event=encrypted_files count=1247 extension=.CRYPTED path=\\fileserver\shared\ elapsed=30s note="ransomware mass encryption in progress"
+2026-04-09T03:01:05Z host=file-server-01 event=encrypted_files count=890 extension=.CRYPTED path=\\fileserver\finance\ elapsed=15s
+2026-04-09T03:01:10Z host=file-server-01 event=file_create path=\\fileserver\shared\DECRYPT-INSTRUCTIONS.txt note="ransom note dropped on all shares"
+Apr  9 03:01:12 file-server-01 syslog: ransom note: "All files encrypted. Pay 5 bitcoin to bc1qabc... within 72 hours. Contact: negotiation@darkmail.onion"
+2026-04-09T03:01:15Z host=file-server-01 event=ransomware_indicator note="bitcoin wallet bc1qabcdef123456 found in ransom note — DECRYPT-INSTRUCTIONS.txt"
+2026-04-09T03:02:00Z host=workstation-40 event=encrypted_files count=340 extension=.CRYPTED path=C:\Users\ elapsed=12s note="ransomware spread to workstation"
+
+# --- Incident detection and response ---
+2026-04-09T03:05:00Z host=siem-01 event=alert severity=critical rule="full-spectrum-attack" msg="Combined auth anomaly, beaconing, privilege escalation, persistence, exfiltration, and ransomware detected"
+2026-04-09T03:05:05Z host=fw-edge event=emergency_block src=0.0.0.0/0 dst=0.0.0.0/0 action=deny note="network segmentation — emergency isolation"
+Apr  9 03:05:10 dc-01 samba[2345]: EMERGENCY: all service accounts disabled — incident response
+2026-04-09T03:10:00Z host=siem-01 event=incident_created id=INC-2026-0409-FS severity=P0 title="Full spectrum attack: auth compromise + C2 + privesc + persistence + exfil + ransomware"
+2026-04-09T03:10:05Z host=siem-01 event=alert_summary categories_triggered=["auth_anomaly","beaconing","exfiltration","privilege_escalation","persistence","ransomware"] total_iocs=47 hosts_affected=6

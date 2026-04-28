@@ -1,0 +1,87 @@
+# Exfiltration Host Log — DVPD-CASE-2026-0315
+# Source: Windows Security/Sysmon Event Logs (WS-FIN04.corp.local, SRV-FILE01.corp.local)
+# Time window: 2026-03-15T14:00:00Z to 2026-03-16T04:30:00Z
+# Compromised user: kpatel (Finance department workstation)
+# Note: after hours file access and staging activity detected starting ~02:00
+
+# --- Normal daytime file access (baseline) ---
+2026-03-15T14:02:11Z Host=SRV-FILE01 EventID=4663 SubjectUserName=mwilliams ObjectName="\\FileShare\Finance\Q1-Budget-2026.xlsx" AccessMask=0x1 ProcessName=EXCEL.EXE HandleId=0x2A4
+2026-03-15T14:08:33Z Host=SRV-FILE01 EventID=4663 SubjectUserName=jdoe ObjectName="\\FileShare\HR\Employee-Directory.xlsx" AccessMask=0x1 ProcessName=EXCEL.EXE HandleId=0x2B1
+2026-03-15T14:15:44Z Host=SRV-FILE01 EventID=4663 SubjectUserName=lchen ObjectName="\\FileShare\Engineering\Project-Specs-v3.docx" AccessMask=0x1 ProcessName=WINWORD.EXE HandleId=0x2C0
+2026-03-15T14:22:18Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\Finance\AP-Invoices-March.xlsx" AccessMask=0x1 ProcessName=EXCEL.EXE HandleId=0x2D3
+2026-03-15T14:30:05Z Host=SRV-FILE01 EventID=4663 SubjectUserName=rbrown ObjectName="\\FileShare\Sales\Pipeline-Q1.pptx" AccessMask=0x1 ProcessName=POWERPNT.EXE HandleId=0x2E5
+2026-03-15T14:45:22Z Host=SRV-FILE01 EventID=4663 SubjectUserName=tgarcia ObjectName="\\FileShare\IT\Network-Diagram-2026.vsd" AccessMask=0x1 ProcessName=VISIO.EXE HandleId=0x2F8
+2026-03-15T15:10:30Z Host=SRV-FILE01 EventID=4663 SubjectUserName=mwilliams ObjectName="\\FileShare\Finance\Payroll-March-2026.xlsx" AccessMask=0x1 ProcessName=EXCEL.EXE HandleId=0x310
+2026-03-15T15:35:12Z Host=SRV-FILE01 EventID=4663 SubjectUserName=jdoe ObjectName="\\FileShare\HR\Benefits-Summary.pdf" AccessMask=0x1 ProcessName=AcroRd32.EXE HandleId=0x325
+
+# --- Normal end of business ---
+2026-03-15T17:02:44Z Host=WS-FIN04 EventID=4634 SubjectUserName=kpatel LogonType=2 TargetLogonId=0x4C102
+2026-03-15T17:05:11Z Host=WS-FIN04 EventID=4634 SubjectUserName=mwilliams LogonType=2 TargetLogonId=0x4A201
+2026-03-15T17:30:00Z Host=SRV-FILE01 EventID=4663 SubjectUserName=svc-backup ObjectName="\\FileShare\Backups\daily-snapshot-0315" AccessMask=0x1 ProcessName=BackupExec.exe HandleId=0x340
+2026-03-15T18:00:15Z Host=SRV-FILE01 EventID=4663 SubjectUserName=svc-backup ObjectName="\\FileShare\Backups\daily-snapshot-0315" AccessMask=0x2 ProcessName=BackupExec.exe HandleId=0x340
+
+# --- AFTER HOURS — suspicious login (compromised kpatel) ---
+2026-03-16T02:01:33Z Host=WS-FIN04 EventID=4624 SubjectUserName=kpatel LogonType=10 AuthPackage=ntlm IpAddress=203.0.113.42 Status=0x0 after hours
+2026-03-16T02:01:34Z Host=WS-FIN04 EventID=4672 SubjectUserName=kpatel PrivilegeList="SeBackupPrivilege SeRestorePrivilege" ElevatedToken=Yes
+
+# --- Staging directory creation ---
+2026-03-16T02:03:10Z Host=WS-FIN04 EventID=4663 SubjectUserName=kpatel ObjectName="C:\Users\kpatel\AppData\Local\Temp\staging" AccessMask=0x2 ProcessName=cmd.exe HandleId=0x3A0 Operation=CreateDirectory staging
+2026-03-16T02:03:11Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=cmd.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging" User=CORP\kpatel
+
+# --- Bulk file access — sensitive file reads from file share (rapid succession) ---
+2026-03-16T02:04:01Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\Finance\Payroll-March-2026.xlsx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3B1 sensitive file after hours
+2026-03-16T02:04:03Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\Finance\Payroll-Feb-2026.xlsx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3B2 sensitive file after hours
+2026-03-16T02:04:05Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\Finance\Payroll-Jan-2026.xlsx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3B3 sensitive file after hours
+2026-03-16T02:04:08Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\Finance\Q1-Budget-2026.xlsx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3B4 sensitive file after hours
+2026-03-16T02:04:10Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\Finance\Revenue-Forecast-FY26.xlsx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3B5 sensitive file after hours
+2026-03-16T02:04:13Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\Finance\M&A-Targets-Confidential.docx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3B6 sensitive file after hours
+2026-03-16T02:04:15Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\Finance\Bank-Account-Details.xlsx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3B7 sensitive file after hours
+2026-03-16T02:04:18Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\HR\SSN-Records-2026.xlsx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3B8 sensitive file after hours
+2026-03-16T02:04:20Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\HR\Salary-Bands-All-Dept.xlsx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3B9 sensitive file after hours
+2026-03-16T02:04:23Z Host=SRV-FILE01 EventID=4663 SubjectUserName=kpatel ObjectName="\\FileShare\IT\VPN-Credentials-Master.xlsx" AccessMask=0x1 ProcessName=cmd.exe HandleId=0x3BA sensitive file after hours
+
+# --- Bulk file copy to staging directory (bulk download pattern) ---
+2026-03-16T02:05:01Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\Payroll-March-2026.xlsx" FileSize=2840576 User=CORP\kpatel bulk download
+2026-03-16T02:05:03Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\Payroll-Feb-2026.xlsx" FileSize=2720384 User=CORP\kpatel bulk download
+2026-03-16T02:05:05Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\Payroll-Jan-2026.xlsx" FileSize=2680192 User=CORP\kpatel bulk download
+2026-03-16T02:05:07Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\Q1-Budget-2026.xlsx" FileSize=1540096 User=CORP\kpatel bulk download
+2026-03-16T02:05:09Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\Revenue-Forecast-FY26.xlsx" FileSize=3210240 User=CORP\kpatel bulk download
+2026-03-16T02:05:11Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\M&A-Targets-Confidential.docx" FileSize=890880 User=CORP\kpatel bulk download
+2026-03-16T02:05:13Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\Bank-Account-Details.xlsx" FileSize=420864 User=CORP\kpatel bulk download
+2026-03-16T02:05:15Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\SSN-Records-2026.xlsx" FileSize=5140480 User=CORP\kpatel bulk download
+2026-03-16T02:05:17Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\Salary-Bands-All-Dept.xlsx" FileSize=1240064 User=CORP\kpatel bulk download
+2026-03-16T02:05:19Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=robocopy.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\staging\VPN-Credentials-Master.xlsx" FileSize=380928 User=CORP\kpatel bulk download
+
+# --- Archive creation — compress staged files ---
+2026-03-16T02:08:01Z Host=WS-FIN04 Sysmon EventID=1 ProcessId=6100 ParentProcessId=5824 Image="C:\Program Files\7-Zip\7z.exe" CommandLine="7z.exe a -p -mhe=on C:\Users\kpatel\AppData\Local\Temp\update-pkg.7z C:\Users\kpatel\AppData\Local\Temp\staging\*" User=CORP\kpatel compress archive
+2026-03-16T02:08:44Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=6100 Image=7z.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\update-pkg.7z" FileSize=18874368 User=CORP\kpatel archive compress zip 7z
+
+# --- USB device insertion ---
+2026-03-16T02:10:02Z Host=WS-FIN04 EventID=6416 SubjectUserName=kpatel DeviceId="USB\VID_0781&PID_5583\4C530001221014106283" DeviceDescription="SanDisk Ultra USB 3.0" ClassName=DiskDrive usb
+2026-03-16T02:10:03Z Host=WS-FIN04 Sysmon EventID=1 ProcessId=6200 Image=explorer.exe CommandLine="explorer.exe E:\" User=CORP\kpatel usb
+
+# --- File copy to USB ---
+2026-03-16T02:10:30Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=5824 Image=cmd.exe TargetFilename="E:\update-pkg.7z" FileSize=18874368 User=CORP\kpatel usb copy
+2026-03-16T02:10:45Z Host=WS-FIN04 EventID=4663 SubjectUserName=kpatel ObjectName="E:\update-pkg.7z" AccessMask=0x2 ProcessName=cmd.exe HandleId=0x3D0 usb
+
+# --- Secondary archive for network exfil (split into chunks) ---
+2026-03-16T02:15:01Z Host=WS-FIN04 Sysmon EventID=1 ProcessId=6300 ParentProcessId=5824 Image="C:\Program Files\7-Zip\7z.exe" CommandLine="7z.exe a -v5m C:\Users\kpatel\AppData\Local\Temp\syslog-archive.zip C:\Users\kpatel\AppData\Local\Temp\staging\*" User=CORP\kpatel compress archive zip split
+2026-03-16T02:15:38Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=6300 Image=7z.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\syslog-archive.zip.001" FileSize=5242880 User=CORP\kpatel
+2026-03-16T02:15:39Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=6300 Image=7z.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\syslog-archive.zip.002" FileSize=5242880 User=CORP\kpatel
+2026-03-16T02:15:40Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=6300 Image=7z.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\syslog-archive.zip.003" FileSize=5242880 User=CORP\kpatel
+2026-03-16T02:15:41Z Host=WS-FIN04 Sysmon EventID=11 ProcessId=6300 Image=7z.exe TargetFilename="C:\Users\kpatel\AppData\Local\Temp\syslog-archive.zip.004" FileSize=3145728 User=CORP\kpatel
+
+# --- Staging directory cleanup attempt ---
+2026-03-16T02:20:05Z Host=WS-FIN04 Sysmon EventID=1 ProcessId=6400 ParentProcessId=5824 Image=cmd.exe CommandLine="cmd.exe /c rd /s /q C:\Users\kpatel\AppData\Local\Temp\staging" User=CORP\kpatel
+2026-03-16T02:20:06Z Host=WS-FIN04 EventID=4663 SubjectUserName=kpatel ObjectName="C:\Users\kpatel\AppData\Local\Temp\staging" AccessMask=0x10000 ProcessName=cmd.exe HandleId=0x3E0 Operation=Delete
+
+# --- USB device removal ---
+2026-03-16T02:22:01Z Host=WS-FIN04 EventID=6422 SubjectUserName=kpatel DeviceId="USB\VID_0781&PID_5583\4C530001221014106283" DeviceDescription="SanDisk Ultra USB 3.0" ClassName=DiskDrive usb removed
+
+# --- Session continues for network exfil ---
+2026-03-16T02:30:00Z Host=WS-FIN04 Sysmon EventID=3 ProcessId=6500 Image=powershell.exe DestinationIp=192.0.2.200 DestinationPort=443 Protocol=tcp User=CORP\kpatel DestinationHostname=cdn-static.update-srv-ms.com
+
+# --- Logoff after hours ---
+2026-03-16T04:15:33Z Host=WS-FIN04 EventID=4634 SubjectUserName=kpatel LogonType=10 TargetLogonId=0x60A15 after hours
+
+# END OF LOG

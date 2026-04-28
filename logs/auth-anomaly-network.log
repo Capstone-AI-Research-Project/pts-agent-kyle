@@ -1,0 +1,83 @@
+# Auth Anomaly Network Log — DVPD-CASE-2026-0315
+# Source: Perimeter Firewall (FW-EDGE01) + Suricata IDS (IDS-DMZ01)
+# Time window: 2026-03-15T06:00:00Z to 2026-03-15T10:15:00Z
+# Correlates with auth-anomaly-host.log — same attack campaign, network perspective
+
+# --- Normal internal ssh/rdp traffic baseline ---
+2026-03-15T06:03:11Z proto=tcp src=10.0.2.34 dst=10.0.1.10 sport=52110 dport=22 action=allowed bytes_out=1240 bytes_in=3842 duration=0.3s rule=internal-ssh-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T06:06:02Z proto=tcp src=172.16.5.22 dst=10.0.1.5 sport=49833 dport=3389 action=allowed bytes_out=8420 bytes_in=45210 duration=12.4s rule=vpn-rdp-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T06:09:44Z proto=tcp src=10.0.2.36 dst=10.0.1.10 sport=52220 dport=22 action=allowed bytes_out=980 bytes_in=2104 duration=0.2s rule=internal-ssh-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T06:15:30Z proto=tcp src=10.0.2.40 dst=10.0.1.20 sport=49901 dport=3389 action=allowed bytes_out=6340 bytes_in=38900 duration=8.2s rule=internal-rdp-allow device=FW-EDGE01 connection=established authentication=success
+
+# --- External ssh brute force attempts begin ---
+2026-03-15T07:00:45Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44012 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:00:47Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44013 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:00:49Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44014 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:00:51Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44015 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:00:53Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44016 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+
+# --- Suricata alert for ssh brute force ---
+2026-03-15T07:00:54Z [**] [1:2001219:20] ET SCAN Potential SSH Brute Force [**] [Classification: Attempted Information Leak] [Priority: 2] proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44017 dport=22 device=IDS-DMZ01
+
+# --- External rdp attempts from second attacker IP ---
+2026-03-15T07:01:02Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44100 dport=3389 action=allowed bytes_out=540 bytes_in=0 duration=0.2s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:01:04Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44101 dport=3389 action=allowed bytes_out=540 bytes_in=0 duration=0.2s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:01:06Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44102 dport=3389 action=allowed bytes_out=540 bytes_in=0 duration=0.2s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:01:08Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44103 dport=3389 action=allowed bytes_out=540 bytes_in=0 duration=0.2s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:01:10Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44104 dport=3389 action=allowed bytes_out=540 bytes_in=0 duration=0.2s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:01:12Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44105 dport=3389 action=allowed bytes_out=540 bytes_in=0 duration=0.2s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+
+# --- Suricata alert for rdp brute force ---
+2026-03-15T07:01:13Z [**] [1:2024297:4] ET SCAN RDP Brute Force Attempt [**] [Classification: Attempted Admin Access] [Priority: 1] proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=44106 dport=3389 device=IDS-DMZ01
+
+# --- Normal internal traffic mixed in ---
+2026-03-15T07:10:22Z proto=tcp src=10.0.2.35 dst=10.0.1.10 sport=52440 dport=22 action=allowed bytes_out=1100 bytes_in=3200 duration=0.4s rule=internal-ssh-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T07:15:08Z proto=tcp src=10.0.2.41 dst=10.0.1.20 sport=50102 dport=3389 action=allowed bytes_out=7800 bytes_in=42100 duration=10.1s rule=internal-rdp-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T07:20:33Z proto=tcp src=10.0.2.34 dst=10.0.1.30 sport=52660 dport=443 action=allowed bytes_out=2450 bytes_in=18700 duration=1.2s rule=internal-https-allow device=FW-EDGE01 connection=established
+
+# --- Password spray network traffic from 198.51.100.15 ---
+2026-03-15T07:30:00Z proto=tcp src=198.51.100.15 dst=10.0.1.5 sport=38001 dport=3389 action=allowed bytes_out=480 bytes_in=0 duration=0.1s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:30:02Z proto=tcp src=198.51.100.15 dst=10.0.1.5 sport=38002 dport=3389 action=allowed bytes_out=480 bytes_in=0 duration=0.1s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:30:04Z proto=tcp src=198.51.100.15 dst=10.0.1.5 sport=38003 dport=3389 action=allowed bytes_out=480 bytes_in=0 duration=0.1s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:30:06Z proto=tcp src=198.51.100.15 dst=10.0.1.5 sport=38004 dport=3389 action=allowed bytes_out=480 bytes_in=0 duration=0.1s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:30:08Z proto=tcp src=198.51.100.15 dst=10.0.1.5 sport=38005 dport=3389 action=allowed bytes_out=480 bytes_in=0 duration=0.1s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:30:10Z proto=tcp src=198.51.100.15 dst=10.0.1.5 sport=38006 dport=3389 action=allowed bytes_out=480 bytes_in=0 duration=0.1s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T07:30:12Z proto=tcp src=198.51.100.15 dst=10.0.1.5 sport=38007 dport=3389 action=allowed bytes_out=480 bytes_in=0 duration=0.1s rule=dmz-rdp-allow device=FW-EDGE01 connection=reset authentication=failed
+
+# --- Suricata alert for known threat intel IP ---
+2026-03-15T07:30:13Z [**] [1:2523048:1] ET CNC Known Malicious IP - 198.51.100.15 [**] [Classification: A Network Trojan was Detected] [Priority: 1] proto=tcp src=198.51.100.15 dst=10.0.1.5 sport=38008 dport=3389 device=IDS-DMZ01
+
+# --- Distributed brute force from multiple IPs targeting ssh ---
+2026-03-15T08:00:01Z proto=tcp src=203.0.113.88 dst=10.0.1.5 sport=55201 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T08:00:14Z proto=tcp src=192.0.2.17 dst=10.0.1.5 sport=55301 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T08:00:28Z proto=tcp src=198.51.100.201 dst=10.0.1.5 sport=55401 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T08:00:42Z proto=tcp src=203.0.113.110 dst=10.0.1.5 sport=55501 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+2026-03-15T08:00:57Z proto=tcp src=192.0.2.44 dst=10.0.1.5 sport=55601 dport=22 action=allowed bytes_out=320 bytes_in=0 duration=0.1s rule=dmz-ssh-allow device=FW-EDGE01 connection=reset authentication=failed
+
+# --- Successful connection from attacker after credential found ---
+2026-03-15T08:32:05Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=46200 dport=3389 action=allowed bytes_out=12400 bytes_in=89300 duration=45.2s rule=dmz-rdp-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T08:32:06Z [**] [1:2024299:3] ET POLICY RDP Connection from External Source [**] [Classification: Potentially Bad Traffic] [Priority: 2] proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=46200 dport=3389 device=IDS-DMZ01
+
+# --- Lateral movement: compromised host reaches internal systems ---
+2026-03-15T08:35:20Z proto=tcp src=10.0.2.35 dst=10.0.1.20 sport=53001 dport=445 action=allowed bytes_out=2200 bytes_in=14500 duration=1.8s rule=internal-smb-allow device=FW-EDGE01 connection=established
+2026-03-15T08:35:38Z proto=tcp src=10.0.2.35 dst=10.0.1.20 sport=53002 dport=22 action=allowed bytes_out=1300 bytes_in=4200 duration=0.5s rule=internal-ssh-allow device=FW-EDGE01 connection=established authentication=success
+
+# --- Normal afternoon traffic ---
+2026-03-15T09:00:15Z proto=tcp src=10.0.2.36 dst=10.0.1.10 sport=53100 dport=22 action=allowed bytes_out=1050 bytes_in=2800 duration=0.3s rule=internal-ssh-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T09:05:42Z proto=tcp src=172.16.5.22 dst=10.0.1.5 sport=50200 dport=3389 action=allowed bytes_out=9100 bytes_in=51200 duration=14.3s rule=vpn-rdp-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T09:10:18Z proto=tcp src=10.0.2.40 dst=10.0.1.30 sport=53200 dport=443 action=allowed bytes_out=3100 bytes_in=22400 duration=1.5s rule=internal-https-allow device=FW-EDGE01 connection=established
+
+# --- Continued attacker rdp session (long duration) ---
+2026-03-15T09:30:00Z proto=tcp src=203.0.113.42 dst=10.0.1.5 sport=46200 dport=3389 action=allowed bytes_out=84200 bytes_in=620100 duration=3478.0s rule=dmz-rdp-allow device=FW-EDGE01 connection=established note="long-duration-session"
+
+# --- Internal lateral movement from compromised SRV-WEB01 ---
+2026-03-15T09:30:04Z proto=tcp src=10.0.1.20 dst=10.0.1.10 sport=53400 dport=3389 action=allowed bytes_out=5600 bytes_in=31200 duration=6.4s rule=internal-rdp-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T09:30:12Z proto=tcp src=10.0.1.20 dst=10.0.1.40 sport=53401 dport=1433 action=allowed bytes_out=1800 bytes_in=9400 duration=2.1s rule=internal-sql-allow device=FW-EDGE01 connection=established
+
+# --- Closing normal traffic ---
+2026-03-15T09:45:10Z proto=tcp src=10.0.2.36 dst=10.0.1.20 sport=53500 dport=443 action=allowed bytes_out=2200 bytes_in=15800 duration=0.9s rule=internal-https-allow device=FW-EDGE01 connection=established
+2026-03-15T09:50:22Z proto=tcp src=10.0.2.41 dst=10.0.1.10 sport=53600 dport=22 action=allowed bytes_out=900 bytes_in=2400 duration=0.2s rule=internal-ssh-allow device=FW-EDGE01 connection=established authentication=success
+2026-03-15T10:00:05Z proto=tcp src=10.0.2.34 dst=10.0.1.30 sport=53700 dport=443 action=allowed bytes_out=1800 bytes_in=12300 duration=0.7s rule=internal-https-allow device=FW-EDGE01 connection=established
+2026-03-15T10:10:33Z proto=tcp src=172.16.5.22 dst=10.0.1.5 sport=50400 dport=3389 action=allowed bytes_out=4200 bytes_in=28100 duration=5.8s rule=vpn-rdp-allow device=FW-EDGE01 connection=established authentication=success
+
+# END OF LOG

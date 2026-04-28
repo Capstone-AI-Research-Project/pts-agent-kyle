@@ -1,0 +1,71 @@
+# =============================================================================
+# COMPREHENSIVE LOG 03: Insider Threat Leading to Data Exfiltration
+# Scenario: Policy violations -> data hoarding -> data theft via USB and cloud
+# Expected keyword triggers: insider_threat, exfiltration, auth_anomaly
+# =============================================================================
+
+# --- Normal business-hours baseline ---
+2026-04-07T08:30:00Z host=workstation-25 src=10.0.10.25 event=logon user=mthompson EventID=4624 LogonType=2 status=success
+Apr  7 08:30:05 proxy-01 squid[3000]: 10.0.10.25 TCP_MISS/200 15234 GET http://intranet.corp.local/dashboard - DIRECT/10.0.2.10
+1712474405.000000	conn	CID200	10.0.10.25	51200	10.0.2.10	443	tcp	ssl	0.020	1024	4096	SF	-	-	-
+2026-04-07T08:35:00Z host=mail-gw event=email_sent from=mthompson@corp.local to=team-lead@corp.local subject="Status update" size=45000 status=sent
+2026-04-07T09:00:00Z host=file-server-01 event=file_access user=mthompson path=\\fileserver\projects\roadmap.pptx action=read bytes=2400000
+
+# --- Phase 1: After-hours access and policy violations ---
+# ALERT: insider threat indicator — after hours access by mthompson on multiple consecutive nights
+2026-04-07T22:15:00Z host=vpn-gw src=192.0.2.88 event=vpn_connect user=mthompson status=success device_id=PERSONAL-LAPTOP-01 note="after hours VPN from personal device"
+# ALERT: auth_anomaly — login from unregistered personal device outside business hours
+2026-04-07T22:15:05Z host=dc-01 EventID=4624 LogonType=10 src=192.0.2.88 user=mthompson note="failed password on first attempt, succeeded on second — personal email client detected"
+Apr  7 22:15:10 vpn-gw openvpn[800]: mthompson/192.0.2.88 CONNECTED — device not in MDM inventory — policy violation
+2026-04-07T22:16:00Z host=dlp-agent event=policy_violation user=mthompson rule="unmanaged-device-access" severity=medium note="insider threat: accessing corporate resources from personal device after hours"
+
+# --- Phase 2: Mass data access and hoarding ---
+# ALERT: mass download detected — mthompson accessing 200+ files from sensitive shares
+2026-04-07T22:20:00Z host=file-server-01 event=file_access user=mthompson path=\\fileserver\engineering\designs\chip-v3-schematic.pdf action=read bytes=8900000
+2026-04-07T22:20:02Z host=file-server-01 event=file_access user=mthompson path=\\fileserver\engineering\designs\chip-v3-layout.gds action=read bytes=45000000
+2026-04-07T22:20:05Z host=file-server-01 event=file_access user=mthompson path=\\fileserver\engineering\firmware\source-v2.tar.gz action=read bytes=12000000
+2026-04-07T22:20:08Z host=file-server-01 event=file_access user=mthompson path=\\fileserver\finance\compensation-bands-2026.xlsx action=read bytes=340000
+2026-04-07T22:20:10Z host=file-server-01 event=file_access user=mthompson path=\\fileserver\hr\org-chart-confidential.pdf action=read bytes=1200000
+2026-04-07T22:20:12Z host=file-server-01 event=file_access user=mthompson path=\\fileserver\legal\patent-pending-applications.docx action=read bytes=5600000
+# ALERT: mass download — 47 files accessed in 2 minutes, total 73 MB — abnormal for this user profile
+2026-04-07T22:22:00Z host=dlp-agent event=alert user=mthompson rule="mass-download-threshold" files_accessed=47 total_bytes=73040000 window=120s severity=high
+Apr  7 22:22:05 file-server-01 auditd[900]: ANOMALY: user mthompson read 47 files in 120s — avg is 3 files/hr for this user
+
+# --- Normal traffic interspersed (other employees) ---
+1712478130.000000	conn	CID201	10.0.10.30	55100	10.0.2.10	80	tcp	http	0.010	256	1024	SF	-	-	-
+Apr  7 22:25:00 backup-server rsync[5500]: nightly sync /data/backups — 234 files transferred, 1.2GB
+2026-04-07T22:30:00Z host=monitoring event=heartbeat service=nagios targets_checked=142 all_ok=true
+
+# --- Phase 3: Data staging and USB exfiltration ---
+# ALERT: exfiltration via usb — large archive copied to removable media
+2026-04-07T22:35:00Z host=workstation-25 event=file_create path=C:\Users\mthompson\Desktop\project-backup.7z size=71000000 note="staging compressed archive"
+2026-04-07T22:36:00Z host=workstation-25 event=usb_device_connected vendor="SanDisk" product="Extreme Pro 256GB" serial=SD256-4412 user=mthompson
+# ALERT: insider threat — usb mass storage connected and large file transfer initiated after hours
+2026-04-07T22:36:05Z host=workstation-25 event=file_copy src=C:\Users\mthompson\Desktop\project-backup.7z dst=E:\project-backup.7z bytes=71000000 user=mthompson note="usb exfiltration"
+2026-04-07T22:37:00Z host=dlp-agent event=alert user=mthompson rule="usb-large-transfer" device="SanDisk Extreme Pro" bytes=71000000 severity=critical
+Apr  7 22:37:05 workstation-25 kernel: [usb-storage] device sda: write 71000000 bytes to /dev/sda1
+
+# --- Phase 4: Cloud upload exfiltration ---
+# ALERT: exfiltration via cloud storage — dropbox upload of confidential data
+2026-04-08T00:10:00Z host=workstation-25 event=process_create exe=chrome.exe cmdline="chrome.exe --new-window https://www.dropbox.com/upload" user=mthompson pid=9100
+2026-04-08T00:10:05Z host=proxy-01 src=10.0.10.25 event=http_request method=POST uri=https://content.dropboxapi.com/2/files/upload status=200 bytes_out=35000000
+# ALERT: large transfer to dropbox cloud storage — 35 MB uploaded to personal cloud account
+2026-04-08T00:10:10Z host=dlp-agent event=alert user=mthompson rule="cloud-storage-upload" destination=dropbox bytes=35000000 severity=critical note="exfiltration to personal cloud storage account"
+1712484610.000000	conn	CID202	10.0.10.25	52400	198.51.100.50	443	tcp	ssl	45.200	35000000	4096	SF	-	-	-
+2026-04-08T00:11:00Z host=proxy-01 src=10.0.10.25 event=http_request method=POST uri=https://mail.google.com/mail/u/0/?compose=new status=200 bytes_out=8500000 note="personal email attachment — insider threat indicator"
+Apr  8 00:11:05 mail-gw postfix/smtpd[5690]: warning: outbound to personal email detected: mthompson -> m.thompson.personal@gmail.com attachment=8.5MB
+
+# --- More after-hours suspicious activity ---
+2026-04-08T00:15:00Z host=workstation-25 event=file_delete path=C:\Users\mthompson\Desktop\project-backup.7z user=mthompson note="cleaning up staging area"
+2026-04-08T00:15:05Z host=workstation-25 event=process_create exe=sdelete.exe cmdline="sdelete -p 3 C:\Users\mthompson\Recent\*" user=mthompson note="secure delete of recent file list"
+2026-04-08T00:15:10Z host=workstation-25 event=log_clear log="RecentDocs" user=mthompson note="clearing tracks — anti-forensics"
+
+# --- Next morning: normal login, acting normal ---
+2026-04-08T08:30:00Z host=workstation-25 src=10.0.10.25 event=logon user=mthompson EventID=4624 LogonType=2 status=success
+2026-04-08T08:35:00Z host=mail-gw event=email_sent from=mthompson@corp.local to=hr@corp.local subject="PTO request April 15-18" size=12000 status=sent
+Apr  8 08:40:00 proxy-01 squid[3000]: 10.0.10.25 TCP_MISS/200 8234 GET http://intranet.corp.local/hr/pto - DIRECT/10.0.2.10
+
+# --- DLP team investigation triggered ---
+2026-04-08T10:00:00Z host=siem-01 event=case_created id=CASE-2026-0408-INS severity=high title="Insider threat: mthompson mass download and exfiltration via USB and cloud storage"
+2026-04-08T10:00:05Z host=siem-01 event=alert_correlation rules_matched=["mass-download-threshold","usb-large-transfer","cloud-storage-upload","after-hours-access","personal-device"] user=mthompson
+Apr  8 10:05:00 dc-01 samba[2345]: AUDIT: account mthompson flagged for insider threat review — access restricted pending investigation
