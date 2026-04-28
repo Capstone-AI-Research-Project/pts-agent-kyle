@@ -1,0 +1,7069 @@
+{
+  "version": "2024-01-08",
+  "description": "MITRE ATT&CK Analytic Coverage — detection rule counts across CAR, Sigma, ES SIEM, and Splunk",
+  "source": "analytic_coverage_01_08_2024.csv",
+  "technique_count": 588,
+  "coverage_stats": {
+    "no_coverage": 178,
+    "low_coverage": 174,
+    "good_coverage": 236
+  },
+  "techniques": [
+    {
+      "id": "T1001",
+      "name": "Data Obfuscation",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1001.001",
+      "name": "Data Obfuscation",
+      "subtechnique": "Junk Data",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1001.002",
+      "name": "Data Obfuscation",
+      "subtechnique": "Steganography",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1001.003",
+      "name": "Data Obfuscation",
+      "subtechnique": "Protocol Impersonation",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1003",
+      "name": "OS Credential Dumping",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 23,
+        "es_siem": 34,
+        "splunk": 36,
+        "total": 93
+      }
+    },
+    {
+      "id": "T1003.001",
+      "name": "OS Credential Dumping",
+      "subtechnique": "LSASS Memory",
+      "coverage": {
+        "car": 5,
+        "sigma": 75,
+        "es_siem": 10,
+        "splunk": 14,
+        "total": 104
+      }
+    },
+    {
+      "id": "T1003.002",
+      "name": "OS Credential Dumping",
+      "subtechnique": "Security Account Manager",
+      "coverage": {
+        "car": 1,
+        "sigma": 28,
+        "es_siem": 5,
+        "splunk": 9,
+        "total": 43
+      }
+    },
+    {
+      "id": "T1003.003",
+      "name": "OS Credential Dumping",
+      "subtechnique": "NTDS",
+      "coverage": {
+        "car": 2,
+        "sigma": 19,
+        "es_siem": 1,
+        "splunk": 8,
+        "total": 30
+      }
+    },
+    {
+      "id": "T1003.004",
+      "name": "OS Credential Dumping",
+      "subtechnique": "LSA Secrets",
+      "coverage": {
+        "car": 0,
+        "sigma": 12,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 13
+      }
+    },
+    {
+      "id": "T1003.005",
+      "name": "OS Credential Dumping",
+      "subtechnique": "Cached Domain Credentials",
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 9
+      }
+    },
+    {
+      "id": "T1003.006",
+      "name": "OS Credential Dumping",
+      "subtechnique": "DCSync",
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1003.007",
+      "name": "OS Credential Dumping",
+      "subtechnique": "Proc Filesystem",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1003.008",
+      "name": "OS Credential Dumping",
+      "subtechnique": "/etc/passwd and /etc/shadow",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1005",
+      "name": "Data from Local System",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1006",
+      "name": "Direct Volume Access",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1007",
+      "name": "System Service Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 2,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1008",
+      "name": "Fallback Channels",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1010",
+      "name": "Application Window Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1011",
+      "name": "Exfiltration Over Other Network Medium",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1011.001",
+      "name": "Exfiltration Over Other Network Medium",
+      "subtechnique": "Exfiltration Over Bluetooth",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1012",
+      "name": "Query Registry",
+      "subtechnique": null,
+      "coverage": {
+        "car": 3,
+        "sigma": 10,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 16
+      }
+    },
+    {
+      "id": "T1014",
+      "name": "Rootkit",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1016",
+      "name": "System Network Configuration Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 2,
+        "sigma": 8,
+        "es_siem": 3,
+        "splunk": 4,
+        "total": 17
+      }
+    },
+    {
+      "id": "T1016.001",
+      "name": "System Network Configuration Discovery",
+      "subtechnique": "Internet Connection Discovery",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1018",
+      "name": "Remote System Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 15,
+        "es_siem": 4,
+        "splunk": 18,
+        "total": 38
+      }
+    },
+    {
+      "id": "T1020",
+      "name": "Automated Exfiltration",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 5,
+        "es_siem": 1,
+        "splunk": 6,
+        "total": 12
+      }
+    },
+    {
+      "id": "T1020.001",
+      "name": "Automated Exfiltration",
+      "subtechnique": "Traffic Duplication",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1021",
+      "name": "Remote Services",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 3,
+        "es_siem": 34,
+        "splunk": 24,
+        "total": 62
+      }
+    },
+    {
+      "id": "T1021.001",
+      "name": "Remote Services",
+      "subtechnique": "Remote Desktop Protocol",
+      "coverage": {
+        "car": 3,
+        "sigma": 14,
+        "es_siem": 1,
+        "splunk": 9,
+        "total": 27
+      }
+    },
+    {
+      "id": "T1021.002",
+      "name": "Remote Services",
+      "subtechnique": "SMB/Windows Admin Shares",
+      "coverage": {
+        "car": 5,
+        "sigma": 33,
+        "es_siem": 6,
+        "splunk": 5,
+        "total": 49
+      }
+    },
+    {
+      "id": "T1021.003",
+      "name": "Remote Services",
+      "subtechnique": "Distributed Component Object Model",
+      "coverage": {
+        "car": 1,
+        "sigma": 9,
+        "es_siem": 0,
+        "splunk": 5,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1021.004",
+      "name": "Remote Services",
+      "subtechnique": "SSH",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1021.005",
+      "name": "Remote Services",
+      "subtechnique": "VNC",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1021.006",
+      "name": "Remote Services",
+      "subtechnique": "Windows Remote Management",
+      "coverage": {
+        "car": 3,
+        "sigma": 9,
+        "es_siem": 0,
+        "splunk": 6,
+        "total": 18
+      }
+    },
+    {
+      "id": "T1025",
+      "name": "Data from Removable Media",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1026",
+      "name": "Multiband Communication",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1027",
+      "name": "Obfuscated Files or Information",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 83,
+        "es_siem": 7,
+        "splunk": 8,
+        "total": 98
+      }
+    },
+    {
+      "id": "T1027.001",
+      "name": "Obfuscated Files or Information",
+      "subtechnique": "Binary Padding",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1027.002",
+      "name": "Obfuscated Files or Information",
+      "subtechnique": "Software Packing",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1027.003",
+      "name": "Obfuscated Files or Information",
+      "subtechnique": "Steganography",
+      "coverage": {
+        "car": 0,
+        "sigma": 5,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1027.004",
+      "name": "Obfuscated Files or Information",
+      "subtechnique": "Compile After Delivery",
+      "coverage": {
+        "car": 0,
+        "sigma": 5,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1027.005",
+      "name": "Obfuscated Files or Information",
+      "subtechnique": "Indicator Removal from Tools",
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1027.006",
+      "name": "Obfuscated Files or Information",
+      "subtechnique": "HTML Smuggling",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1029",
+      "name": "Scheduled Transfer",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1030",
+      "name": "Data Transfer Size Limits",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1033",
+      "name": "System Owner/User Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 2,
+        "sigma": 25,
+        "es_siem": 4,
+        "splunk": 10,
+        "total": 41
+      }
+    },
+    {
+      "id": "T1034",
+      "name": "Path Interception",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1036",
+      "name": "Masquerading",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 27,
+        "es_siem": 16,
+        "splunk": 27,
+        "total": 71
+      }
+    },
+    {
+      "id": "T1036.001",
+      "name": "Masquerading",
+      "subtechnique": "Invalid Code Signature",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1036.002",
+      "name": "Masquerading",
+      "subtechnique": "Right-to-Left Override",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1036.003",
+      "name": "Masquerading",
+      "subtechnique": "Rename System Utilities",
+      "coverage": {
+        "car": 1,
+        "sigma": 21,
+        "es_siem": 2,
+        "splunk": 22,
+        "total": 46
+      }
+    },
+    {
+      "id": "T1036.004",
+      "name": "Masquerading",
+      "subtechnique": "Masquerade Task or Service",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1036.005",
+      "name": "Masquerading",
+      "subtechnique": "Match Legitimate Name or Location",
+      "coverage": {
+        "car": 1,
+        "sigma": 9,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 12
+      }
+    },
+    {
+      "id": "T1036.006",
+      "name": "Masquerading",
+      "subtechnique": "Space after Filename",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1036.007",
+      "name": "Masquerading",
+      "subtechnique": "Double File Extension",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1037",
+      "name": "Boot or Logon Initialization Scripts",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 5,
+        "splunk": 2,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1037.001",
+      "name": "Boot or Logon Initialization Scripts",
+      "subtechnique": "Logon Script (Windows)",
+      "coverage": {
+        "car": 2,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1037.002",
+      "name": "Boot or Logon Initialization Scripts",
+      "subtechnique": "Login Hook",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1037.003",
+      "name": "Boot or Logon Initialization Scripts",
+      "subtechnique": "Network Logon Script",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1037.004",
+      "name": "Boot or Logon Initialization Scripts",
+      "subtechnique": "RC Scripts",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1037.005",
+      "name": "Boot or Logon Initialization Scripts",
+      "subtechnique": "Startup Items",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1039",
+      "name": "Data from Network Shared Drive",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1040",
+      "name": "Network Sniffing",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 8,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 12
+      }
+    },
+    {
+      "id": "T1041",
+      "name": "Exfiltration Over C2 Channel",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1043",
+      "name": "Commonly Used Port",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1046",
+      "name": "Network Service Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 2,
+        "sigma": 11,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 14
+      }
+    },
+    {
+      "id": "T1047",
+      "name": "Windows Management Instrumentation",
+      "subtechnique": null,
+      "coverage": {
+        "car": 3,
+        "sigma": 40,
+        "es_siem": 5,
+        "splunk": 14,
+        "total": 62
+      }
+    },
+    {
+      "id": "T1048",
+      "name": "Exfiltration Over Alternative Protocol",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 6,
+        "splunk": 9,
+        "total": 22
+      }
+    },
+    {
+      "id": "T1048.001",
+      "name": "Exfiltration Over Alternative Protocol",
+      "subtechnique": "Exfiltration Over Symmetric Encrypted Non-C2 Protocol",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1048.002",
+      "name": "Exfiltration Over Alternative Protocol",
+      "subtechnique": "Exfiltration Over Asymmetric Encrypted Non-C2 Protocol",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1048.003",
+      "name": "Exfiltration Over Alternative Protocol",
+      "subtechnique": "Exfiltration Over Unencrypted Non-C2 Protocol",
+      "coverage": {
+        "car": 0,
+        "sigma": 14,
+        "es_siem": 0,
+        "splunk": 9,
+        "total": 23
+      }
+    },
+    {
+      "id": "T1049",
+      "name": "System Network Connections Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 8,
+        "es_siem": 1,
+        "splunk": 6,
+        "total": 16
+      }
+    },
+    {
+      "id": "T1051",
+      "name": "Shared Webroot",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1052",
+      "name": "Exfiltration Over Physical Medium",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1052.001",
+      "name": "Exfiltration Over Physical Medium",
+      "subtechnique": "Exfiltration over USB",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1053",
+      "name": "Scheduled Task/Job",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 11,
+        "es_siem": 19,
+        "splunk": 28,
+        "total": 58
+      }
+    },
+    {
+      "id": "T1053.002",
+      "name": "Scheduled Task/Job",
+      "subtechnique": "At",
+      "coverage": {
+        "car": 3,
+        "sigma": 8,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 14
+      }
+    },
+    {
+      "id": "T1053.003",
+      "name": "Scheduled Task/Job",
+      "subtechnique": "Cron",
+      "coverage": {
+        "car": 0,
+        "sigma": 6,
+        "es_siem": 5,
+        "splunk": 6,
+        "total": 17
+      }
+    },
+    {
+      "id": "T1053.004",
+      "name": "Scheduled Task/Job",
+      "subtechnique": "Launchd",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1053.005",
+      "name": "Scheduled Task/Job",
+      "subtechnique": "Scheduled Task",
+      "coverage": {
+        "car": 6,
+        "sigma": 38,
+        "es_siem": 9,
+        "splunk": 15,
+        "total": 68
+      }
+    },
+    {
+      "id": "T1053.006",
+      "name": "Scheduled Task/Job",
+      "subtechnique": "Systemd Timers",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1053.007",
+      "name": "Scheduled Task/Job",
+      "subtechnique": "Container Orchestration Job",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1055",
+      "name": "Process Injection",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 23,
+        "es_siem": 13,
+        "splunk": 26,
+        "total": 62
+      }
+    },
+    {
+      "id": "T1055.001",
+      "name": "Process Injection",
+      "subtechnique": "Dynamic-link Library Injection",
+      "coverage": {
+        "car": 2,
+        "sigma": 8,
+        "es_siem": 0,
+        "splunk": 4,
+        "total": 14
+      }
+    },
+    {
+      "id": "T1055.002",
+      "name": "Process Injection",
+      "subtechnique": "Portable Executable Injection",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1055.003",
+      "name": "Process Injection",
+      "subtechnique": "Thread Execution Hijacking",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1055.004",
+      "name": "Process Injection",
+      "subtechnique": "Asynchronous Procedure Call",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1055.005",
+      "name": "Process Injection",
+      "subtechnique": "Thread Local Storage",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1055.008",
+      "name": "Process Injection",
+      "subtechnique": "Ptrace System Calls",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1055.009",
+      "name": "Process Injection",
+      "subtechnique": "Proc Memory",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1055.011",
+      "name": "Process Injection",
+      "subtechnique": "Extra Window Memory Injection",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1055.012",
+      "name": "Process Injection",
+      "subtechnique": "Process Hollowing",
+      "coverage": {
+        "car": 1,
+        "sigma": 2,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1055.013",
+      "name": "Process Injection",
+      "subtechnique": "Process Doppelgänging",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1055.014",
+      "name": "Process Injection",
+      "subtechnique": "VDSO Hijacking",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1055.015",
+      "name": "Process Injection",
+      "subtechnique": "ListPlanting",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1056",
+      "name": "Input Capture",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1056.001",
+      "name": "Input Capture",
+      "subtechnique": "Keylogging",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1056.002",
+      "name": "Input Capture",
+      "subtechnique": "GUI Input Capture",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1056.003",
+      "name": "Input Capture",
+      "subtechnique": "Web Portal Capture",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1056.004",
+      "name": "Input Capture",
+      "subtechnique": "Credential API Hooking",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1057",
+      "name": "Process Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 2,
+        "sigma": 5,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 9
+      }
+    },
+    {
+      "id": "T1059",
+      "name": "Command and Scripting Interpreter",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 51,
+        "es_siem": 64,
+        "splunk": 57,
+        "total": 173
+      }
+    },
+    {
+      "id": "T1059.001",
+      "name": "Command and Scripting Interpreter",
+      "subtechnique": "PowerShell",
+      "coverage": {
+        "car": 3,
+        "sigma": 181,
+        "es_siem": 7,
+        "splunk": 32,
+        "total": 223
+      }
+    },
+    {
+      "id": "T1059.002",
+      "name": "Command and Scripting Interpreter",
+      "subtechnique": "AppleScript",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1059.003",
+      "name": "Command and Scripting Interpreter",
+      "subtechnique": "Windows Command Shell",
+      "coverage": {
+        "car": 2,
+        "sigma": 21,
+        "es_siem": 0,
+        "splunk": 9,
+        "total": 32
+      }
+    },
+    {
+      "id": "T1059.004",
+      "name": "Command and Scripting Interpreter",
+      "subtechnique": "Unix Shell",
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 18,
+        "splunk": 3,
+        "total": 29
+      }
+    },
+    {
+      "id": "T1059.005",
+      "name": "Command and Scripting Interpreter",
+      "subtechnique": "Visual Basic",
+      "coverage": {
+        "car": 1,
+        "sigma": 18,
+        "es_siem": 0,
+        "splunk": 4,
+        "total": 23
+      }
+    },
+    {
+      "id": "T1059.006",
+      "name": "Command and Scripting Interpreter",
+      "subtechnique": "Python",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1059.007",
+      "name": "Command and Scripting Interpreter",
+      "subtechnique": "JavaScript",
+      "coverage": {
+        "car": 0,
+        "sigma": 13,
+        "es_siem": 3,
+        "splunk": 4,
+        "total": 20
+      }
+    },
+    {
+      "id": "T1059.008",
+      "name": "Command and Scripting Interpreter",
+      "subtechnique": "Network Device CLI",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1061",
+      "name": "Graphical User Interface",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1062",
+      "name": "Hypervisor",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1064",
+      "name": "Scripting",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1068",
+      "name": "Exploitation for Privilege Escalation",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 25,
+        "es_siem": 18,
+        "splunk": 10,
+        "total": 54
+      }
+    },
+    {
+      "id": "T1069",
+      "name": "Permission Groups Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 5,
+        "splunk": 25,
+        "total": 31
+      }
+    },
+    {
+      "id": "T1069.001",
+      "name": "Permission Groups Discovery",
+      "subtechnique": "Local Groups",
+      "coverage": {
+        "car": 3,
+        "sigma": 14,
+        "es_siem": 1,
+        "splunk": 11,
+        "total": 29
+      }
+    },
+    {
+      "id": "T1069.002",
+      "name": "Permission Groups Discovery",
+      "subtechnique": "Domain Groups",
+      "coverage": {
+        "car": 3,
+        "sigma": 10,
+        "es_siem": 2,
+        "splunk": 18,
+        "total": 33
+      }
+    },
+    {
+      "id": "T1069.003",
+      "name": "Permission Groups Discovery",
+      "subtechnique": "Cloud Groups",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1070",
+      "name": "Indicator Removal on Host",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 13,
+        "es_siem": 14,
+        "splunk": 23,
+        "total": 50
+      }
+    },
+    {
+      "id": "T1070.001",
+      "name": "Indicator Removal on Host",
+      "subtechnique": "Clear Windows Event Logs",
+      "coverage": {
+        "car": 2,
+        "sigma": 8,
+        "es_siem": 3,
+        "splunk": 6,
+        "total": 19
+      }
+    },
+    {
+      "id": "T1070.002",
+      "name": "Indicator Removal on Host",
+      "subtechnique": "Clear Linux or Mac System Logs",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1070.003",
+      "name": "Indicator Removal on Host",
+      "subtechnique": "Clear Command History",
+      "coverage": {
+        "car": 1,
+        "sigma": 7,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1070.004",
+      "name": "Indicator Removal on Host",
+      "subtechnique": "File Deletion",
+      "coverage": {
+        "car": 0,
+        "sigma": 12,
+        "es_siem": 4,
+        "splunk": 12,
+        "total": 28
+      }
+    },
+    {
+      "id": "T1070.005",
+      "name": "Indicator Removal on Host",
+      "subtechnique": "Network Share Connection Removal",
+      "coverage": {
+        "car": 1,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1070.006",
+      "name": "Indicator Removal on Host",
+      "subtechnique": "Timestomp",
+      "coverage": {
+        "car": 0,
+        "sigma": 5,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1071",
+      "name": "Application Layer Protocol",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 6,
+        "es_siem": 11,
+        "splunk": 10,
+        "total": 27
+      }
+    },
+    {
+      "id": "T1071.001",
+      "name": "Application Layer Protocol",
+      "subtechnique": "Web Protocols",
+      "coverage": {
+        "car": 0,
+        "sigma": 29,
+        "es_siem": 3,
+        "splunk": 2,
+        "total": 34
+      }
+    },
+    {
+      "id": "T1071.002",
+      "name": "Application Layer Protocol",
+      "subtechnique": "File Transfer Protocols",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1071.003",
+      "name": "Application Layer Protocol",
+      "subtechnique": "Mail Protocols",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1071.004",
+      "name": "Application Layer Protocol",
+      "subtechnique": "DNS",
+      "coverage": {
+        "car": 0,
+        "sigma": 17,
+        "es_siem": 0,
+        "splunk": 4,
+        "total": 21
+      }
+    },
+    {
+      "id": "T1072",
+      "name": "Software Deployment Tools",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1074",
+      "name": "Data Staged",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1074.001",
+      "name": "Data Staged",
+      "subtechnique": "Local Data Staging",
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1074.002",
+      "name": "Data Staged",
+      "subtechnique": "Remote Data Staging",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1078",
+      "name": "Valid Accounts",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 42,
+        "es_siem": 40,
+        "splunk": 51,
+        "total": 133
+      }
+    },
+    {
+      "id": "T1078.001",
+      "name": "Valid Accounts",
+      "subtechnique": "Default Accounts",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 2,
+        "splunk": 8,
+        "total": 11
+      }
+    },
+    {
+      "id": "T1078.002",
+      "name": "Valid Accounts",
+      "subtechnique": "Domain Accounts",
+      "coverage": {
+        "car": 5,
+        "sigma": 1,
+        "es_siem": 2,
+        "splunk": 6,
+        "total": 14
+      }
+    },
+    {
+      "id": "T1078.003",
+      "name": "Valid Accounts",
+      "subtechnique": "Local Accounts",
+      "coverage": {
+        "car": 5,
+        "sigma": 1,
+        "es_siem": 5,
+        "splunk": 2,
+        "total": 13
+      }
+    },
+    {
+      "id": "T1078.004",
+      "name": "Valid Accounts",
+      "subtechnique": "Cloud Accounts",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 1,
+        "splunk": 28,
+        "total": 32
+      }
+    },
+    {
+      "id": "T1080",
+      "name": "Taint Shared Content",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1082",
+      "name": "System Information Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 2,
+        "sigma": 14,
+        "es_siem": 7,
+        "splunk": 5,
+        "total": 28
+      }
+    },
+    {
+      "id": "T1083",
+      "name": "File and Directory Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 12,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1087",
+      "name": "Account Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 12,
+        "es_siem": 4,
+        "splunk": 27,
+        "total": 43
+      }
+    },
+    {
+      "id": "T1087.001",
+      "name": "Account Discovery",
+      "subtechnique": "Local Account",
+      "coverage": {
+        "car": 2,
+        "sigma": 11,
+        "es_siem": 0,
+        "splunk": 11,
+        "total": 24
+      }
+    },
+    {
+      "id": "T1087.002",
+      "name": "Account Discovery",
+      "subtechnique": "Domain Account",
+      "coverage": {
+        "car": 2,
+        "sigma": 15,
+        "es_siem": 1,
+        "splunk": 19,
+        "total": 37
+      }
+    },
+    {
+      "id": "T1087.003",
+      "name": "Account Discovery",
+      "subtechnique": "Email Account",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1087.004",
+      "name": "Account Discovery",
+      "subtechnique": "Cloud Account",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1090",
+      "name": "Proxy",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 11,
+        "es_siem": 1,
+        "splunk": 3,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1090.001",
+      "name": "Proxy",
+      "subtechnique": "Internal Proxy",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1090.002",
+      "name": "Proxy",
+      "subtechnique": "External Proxy",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1090.003",
+      "name": "Proxy",
+      "subtechnique": "Multi-hop Proxy",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1090.004",
+      "name": "Proxy",
+      "subtechnique": "Domain Fronting",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1091",
+      "name": "Replication Through Removable Media",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1092",
+      "name": "Communication Through Removable Media",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1095",
+      "name": "Non-Application Layer Protocol",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1098",
+      "name": "Account Manipulation",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 22,
+        "es_siem": 35,
+        "splunk": 10,
+        "total": 68
+      }
+    },
+    {
+      "id": "T1098.001",
+      "name": "Account Manipulation",
+      "subtechnique": "Additional Cloud Credentials",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1098.002",
+      "name": "Account Manipulation",
+      "subtechnique": "Additional Email Delegate Permissions",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1098.003",
+      "name": "Account Manipulation",
+      "subtechnique": "Additional Cloud Roles",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 3,
+        "splunk": 2,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1098.004",
+      "name": "Account Manipulation",
+      "subtechnique": "SSH Authorized Keys",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 3,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1098.005",
+      "name": "Account Manipulation",
+      "subtechnique": "Device Registration",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1102",
+      "name": "Web Service",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1102.001",
+      "name": "Web Service",
+      "subtechnique": "Dead Drop Resolver",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1102.002",
+      "name": "Web Service",
+      "subtechnique": "Bidirectional Communication",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1102.003",
+      "name": "Web Service",
+      "subtechnique": "One-Way Communication",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1104",
+      "name": "Multi-Stage Channels",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1105",
+      "name": "Ingress Tool Transfer",
+      "subtechnique": null,
+      "coverage": {
+        "car": 4,
+        "sigma": 47,
+        "es_siem": 9,
+        "splunk": 23,
+        "total": 83
+      }
+    },
+    {
+      "id": "T1106",
+      "name": "Native API",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 12,
+        "es_siem": 6,
+        "splunk": 0,
+        "total": 18
+      }
+    },
+    {
+      "id": "T1108",
+      "name": "Redundant Access",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1110",
+      "name": "Brute Force",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 10,
+        "es_siem": 19,
+        "splunk": 25,
+        "total": 54
+      }
+    },
+    {
+      "id": "T1110.001",
+      "name": "Brute Force",
+      "subtechnique": "Password Guessing",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 6,
+        "splunk": 3,
+        "total": 12
+      }
+    },
+    {
+      "id": "T1110.002",
+      "name": "Brute Force",
+      "subtechnique": "Password Cracking",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1110.003",
+      "name": "Brute Force",
+      "subtechnique": "Password Spraying",
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 6,
+        "splunk": 15,
+        "total": 29
+      }
+    },
+    {
+      "id": "T1110.004",
+      "name": "Brute Force",
+      "subtechnique": "Credential Stuffing",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 5,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1111",
+      "name": "Multi-Factor Authentication Interception",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1112",
+      "name": "Modify Registry",
+      "subtechnique": null,
+      "coverage": {
+        "car": 8,
+        "sigma": 62,
+        "es_siem": 5,
+        "splunk": 25,
+        "total": 100
+      }
+    },
+    {
+      "id": "T1113",
+      "name": "Screen Capture",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 6,
+        "es_siem": 1,
+        "splunk": 3,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1114",
+      "name": "Email Collection",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 3,
+        "splunk": 8,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1114.001",
+      "name": "Email Collection",
+      "subtechnique": "Local Email Collection",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1114.002",
+      "name": "Email Collection",
+      "subtechnique": "Remote Email Collection",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 3,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1114.003",
+      "name": "Email Collection",
+      "subtechnique": "Email Forwarding Rule",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1115",
+      "name": "Clipboard Data",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 6,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1119",
+      "name": "Automated Collection",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 5,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1120",
+      "name": "Peripheral Device Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1123",
+      "name": "Audio Capture",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 6,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1124",
+      "name": "System Time Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1125",
+      "name": "Video Capture",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1127",
+      "name": "Trusted Developer Utilities Proxy Execution",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 17,
+        "es_siem": 8,
+        "splunk": 9,
+        "total": 34
+      }
+    },
+    {
+      "id": "T1127.001",
+      "name": "Trusted Developer Utilities Proxy Execution",
+      "subtechnique": "MSBuild",
+      "coverage": {
+        "car": 1,
+        "sigma": 1,
+        "es_siem": 3,
+        "splunk": 6,
+        "total": 11
+      }
+    },
+    {
+      "id": "T1129",
+      "name": "Shared Modules",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1132",
+      "name": "Data Encoding",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1132.001",
+      "name": "Data Encoding",
+      "subtechnique": "Standard Encoding",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1132.002",
+      "name": "Data Encoding",
+      "subtechnique": "Non-Standard Encoding",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1133",
+      "name": "External Remote Services",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 5,
+        "splunk": 0,
+        "total": 12
+      }
+    },
+    {
+      "id": "T1134",
+      "name": "Access Token Manipulation",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 12,
+        "splunk": 5,
+        "total": 17
+      }
+    },
+    {
+      "id": "T1134.001",
+      "name": "Access Token Manipulation",
+      "subtechnique": "Token Impersonation/Theft",
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 1,
+        "splunk": 3,
+        "total": 11
+      }
+    },
+    {
+      "id": "T1134.002",
+      "name": "Access Token Manipulation",
+      "subtechnique": "Create Process with Token",
+      "coverage": {
+        "car": 0,
+        "sigma": 5,
+        "es_siem": 3,
+        "splunk": 1,
+        "total": 9
+      }
+    },
+    {
+      "id": "T1134.003",
+      "name": "Access Token Manipulation",
+      "subtechnique": "Make and Impersonate Token",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1134.004",
+      "name": "Access Token Manipulation",
+      "subtechnique": "Parent PID Spoofing",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1134.005",
+      "name": "Access Token Manipulation",
+      "subtechnique": "SID-History Injection",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1135",
+      "name": "Network Share Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 3,
+        "splunk": 0,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1136",
+      "name": "Create Account",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 7,
+        "splunk": 14,
+        "total": 22
+      }
+    },
+    {
+      "id": "T1136.001",
+      "name": "Create Account",
+      "subtechnique": "Local Account",
+      "coverage": {
+        "car": 1,
+        "sigma": 12,
+        "es_siem": 2,
+        "splunk": 5,
+        "total": 20
+      }
+    },
+    {
+      "id": "T1136.002",
+      "name": "Create Account",
+      "subtechnique": "Domain Account",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1136.003",
+      "name": "Create Account",
+      "subtechnique": "Cloud Account",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 2,
+        "splunk": 10,
+        "total": 14
+      }
+    },
+    {
+      "id": "T1137",
+      "name": "Office Application Startup",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 6,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1137.001",
+      "name": "Office Application Startup",
+      "subtechnique": "Office Template Macros",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1137.002",
+      "name": "Office Application Startup",
+      "subtechnique": "Office Test",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1137.003",
+      "name": "Office Application Startup",
+      "subtechnique": "Outlook Forms",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1137.004",
+      "name": "Office Application Startup",
+      "subtechnique": "Outlook Home Page",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1137.005",
+      "name": "Office Application Startup",
+      "subtechnique": "Outlook Rules",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1137.006",
+      "name": "Office Application Startup",
+      "subtechnique": "Add-ins",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1140",
+      "name": "Deobfuscate/Decode Files or Information",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 13,
+        "es_siem": 6,
+        "splunk": 2,
+        "total": 22
+      }
+    },
+    {
+      "id": "T1149",
+      "name": "LC_MAIN Hijacking",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1153",
+      "name": "Source",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1175",
+      "name": "Component Object Model and Distributed COM",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1176",
+      "name": "Browser Extensions",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1185",
+      "name": "Browser Session Hijacking",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1187",
+      "name": "Forced Authentication",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1189",
+      "name": "Drive-by Compromise",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 5,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1190",
+      "name": "Exploit Public-Facing Application",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 74,
+        "es_siem": 15,
+        "splunk": 31,
+        "total": 120
+      }
+    },
+    {
+      "id": "T1195",
+      "name": "Supply Chain Compromise",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 4,
+        "splunk": 3,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1195.001",
+      "name": "Supply Chain Compromise",
+      "subtechnique": "Compromise Software Dependencies and Development Tools",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1195.002",
+      "name": "Supply Chain Compromise",
+      "subtechnique": "Compromise Software Supply Chain",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 4,
+        "splunk": 1,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1195.003",
+      "name": "Supply Chain Compromise",
+      "subtechnique": "Compromise Hardware Supply Chain",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1197",
+      "name": "BITS Jobs",
+      "subtechnique": null,
+      "coverage": {
+        "car": 2,
+        "sigma": 16,
+        "es_siem": 1,
+        "splunk": 6,
+        "total": 25
+      }
+    },
+    {
+      "id": "T1199",
+      "name": "Trusted Relationship",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1200",
+      "name": "Hardware Additions",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 5,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1201",
+      "name": "Password Policy Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 0,
+        "splunk": 7,
+        "total": 11
+      }
+    },
+    {
+      "id": "T1202",
+      "name": "Indirect Command Execution",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 28,
+        "es_siem": 0,
+        "splunk": 4,
+        "total": 32
+      }
+    },
+    {
+      "id": "T1203",
+      "name": "Exploitation for Client Execution",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 21,
+        "es_siem": 2,
+        "splunk": 4,
+        "total": 27
+      }
+    },
+    {
+      "id": "T1204",
+      "name": "User Execution",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 7,
+        "splunk": 15,
+        "total": 30
+      }
+    },
+    {
+      "id": "T1204.001",
+      "name": "User Execution",
+      "subtechnique": "Malicious Link",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1204.002",
+      "name": "User Execution",
+      "subtechnique": "Malicious File",
+      "coverage": {
+        "car": 1,
+        "sigma": 26,
+        "es_siem": 3,
+        "splunk": 4,
+        "total": 34
+      }
+    },
+    {
+      "id": "T1204.003",
+      "name": "User Execution",
+      "subtechnique": "Malicious Image",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 7,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1205",
+      "name": "Traffic Signaling",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1205.001",
+      "name": "Traffic Signaling",
+      "subtechnique": "Port Knocking",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1207",
+      "name": "Rogue Domain Controller",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1210",
+      "name": "Exploitation of Remote Services",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 1,
+        "splunk": 3,
+        "total": 12
+      }
+    },
+    {
+      "id": "T1211",
+      "name": "Exploitation for Defense Evasion",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1212",
+      "name": "Exploitation for Credential Access",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 11
+      }
+    },
+    {
+      "id": "T1213",
+      "name": "Data from Information Repositories",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1213.001",
+      "name": "Data from Information Repositories",
+      "subtechnique": "Confluence",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1213.002",
+      "name": "Data from Information Repositories",
+      "subtechnique": "Sharepoint",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1213.003",
+      "name": "Data from Information Repositories",
+      "subtechnique": "Code Repositories",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1216",
+      "name": "System Script Proxy Execution",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 17,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 18
+      }
+    },
+    {
+      "id": "T1216.001",
+      "name": "System Script Proxy Execution",
+      "subtechnique": "PubPrn",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1217",
+      "name": "Browser Bookmark Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1218",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 94,
+        "es_siem": 18,
+        "splunk": 70,
+        "total": 182
+      }
+    },
+    {
+      "id": "T1218.001",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Compiled HTML File",
+      "coverage": {
+        "car": 1,
+        "sigma": 5,
+        "es_siem": 1,
+        "splunk": 8,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1218.002",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Control Panel",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1218.003",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "CMSTP",
+      "coverage": {
+        "car": 1,
+        "sigma": 7,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 11
+      }
+    },
+    {
+      "id": "T1218.004",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "InstallUtil",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 9,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1218.005",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Mshta",
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 4,
+        "splunk": 12,
+        "total": 24
+      }
+    },
+    {
+      "id": "T1218.007",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Msiexec",
+      "coverage": {
+        "car": 0,
+        "sigma": 9,
+        "es_siem": 0,
+        "splunk": 9,
+        "total": 18
+      }
+    },
+    {
+      "id": "T1218.008",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Odbcconf",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 4,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1218.009",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Regsvcs/Regasm",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 6,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1218.010",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Regsvr32",
+      "coverage": {
+        "car": 2,
+        "sigma": 16,
+        "es_siem": 2,
+        "splunk": 6,
+        "total": 26
+      }
+    },
+    {
+      "id": "T1218.011",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Rundll32",
+      "coverage": {
+        "car": 1,
+        "sigma": 32,
+        "es_siem": 3,
+        "splunk": 16,
+        "total": 52
+      }
+    },
+    {
+      "id": "T1218.012",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Verclsid",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1218.013",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "Mavinject",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1218.014",
+      "name": "System Binary Proxy Execution",
+      "subtechnique": "MMC",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1219",
+      "name": "Remote Access Software",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 28,
+        "es_siem": 3,
+        "splunk": 3,
+        "total": 34
+      }
+    },
+    {
+      "id": "T1220",
+      "name": "XSL Script Processing",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 3,
+        "splunk": 2,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1221",
+      "name": "Template Injection",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1222",
+      "name": "File and Directory Permissions Modification",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 4,
+        "splunk": 11,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1222.001",
+      "name": "File and Directory Permissions Modification",
+      "subtechnique": "Windows File and Directory Permissions Modification",
+      "coverage": {
+        "car": 1,
+        "sigma": 4,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1222.002",
+      "name": "File and Directory Permissions Modification",
+      "subtechnique": "Linux and Mac File and Directory Permissions Modification",
+      "coverage": {
+        "car": 1,
+        "sigma": 4,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1480",
+      "name": "Execution Guardrails",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1480.001",
+      "name": "Execution Guardrails",
+      "subtechnique": "Environmental Keying",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1482",
+      "name": "Domain Trust Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 13,
+        "es_siem": 2,
+        "splunk": 11,
+        "total": 26
+      }
+    },
+    {
+      "id": "T1484",
+      "name": "Domain Policy Modification",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 4,
+        "splunk": 2,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1484.001",
+      "name": "Domain Policy Modification",
+      "subtechnique": "Group Policy Modification",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1484.002",
+      "name": "Domain Policy Modification",
+      "subtechnique": "Domain Trust Modification",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1485",
+      "name": "Data Destruction",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 10,
+        "es_siem": 8,
+        "splunk": 19,
+        "total": 37
+      }
+    },
+    {
+      "id": "T1486",
+      "name": "Data Encrypted for Impact",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 10,
+        "es_siem": 1,
+        "splunk": 7,
+        "total": 18
+      }
+    },
+    {
+      "id": "T1489",
+      "name": "Service Stop",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 6,
+        "splunk": 14,
+        "total": 27
+      }
+    },
+    {
+      "id": "T1490",
+      "name": "Inhibit System Recovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 2,
+        "sigma": 18,
+        "es_siem": 6,
+        "splunk": 12,
+        "total": 38
+      }
+    },
+    {
+      "id": "T1491",
+      "name": "Defacement",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1491.001",
+      "name": "Defacement",
+      "subtechnique": "Internal Defacement",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1491.002",
+      "name": "Defacement",
+      "subtechnique": "External Defacement",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1495",
+      "name": "Firmware Corruption",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1496",
+      "name": "Resource Hijacking",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1497",
+      "name": "Virtualization/Sandbox Evasion",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1497.001",
+      "name": "Virtualization/Sandbox Evasion",
+      "subtechnique": "System Checks",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1497.002",
+      "name": "Virtualization/Sandbox Evasion",
+      "subtechnique": "User Activity Based Checks",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1497.003",
+      "name": "Virtualization/Sandbox Evasion",
+      "subtechnique": "Time Based Evasion",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1498",
+      "name": "Network Denial of Service",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 7,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1498.001",
+      "name": "Network Denial of Service",
+      "subtechnique": "Direct Network Flood",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1498.002",
+      "name": "Network Denial of Service",
+      "subtechnique": "Reflection Amplification",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1499",
+      "name": "Endpoint Denial of Service",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1499.001",
+      "name": "Endpoint Denial of Service",
+      "subtechnique": "OS Exhaustion Flood",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1499.002",
+      "name": "Endpoint Denial of Service",
+      "subtechnique": "Service Exhaustion Flood",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1499.003",
+      "name": "Endpoint Denial of Service",
+      "subtechnique": "Application Exhaustion Flood",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1499.004",
+      "name": "Endpoint Denial of Service",
+      "subtechnique": "Application or System Exploitation",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1505",
+      "name": "Server Software Component",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 2,
+        "splunk": 7,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1505.001",
+      "name": "Server Software Component",
+      "subtechnique": "SQL Stored Procedures",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1505.002",
+      "name": "Server Software Component",
+      "subtechnique": "Transport Agent",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1505.003",
+      "name": "Server Software Component",
+      "subtechnique": "Web Shell",
+      "coverage": {
+        "car": 1,
+        "sigma": 27,
+        "es_siem": 2,
+        "splunk": 7,
+        "total": 37
+      }
+    },
+    {
+      "id": "T1505.004",
+      "name": "Server Software Component",
+      "subtechnique": "IIS Components",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1505.005",
+      "name": "Server Software Component",
+      "subtechnique": "Terminal Services DLL",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1518",
+      "name": "Software Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 3,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1518.001",
+      "name": "Software Discovery",
+      "subtechnique": "Security Software Discovery",
+      "coverage": {
+        "car": 1,
+        "sigma": 4,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1525",
+      "name": "Implant Internal Image",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1526",
+      "name": "Cloud Service Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 7,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1528",
+      "name": "Steal Application Access Token",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 10,
+        "es_siem": 3,
+        "splunk": 0,
+        "total": 13
+      }
+    },
+    {
+      "id": "T1529",
+      "name": "System Shutdown/Reboot",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 6,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 9
+      }
+    },
+    {
+      "id": "T1530",
+      "name": "Data from Cloud Storage Object",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 5,
+        "splunk": 6,
+        "total": 11
+      }
+    },
+    {
+      "id": "T1531",
+      "name": "Account Access Removal",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 9,
+        "splunk": 4,
+        "total": 16
+      }
+    },
+    {
+      "id": "T1534",
+      "name": "Internal Spearphishing",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1535",
+      "name": "Unused/Unsupported Cloud Regions",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 8,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1537",
+      "name": "Transfer Data to Cloud Account",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 6,
+        "splunk": 2,
+        "total": 12
+      }
+    },
+    {
+      "id": "T1538",
+      "name": "Cloud Service Dashboard",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1539",
+      "name": "Steal Web Session Cookie",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 3,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1542",
+      "name": "Pre-OS Boot",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1542.001",
+      "name": "Pre-OS Boot",
+      "subtechnique": "System Firmware",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1542.002",
+      "name": "Pre-OS Boot",
+      "subtechnique": "Component Firmware",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1542.003",
+      "name": "Pre-OS Boot",
+      "subtechnique": "Bootkit",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1542.004",
+      "name": "Pre-OS Boot",
+      "subtechnique": "ROMMONkit",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1542.005",
+      "name": "Pre-OS Boot",
+      "subtechnique": "TFTP Boot",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1543",
+      "name": "Create or Modify System Process",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 9,
+        "es_siem": 28,
+        "splunk": 16,
+        "total": 53
+      }
+    },
+    {
+      "id": "T1543.001",
+      "name": "Create or Modify System Process",
+      "subtechnique": "Launch Agent",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 3,
+        "splunk": 2,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1543.002",
+      "name": "Create or Modify System Process",
+      "subtechnique": "Systemd Service",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1543.003",
+      "name": "Create or Modify System Process",
+      "subtechnique": "Windows Service",
+      "coverage": {
+        "car": 6,
+        "sigma": 40,
+        "es_siem": 10,
+        "splunk": 14,
+        "total": 70
+      }
+    },
+    {
+      "id": "T1543.004",
+      "name": "Create or Modify System Process",
+      "subtechnique": "Launch Daemon",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1546",
+      "name": "Event Triggered Execution",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 9,
+        "es_siem": 15,
+        "splunk": 15,
+        "total": 39
+      }
+    },
+    {
+      "id": "T1546.001",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Change Default File Association",
+      "coverage": {
+        "car": 1,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1546.002",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Screensaver",
+      "coverage": {
+        "car": 1,
+        "sigma": 4,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1546.003",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Windows Management Instrumentation Event Subscription",
+      "coverage": {
+        "car": 1,
+        "sigma": 12,
+        "es_siem": 1,
+        "splunk": 3,
+        "total": 17
+      }
+    },
+    {
+      "id": "T1546.004",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Unix Shell Configuration Modification",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1546.005",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Trap",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1546.006",
+      "name": "Event Triggered Execution",
+      "subtechnique": "LC_LOAD_DYLIB Addition",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1546.007",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Netsh Helper DLL",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1546.008",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Accessibility Features",
+      "coverage": {
+        "car": 3,
+        "sigma": 7,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 12
+      }
+    },
+    {
+      "id": "T1546.009",
+      "name": "Event Triggered Execution",
+      "subtechnique": "AppCert DLLs",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1546.010",
+      "name": "Event Triggered Execution",
+      "subtechnique": "AppInit DLLs",
+      "coverage": {
+        "car": 2,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1546.011",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Application Shimming",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 2,
+        "splunk": 3,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1546.012",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Image File Execution Options Injection",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1546.013",
+      "name": "Event Triggered Execution",
+      "subtechnique": "PowerShell Profile",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1546.014",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Emond",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1546.015",
+      "name": "Event Triggered Execution",
+      "subtechnique": "Component Object Model Hijacking",
+      "coverage": {
+        "car": 1,
+        "sigma": 9,
+        "es_siem": 1,
+        "splunk": 4,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1547",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 6,
+        "es_siem": 24,
+        "splunk": 16,
+        "total": 46
+      }
+    },
+    {
+      "id": "T1547.001",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Registry Run Keys / Startup Folder",
+      "coverage": {
+        "car": 4,
+        "sigma": 31,
+        "es_siem": 9,
+        "splunk": 2,
+        "total": 46
+      }
+    },
+    {
+      "id": "T1547.002",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Authentication Package",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1547.003",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Time Providers",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1547.004",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Winlogon Helper DLL",
+      "coverage": {
+        "car": 2,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1547.005",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Security Support Provider",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1547.006",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Kernel Modules and Extensions",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 4,
+        "splunk": 3,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1547.007",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Re-opened Applications",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1547.008",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "LSASS Driver",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1547.009",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Shortcut Modification",
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1547.010",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Port Monitors",
+      "coverage": {
+        "car": 1,
+        "sigma": 4,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1547.012",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Print Processors",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 7,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1547.013",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "XDG Autostart Entries",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1547.014",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Active Setup",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1547.015",
+      "name": "Boot or Logon Autostart Execution",
+      "subtechnique": "Login Items",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1548",
+      "name": "Abuse Elevation Control Mechanism",
+      "subtechnique": null,
+      "coverage": {
+        "car": 1,
+        "sigma": 17,
+        "es_siem": 23,
+        "splunk": 51,
+        "total": 92
+      }
+    },
+    {
+      "id": "T1548.001",
+      "name": "Abuse Elevation Control Mechanism",
+      "subtechnique": "Setuid and Setgid",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 2,
+        "splunk": 3,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1548.002",
+      "name": "Abuse Elevation Control Mechanism",
+      "subtechnique": "Bypass User Account Control",
+      "coverage": {
+        "car": 3,
+        "sigma": 48,
+        "es_siem": 11,
+        "splunk": 13,
+        "total": 75
+      }
+    },
+    {
+      "id": "T1548.003",
+      "name": "Abuse Elevation Control Mechanism",
+      "subtechnique": "Sudo and Sudo Caching",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 4,
+        "splunk": 32,
+        "total": 38
+      }
+    },
+    {
+      "id": "T1548.004",
+      "name": "Abuse Elevation Control Mechanism",
+      "subtechnique": "Elevated Execution with Prompt",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1550",
+      "name": "Use Alternate Authentication Material",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 6,
+        "splunk": 9,
+        "total": 18
+      }
+    },
+    {
+      "id": "T1550.001",
+      "name": "Use Alternate Authentication Material",
+      "subtechnique": "Application Access Token",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 5,
+        "splunk": 0,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1550.002",
+      "name": "Use Alternate Authentication Material",
+      "subtechnique": "Pass the Hash",
+      "coverage": {
+        "car": 1,
+        "sigma": 5,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 9
+      }
+    },
+    {
+      "id": "T1550.003",
+      "name": "Use Alternate Authentication Material",
+      "subtechnique": "Pass the Ticket",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 1,
+        "splunk": 3,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1550.004",
+      "name": "Use Alternate Authentication Material",
+      "subtechnique": "Web Session Cookie",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1552",
+      "name": "Unsecured Credentials",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 5,
+        "es_siem": 7,
+        "splunk": 5,
+        "total": 17
+      }
+    },
+    {
+      "id": "T1552.001",
+      "name": "Unsecured Credentials",
+      "subtechnique": "Credentials In Files",
+      "coverage": {
+        "car": 1,
+        "sigma": 14,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 18
+      }
+    },
+    {
+      "id": "T1552.002",
+      "name": "Unsecured Credentials",
+      "subtechnique": "Credentials in Registry",
+      "coverage": {
+        "car": 1,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1552.003",
+      "name": "Unsecured Credentials",
+      "subtechnique": "Bash History",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1552.004",
+      "name": "Unsecured Credentials",
+      "subtechnique": "Private Keys",
+      "coverage": {
+        "car": 0,
+        "sigma": 5,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1552.005",
+      "name": "Unsecured Credentials",
+      "subtechnique": "Cloud Instance Metadata API",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1552.006",
+      "name": "Unsecured Credentials",
+      "subtechnique": "Group Policy Preferences",
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1552.007",
+      "name": "Unsecured Credentials",
+      "subtechnique": "Container API",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1553",
+      "name": "Subvert Trust Controls",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 5,
+        "splunk": 2,
+        "total": 9
+      }
+    },
+    {
+      "id": "T1553.001",
+      "name": "Subvert Trust Controls",
+      "subtechnique": "Gatekeeper Bypass",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1553.002",
+      "name": "Subvert Trust Controls",
+      "subtechnique": "Code Signing",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1553.003",
+      "name": "Subvert Trust Controls",
+      "subtechnique": "SIP and Trust Provider Hijacking",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1553.004",
+      "name": "Subvert Trust Controls",
+      "subtechnique": "Install Root Certificate",
+      "coverage": {
+        "car": 1,
+        "sigma": 5,
+        "es_siem": 2,
+        "splunk": 2,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1553.005",
+      "name": "Subvert Trust Controls",
+      "subtechnique": "Mark-of-the-Web Bypass",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1553.006",
+      "name": "Subvert Trust Controls",
+      "subtechnique": "Code Signing Policy Modification",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1554",
+      "name": "Compromise Client Software Binary",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 2,
+        "splunk": 2,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1555",
+      "name": "Credentials from Password Stores",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 9,
+        "splunk": 4,
+        "total": 17
+      }
+    },
+    {
+      "id": "T1555.001",
+      "name": "Credentials from Password Stores",
+      "subtechnique": "Keychain",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 4,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1555.002",
+      "name": "Credentials from Password Stores",
+      "subtechnique": "Securityd Memory",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1555.003",
+      "name": "Credentials from Password Stores",
+      "subtechnique": "Credentials from Web Browsers",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 2,
+        "splunk": 3,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1555.004",
+      "name": "Credentials from Password Stores",
+      "subtechnique": "Windows Credential Manager",
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1555.005",
+      "name": "Credentials from Password Stores",
+      "subtechnique": "Password Managers",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1556",
+      "name": "Modify Authentication Process",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 9,
+        "splunk": 5,
+        "total": 16
+      }
+    },
+    {
+      "id": "T1556.001",
+      "name": "Modify Authentication Process",
+      "subtechnique": "Domain Controller Authentication",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1556.002",
+      "name": "Modify Authentication Process",
+      "subtechnique": "Password Filter DLL",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1556.003",
+      "name": "Modify Authentication Process",
+      "subtechnique": "Pluggable Authentication Modules",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1556.004",
+      "name": "Modify Authentication Process",
+      "subtechnique": "Network Device Authentication",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1556.005",
+      "name": "Modify Authentication Process",
+      "subtechnique": "Reversible Encryption",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1557",
+      "name": "Adversary-in-the-Middle",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 4,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1557.001",
+      "name": "Adversary-in-the-Middle",
+      "subtechnique": "LLMNR/NBT-NS Poisoning and SMB Relay",
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1557.002",
+      "name": "Adversary-in-the-Middle",
+      "subtechnique": "ARP Cache Poisoning",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 3,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1557.003",
+      "name": "Adversary-in-the-Middle",
+      "subtechnique": "DHCP Spoofing",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1558",
+      "name": "Steal or Forge Kerberos Tickets",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 9,
+        "splunk": 18,
+        "total": 30
+      }
+    },
+    {
+      "id": "T1558.001",
+      "name": "Steal or Forge Kerberos Tickets",
+      "subtechnique": "Golden Ticket",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1558.002",
+      "name": "Steal or Forge Kerberos Tickets",
+      "subtechnique": "Silver Ticket",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1558.003",
+      "name": "Steal or Forge Kerberos Tickets",
+      "subtechnique": "Kerberoasting",
+      "coverage": {
+        "car": 0,
+        "sigma": 11,
+        "es_siem": 1,
+        "splunk": 8,
+        "total": 20
+      }
+    },
+    {
+      "id": "T1558.004",
+      "name": "Steal or Forge Kerberos Tickets",
+      "subtechnique": "AS-REP Roasting",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 7,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1559",
+      "name": "Inter-Process Communication",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1559.001",
+      "name": "Inter-Process Communication",
+      "subtechnique": "Component Object Model",
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 1,
+        "splunk": 1,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1559.002",
+      "name": "Inter-Process Communication",
+      "subtechnique": "Dynamic Data Exchange",
+      "coverage": {
+        "car": 1,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1559.003",
+      "name": "Inter-Process Communication",
+      "subtechnique": "XPC Services",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1560",
+      "name": "Archive Collected Data",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 2,
+        "splunk": 6,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1560.001",
+      "name": "Archive Collected Data",
+      "subtechnique": "Archive via Utility",
+      "coverage": {
+        "car": 1,
+        "sigma": 12,
+        "es_siem": 2,
+        "splunk": 6,
+        "total": 21
+      }
+    },
+    {
+      "id": "T1560.002",
+      "name": "Archive Collected Data",
+      "subtechnique": "Archive via Library",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1560.003",
+      "name": "Archive Collected Data",
+      "subtechnique": "Archive via Custom Method",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1561",
+      "name": "Disk Wipe",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1561.001",
+      "name": "Disk Wipe",
+      "subtechnique": "Disk Content Wipe",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1561.002",
+      "name": "Disk Wipe",
+      "subtechnique": "Disk Structure Wipe",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1562",
+      "name": "Impair Defenses",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 17,
+        "es_siem": 77,
+        "splunk": 62,
+        "total": 156
+      }
+    },
+    {
+      "id": "T1562.001",
+      "name": "Impair Defenses",
+      "subtechnique": "Disable or Modify Tools",
+      "coverage": {
+        "car": 3,
+        "sigma": 74,
+        "es_siem": 39,
+        "splunk": 45,
+        "total": 161
+      }
+    },
+    {
+      "id": "T1562.002",
+      "name": "Impair Defenses",
+      "subtechnique": "Disable Windows Event Logging",
+      "coverage": {
+        "car": 1,
+        "sigma": 12,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1562.003",
+      "name": "Impair Defenses",
+      "subtechnique": "Impair Command History Logging",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1562.004",
+      "name": "Impair Defenses",
+      "subtechnique": "Disable or Modify System Firewall",
+      "coverage": {
+        "car": 0,
+        "sigma": 13,
+        "es_siem": 4,
+        "splunk": 5,
+        "total": 22
+      }
+    },
+    {
+      "id": "T1562.006",
+      "name": "Impair Defenses",
+      "subtechnique": "Indicator Blocking",
+      "coverage": {
+        "car": 2,
+        "sigma": 4,
+        "es_siem": 3,
+        "splunk": 1,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1562.007",
+      "name": "Impair Defenses",
+      "subtechnique": "Disable or Modify Cloud Firewall",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 3,
+        "splunk": 6,
+        "total": 9
+      }
+    },
+    {
+      "id": "T1562.008",
+      "name": "Impair Defenses",
+      "subtechnique": "Disable Cloud Logs",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 6,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1562.009",
+      "name": "Impair Defenses",
+      "subtechnique": "Safe Mode Boot",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1562.010",
+      "name": "Impair Defenses",
+      "subtechnique": "Downgrade Attack",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1563",
+      "name": "Remote Service Session Hijacking",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1563.001",
+      "name": "Remote Service Session Hijacking",
+      "subtechnique": "SSH Hijacking",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1563.002",
+      "name": "Remote Service Session Hijacking",
+      "subtechnique": "RDP Hijacking",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1564",
+      "name": "Hide Artifacts",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 6,
+        "es_siem": 7,
+        "splunk": 1,
+        "total": 14
+      }
+    },
+    {
+      "id": "T1564.001",
+      "name": "Hide Artifacts",
+      "subtechnique": "Hidden Files and Directories",
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 5,
+        "splunk": 2,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1564.002",
+      "name": "Hide Artifacts",
+      "subtechnique": "Hidden Users",
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1564.003",
+      "name": "Hide Artifacts",
+      "subtechnique": "Hidden Window",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1564.004",
+      "name": "Hide Artifacts",
+      "subtechnique": "NTFS File Attributes",
+      "coverage": {
+        "car": 2,
+        "sigma": 19,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 23
+      }
+    },
+    {
+      "id": "T1564.005",
+      "name": "Hide Artifacts",
+      "subtechnique": "Hidden File System",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1564.006",
+      "name": "Hide Artifacts",
+      "subtechnique": "Run Virtual Instance",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1564.007",
+      "name": "Hide Artifacts",
+      "subtechnique": "VBA Stomping",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1564.008",
+      "name": "Hide Artifacts",
+      "subtechnique": "Email Hiding Rules",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1564.009",
+      "name": "Hide Artifacts",
+      "subtechnique": "Resource Forking",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1564.010",
+      "name": "Hide Artifacts",
+      "subtechnique": "Process Argument Spoofing",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1565",
+      "name": "Data Manipulation",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 3,
+        "splunk": 0,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1565.001",
+      "name": "Data Manipulation",
+      "subtechnique": "Stored Data Manipulation",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 3,
+        "splunk": 0,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1565.002",
+      "name": "Data Manipulation",
+      "subtechnique": "Transmitted Data Manipulation",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1565.003",
+      "name": "Data Manipulation",
+      "subtechnique": "Runtime Data Manipulation",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1566",
+      "name": "Phishing",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 9,
+        "es_siem": 17,
+        "splunk": 33,
+        "total": 59
+      }
+    },
+    {
+      "id": "T1566.001",
+      "name": "Phishing",
+      "subtechnique": "Spearphishing Attachment",
+      "coverage": {
+        "car": 0,
+        "sigma": 15,
+        "es_siem": 11,
+        "splunk": 29,
+        "total": 55
+      }
+    },
+    {
+      "id": "T1566.002",
+      "name": "Phishing",
+      "subtechnique": "Spearphishing Link",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 8,
+        "splunk": 1,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1566.003",
+      "name": "Phishing",
+      "subtechnique": "Spearphishing via Service",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1567",
+      "name": "Exfiltration Over Web Service",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1567.001",
+      "name": "Exfiltration Over Web Service",
+      "subtechnique": "Exfiltration to Code Repository",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1567.002",
+      "name": "Exfiltration Over Web Service",
+      "subtechnique": "Exfiltration to Cloud Storage",
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 8
+      }
+    },
+    {
+      "id": "T1568",
+      "name": "Dynamic Resolution",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 3,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1568.001",
+      "name": "Dynamic Resolution",
+      "subtechnique": "Fast Flux DNS",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1568.002",
+      "name": "Dynamic Resolution",
+      "subtechnique": "Domain Generation Algorithms",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 3,
+        "splunk": 1,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1568.003",
+      "name": "Dynamic Resolution",
+      "subtechnique": "DNS Calculation",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1569",
+      "name": "System Services",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 3,
+        "splunk": 5,
+        "total": 12
+      }
+    },
+    {
+      "id": "T1569.001",
+      "name": "System Services",
+      "subtechnique": "Launchctl",
+      "coverage": {
+        "car": 1,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1569.002",
+      "name": "System Services",
+      "subtechnique": "Service Execution",
+      "coverage": {
+        "car": 4,
+        "sigma": 40,
+        "es_siem": 3,
+        "splunk": 5,
+        "total": 52
+      }
+    },
+    {
+      "id": "T1570",
+      "name": "Lateral Tool Transfer",
+      "subtechnique": null,
+      "coverage": {
+        "car": 3,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1571",
+      "name": "Non-Standard Port",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1572",
+      "name": "Protocol Tunneling",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 12,
+        "es_siem": 5,
+        "splunk": 3,
+        "total": 20
+      }
+    },
+    {
+      "id": "T1573",
+      "name": "Encrypted Channel",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 1,
+        "splunk": 2,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1573.001",
+      "name": "Encrypted Channel",
+      "subtechnique": "Symmetric Cryptography",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1573.002",
+      "name": "Encrypted Channel",
+      "subtechnique": "Asymmetric Cryptography",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1574",
+      "name": "Hijack Execution Flow",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 8,
+        "es_siem": 9,
+        "splunk": 11,
+        "total": 28
+      }
+    },
+    {
+      "id": "T1574.001",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "DLL Search Order Hijacking",
+      "coverage": {
+        "car": 1,
+        "sigma": 22,
+        "es_siem": 1,
+        "splunk": 4,
+        "total": 28
+      }
+    },
+    {
+      "id": "T1574.002",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "DLL Side-Loading",
+      "coverage": {
+        "car": 0,
+        "sigma": 42,
+        "es_siem": 2,
+        "splunk": 5,
+        "total": 49
+      }
+    },
+    {
+      "id": "T1574.004",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "Dylib Hijacking",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1574.005",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "Executable Installer File Permissions Weakness",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1574.006",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "Dynamic Linker Hijacking",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 3,
+        "splunk": 1,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1574.007",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "Path Interception by PATH Environment Variable",
+      "coverage": {
+        "car": 1,
+        "sigma": 1,
+        "es_siem": 3,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1574.008",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "Path Interception by Search Order Hijacking",
+      "coverage": {
+        "car": 1,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1574.009",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "Path Interception by Unquoted Path",
+      "coverage": {
+        "car": 2,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1574.010",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "Services File Permissions Weakness",
+      "coverage": {
+        "car": 2,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1574.011",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "Services Registry Permissions Weakness",
+      "coverage": {
+        "car": 4,
+        "sigma": 9,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 15
+      }
+    },
+    {
+      "id": "T1574.012",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "COR_PROFILER",
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1574.013",
+      "name": "Hijack Execution Flow",
+      "subtechnique": "KernelCallbackTable",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1578",
+      "name": "Modify Cloud Compute Infrastructure",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1578.001",
+      "name": "Modify Cloud Compute Infrastructure",
+      "subtechnique": "Create Snapshot",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1578.002",
+      "name": "Modify Cloud Compute Infrastructure",
+      "subtechnique": "Create Cloud Instance",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1578.003",
+      "name": "Modify Cloud Compute Infrastructure",
+      "subtechnique": "Delete Cloud Instance",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1578.004",
+      "name": "Modify Cloud Compute Infrastructure",
+      "subtechnique": "Revert Cloud Instance",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1580",
+      "name": "Cloud Infrastructure Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1583",
+      "name": "Acquire Infrastructure",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1583.001",
+      "name": "Acquire Infrastructure",
+      "subtechnique": "Domains",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1583.002",
+      "name": "Acquire Infrastructure",
+      "subtechnique": "DNS Server",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1583.003",
+      "name": "Acquire Infrastructure",
+      "subtechnique": "Virtual Private Server",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1583.004",
+      "name": "Acquire Infrastructure",
+      "subtechnique": "Server",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1583.005",
+      "name": "Acquire Infrastructure",
+      "subtechnique": "Botnet",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1583.006",
+      "name": "Acquire Infrastructure",
+      "subtechnique": "Web Services",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1584",
+      "name": "Compromise Infrastructure",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1584.001",
+      "name": "Compromise Infrastructure",
+      "subtechnique": "Domains",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1584.002",
+      "name": "Compromise Infrastructure",
+      "subtechnique": "DNS Server",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1584.003",
+      "name": "Compromise Infrastructure",
+      "subtechnique": "Virtual Private Server",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1584.004",
+      "name": "Compromise Infrastructure",
+      "subtechnique": "Server",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1584.005",
+      "name": "Compromise Infrastructure",
+      "subtechnique": "Botnet",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1584.006",
+      "name": "Compromise Infrastructure",
+      "subtechnique": "Web Services",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1585",
+      "name": "Establish Accounts",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1585.001",
+      "name": "Establish Accounts",
+      "subtechnique": "Social Media Accounts",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1585.002",
+      "name": "Establish Accounts",
+      "subtechnique": "Email Accounts",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1586",
+      "name": "Compromise Accounts",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 26,
+        "total": 26
+      }
+    },
+    {
+      "id": "T1586.001",
+      "name": "Compromise Accounts",
+      "subtechnique": "Social Media Accounts",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1586.002",
+      "name": "Compromise Accounts",
+      "subtechnique": "Email Accounts",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1587",
+      "name": "Develop Capabilities",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 5,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 5
+      }
+    },
+    {
+      "id": "T1587.001",
+      "name": "Develop Capabilities",
+      "subtechnique": "Malware",
+      "coverage": {
+        "car": 0,
+        "sigma": 10,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 10
+      }
+    },
+    {
+      "id": "T1587.002",
+      "name": "Develop Capabilities",
+      "subtechnique": "Code Signing Certificates",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1587.003",
+      "name": "Develop Capabilities",
+      "subtechnique": "Digital Certificates",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1587.004",
+      "name": "Develop Capabilities",
+      "subtechnique": "Exploits",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1588",
+      "name": "Obtain Capabilities",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1588.001",
+      "name": "Obtain Capabilities",
+      "subtechnique": "Malware",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1588.002",
+      "name": "Obtain Capabilities",
+      "subtechnique": "Tool",
+      "coverage": {
+        "car": 0,
+        "sigma": 7,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 9
+      }
+    },
+    {
+      "id": "T1588.003",
+      "name": "Obtain Capabilities",
+      "subtechnique": "Code Signing Certificates",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1588.004",
+      "name": "Obtain Capabilities",
+      "subtechnique": "Digital Certificates",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1588.005",
+      "name": "Obtain Capabilities",
+      "subtechnique": "Exploits",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1588.006",
+      "name": "Obtain Capabilities",
+      "subtechnique": "Vulnerabilities",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1589",
+      "name": "Gather Victim Identity Information",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1589.001",
+      "name": "Gather Victim Identity Information",
+      "subtechnique": "Credentials",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1589.002",
+      "name": "Gather Victim Identity Information",
+      "subtechnique": "Email Addresses",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1589.003",
+      "name": "Gather Victim Identity Information",
+      "subtechnique": "Employee Names",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1590",
+      "name": "Gather Victim Network Information",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 2,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1590.001",
+      "name": "Gather Victim Network Information",
+      "subtechnique": "Domain Properties",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1590.002",
+      "name": "Gather Victim Network Information",
+      "subtechnique": "DNS",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1590.003",
+      "name": "Gather Victim Network Information",
+      "subtechnique": "Network Trust Dependencies",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1590.004",
+      "name": "Gather Victim Network Information",
+      "subtechnique": "Network Topology",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1590.005",
+      "name": "Gather Victim Network Information",
+      "subtechnique": "IP Addresses",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 2,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1590.006",
+      "name": "Gather Victim Network Information",
+      "subtechnique": "Network Security Appliances",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1591",
+      "name": "Gather Victim Org Information",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1591.001",
+      "name": "Gather Victim Org Information",
+      "subtechnique": "Determine Physical Locations",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1591.002",
+      "name": "Gather Victim Org Information",
+      "subtechnique": "Business Relationships",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1591.003",
+      "name": "Gather Victim Org Information",
+      "subtechnique": "Identify Business Tempo",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1591.004",
+      "name": "Gather Victim Org Information",
+      "subtechnique": "Identify Roles",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1592",
+      "name": "Gather Victim Host Information",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 5,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1592.001",
+      "name": "Gather Victim Host Information",
+      "subtechnique": "Hardware",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1592.002",
+      "name": "Gather Victim Host Information",
+      "subtechnique": "Software",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1592.003",
+      "name": "Gather Victim Host Information",
+      "subtechnique": "Firmware",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1592.004",
+      "name": "Gather Victim Host Information",
+      "subtechnique": "Client Configurations",
+      "coverage": {
+        "car": 0,
+        "sigma": 3,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 3
+      }
+    },
+    {
+      "id": "T1593",
+      "name": "Search Open Websites/Domains",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1593.001",
+      "name": "Search Open Websites/Domains",
+      "subtechnique": "Social Media",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1593.002",
+      "name": "Search Open Websites/Domains",
+      "subtechnique": "Search Engines",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1594",
+      "name": "Search Victim-Owned Websites",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1595",
+      "name": "Active Scanning",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 1,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1595.001",
+      "name": "Active Scanning",
+      "subtechnique": "Scanning IP Blocks",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1595.002",
+      "name": "Active Scanning",
+      "subtechnique": "Vulnerability Scanning",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1595.003",
+      "name": "Active Scanning",
+      "subtechnique": "Wordlist Scanning",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1596",
+      "name": "Search Open Technical Databases",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1596.001",
+      "name": "Search Open Technical Databases",
+      "subtechnique": "DNS/Passive DNS",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1596.002",
+      "name": "Search Open Technical Databases",
+      "subtechnique": "WHOIS",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1596.003",
+      "name": "Search Open Technical Databases",
+      "subtechnique": "Digital Certificates",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1596.004",
+      "name": "Search Open Technical Databases",
+      "subtechnique": "CDNs",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1596.005",
+      "name": "Search Open Technical Databases",
+      "subtechnique": "Scan Databases",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1597",
+      "name": "Search Closed Sources",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1597.001",
+      "name": "Search Closed Sources",
+      "subtechnique": "Threat Intel Vendors",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1597.002",
+      "name": "Search Closed Sources",
+      "subtechnique": "Purchase Technical Data",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1598",
+      "name": "Phishing for Information",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1598.001",
+      "name": "Phishing for Information",
+      "subtechnique": "Spearphishing Service",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1598.002",
+      "name": "Phishing for Information",
+      "subtechnique": "Spearphishing Attachment",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1598.003",
+      "name": "Phishing for Information",
+      "subtechnique": "Spearphishing Link",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1599",
+      "name": "Network Boundary Bridging",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1599.001",
+      "name": "Network Boundary Bridging",
+      "subtechnique": "Network Address Translation Traversal",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1600",
+      "name": "Weaken Encryption",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1600.001",
+      "name": "Weaken Encryption",
+      "subtechnique": "Reduce Key Space",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1600.002",
+      "name": "Weaken Encryption",
+      "subtechnique": "Disable Crypto Hardware",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1601",
+      "name": "Modify System Image",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1601.001",
+      "name": "Modify System Image",
+      "subtechnique": "Patch System Image",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1601.002",
+      "name": "Modify System Image",
+      "subtechnique": "Downgrade System Image",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1602",
+      "name": "Data from Configuration Repository",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1602.001",
+      "name": "Data from Configuration Repository",
+      "subtechnique": "SNMP (MIB Dump)",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1602.002",
+      "name": "Data from Configuration Repository",
+      "subtechnique": "Network Device Configuration Dump",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1606",
+      "name": "Forge Web Credentials",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1606.001",
+      "name": "Forge Web Credentials",
+      "subtechnique": "Web Cookies",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1606.002",
+      "name": "Forge Web Credentials",
+      "subtechnique": "SAML Tokens",
+      "coverage": {
+        "car": 1,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1608",
+      "name": "Stage Capabilities",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1608.001",
+      "name": "Stage Capabilities",
+      "subtechnique": "Upload Malware",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1608.002",
+      "name": "Stage Capabilities",
+      "subtechnique": "Upload Tool",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1608.003",
+      "name": "Stage Capabilities",
+      "subtechnique": "Install Digital Certificate",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1608.004",
+      "name": "Stage Capabilities",
+      "subtechnique": "Drive-by Target",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1608.005",
+      "name": "Stage Capabilities",
+      "subtechnique": "Link Target",
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1609",
+      "name": "Container Administration Command",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1610",
+      "name": "Deploy Container",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 6,
+        "splunk": 0,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1611",
+      "name": "Escape to Host",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 6,
+        "splunk": 0,
+        "total": 6
+      }
+    },
+    {
+      "id": "T1612",
+      "name": "Build Image on Host",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1613",
+      "name": "Container and Resource Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 2,
+        "splunk": 0,
+        "total": 2
+      }
+    },
+    {
+      "id": "T1614",
+      "name": "System Location Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 1,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1614.001",
+      "name": "System Location Discovery",
+      "subtechnique": "System Language Discovery",
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1615",
+      "name": "Group Policy Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 4,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 4
+      }
+    },
+    {
+      "id": "T1619",
+      "name": "Cloud Storage Object Discovery",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1620",
+      "name": "Reflective Code Loading",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 1,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 1
+      }
+    },
+    {
+      "id": "T1621",
+      "name": "Multi-Factor Authentication Request Generation",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 7,
+        "total": 7
+      }
+    },
+    {
+      "id": "T1622",
+      "name": "Debugger Evasion",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 0,
+        "splunk": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "T1647",
+      "name": "Plist File Modification",
+      "subtechnique": null,
+      "coverage": {
+        "car": 0,
+        "sigma": 0,
+        "es_siem": 2,
+        "splunk": 1,
+        "total": 3
+      }
+    }
+  ]
+}

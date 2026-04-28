@@ -1,0 +1,64 @@
+{
+  "template": "NIST SP 800-92 Aligned Investigation Report",
+  "version": "1.0",
+  "sections": [
+    {
+      "id": 1,
+      "name": "EXECUTIVE SUMMARY",
+      "required": true,
+      "description": "High-level overview of the investigation, key findings, and risk level",
+      "fields": ["query", "domain", "investigation_type", "risk_level", "summary"]
+    },
+    {
+      "id": 2,
+      "name": "INCIDENT CLASSIFICATION",
+      "required": true,
+      "description": "NIST CSF 2.0 function and category mappings",
+      "fields": ["primary_function", "categories", "subcategories"]
+    },
+    {
+      "id": 3,
+      "name": "TECHNICAL FINDINGS",
+      "required": true,
+      "description": "Detailed findings from log and network analysts",
+      "fields": ["log_findings", "network_findings", "correlation_points"]
+    },
+    {
+      "id": 4,
+      "name": "MITRE ATT&CK MAPPING",
+      "required": true,
+      "description": "Validated technique IDs with tactic context and descriptions",
+      "fields": ["techniques", "tactics_coverage", "kill_chain_phase"]
+    },
+    {
+      "id": 5,
+      "name": "DETECTION GAPS & RECOMMENDATIONS",
+      "required": true,
+      "description": "Missing detections, SIEM rules, log sources, and alert thresholds",
+      "fields": ["missing_detections", "recommended_rules", "log_source_gaps"]
+    },
+    {
+      "id": 6,
+      "name": "RECOMMENDED ACTIONS",
+      "required": true,
+      "description": "Prioritized response actions framed as options for analyst consideration",
+      "fields": ["immediate_actions", "short_term_actions", "long_term_actions"]
+    },
+    {
+      "id": 7,
+      "name": "CONFIDENCE ASSESSMENT",
+      "required": true,
+      "description": "Overall confidence level with reasoning and data gaps",
+      "fields": ["overall_confidence", "reasoning", "data_gaps"]
+    },
+    {
+      "id": 8,
+      "name": "EVIDENCE CHAIN",
+      "required": false,
+      "description": "Step-by-step reasoning trace from evidence to conclusions",
+      "fields": ["reasoning_trace", "agents_consulted"]
+    }
+  ],
+  "risk_levels": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFORMATIONAL"],
+  "confidence_levels": ["HIGH", "MEDIUM", "LOW"]
+}

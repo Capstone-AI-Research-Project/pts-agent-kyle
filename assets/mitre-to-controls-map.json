@@ -1,0 +1,3181 @@
+{
+  "version": "1.0.0",
+  "description": "MITRE ATT&CK to CIS Controls v8.1.2 + NIST CSF 2.0 deterministic mappings",
+  "technique_count": 160,
+  "sources": [
+    "CIS Controls v8 ATT&CK Mappings",
+    "NIST CSF to ATT&CK Navigator",
+    "MITRE ATT&CK Mitigations cross-references"
+  ],
+  "mappings": [
+    {
+      "technique_id": "T1078",
+      "technique_name": "Valid Accounts",
+      "tactics": [
+        "Initial Access",
+        "Persistence",
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "6.1",
+        "6.3",
+        "6.4",
+        "6.5",
+        "8.11",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.IR",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1133",
+      "technique_name": "External Remote Services",
+      "tactics": [
+        "Initial Access",
+        "Persistence"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "12.7",
+        "13.1",
+        "4.1",
+        "4.5",
+        "6.3",
+        "6.4"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1190",
+      "technique_name": "Exploit Public-Facing Application",
+      "tactics": [
+        "Initial Access"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "16.1",
+        "16.12",
+        "16.14",
+        "16.6",
+        "7.1",
+        "7.2",
+        "7.4",
+        "7.7"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1566",
+      "technique_name": "Phishing",
+      "tactics": [
+        "Initial Access"
+      ],
+      "cis_safeguards": [
+        "14.1",
+        "14.2",
+        "14.3",
+        "9.1",
+        "9.2",
+        "9.6",
+        "9.7"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.AT"
+      ]
+    },
+    {
+      "technique_id": "T1566.001",
+      "technique_name": "Spearphishing Attachment",
+      "tactics": [
+        "Initial Access"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "14.1",
+        "14.3",
+        "9.1",
+        "9.6",
+        "9.7"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AT"
+      ]
+    },
+    {
+      "technique_id": "T1566.002",
+      "technique_name": "Spearphishing Link",
+      "tactics": [
+        "Initial Access"
+      ],
+      "cis_safeguards": [
+        "14.1",
+        "14.3",
+        "9.1",
+        "9.2",
+        "9.6"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "PR.AT",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1199",
+      "technique_name": "Trusted Relationship",
+      "tactics": [
+        "Initial Access"
+      ],
+      "cis_safeguards": [
+        "12.7",
+        "15.1",
+        "15.2",
+        "6.1",
+        "6.3",
+        "6.4"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1195",
+      "technique_name": "Supply Chain Compromise",
+      "tactics": [
+        "Initial Access"
+      ],
+      "cis_safeguards": [
+        "15.1",
+        "15.2",
+        "16.4",
+        "2.1",
+        "2.2",
+        "2.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1189",
+      "technique_name": "Drive-by Compromise",
+      "tactics": [
+        "Initial Access"
+      ],
+      "cis_safeguards": [
+        "7.1",
+        "7.4",
+        "9.1",
+        "9.2",
+        "9.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1059",
+      "technique_name": "Command and Scripting Interpreter",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5",
+        "2.5",
+        "2.6",
+        "2.7",
+        "8.8"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1059.001",
+      "technique_name": "PowerShell",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5",
+        "2.5",
+        "2.7",
+        "8.8"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1059.003",
+      "technique_name": "Windows Command Shell",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "2.5",
+        "8.8"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1059.004",
+      "technique_name": "Unix Shell",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "2.5",
+        "2.7",
+        "8.8"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1059.005",
+      "technique_name": "Visual Basic",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "2.5",
+        "2.7",
+        "8.8",
+        "9.6"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1059.006",
+      "technique_name": "Python",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "2.5",
+        "2.7",
+        "8.8"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1059.007",
+      "technique_name": "JavaScript",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "2.5",
+        "2.7",
+        "8.8",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1204",
+      "technique_name": "User Execution",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "14.1",
+        "14.2",
+        "14.3",
+        "9.1",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1047",
+      "technique_name": "Windows Management Instrumentation",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "4.8",
+        "6.1",
+        "8.5",
+        "8.8"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1053",
+      "technique_name": "Scheduled Task/Job",
+      "tactics": [
+        "Execution",
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "4.8",
+        "5.3",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1053.005",
+      "technique_name": "Scheduled Task",
+      "tactics": [
+        "Execution",
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "4.8",
+        "5.3",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1053.003",
+      "technique_name": "Cron",
+      "tactics": [
+        "Execution",
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "5.3",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1569",
+      "technique_name": "System Services",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "6.1",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1569.002",
+      "technique_name": "Service Execution",
+      "tactics": [
+        "Execution"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "6.1",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1098",
+      "technique_name": "Account Manipulation",
+      "tactics": [
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.3",
+        "5.4",
+        "6.1",
+        "6.2",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1136",
+      "technique_name": "Create Account",
+      "tactics": [
+        "Persistence"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.3",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1136.001",
+      "technique_name": "Local Account",
+      "tactics": [
+        "Persistence"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.3",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1136.002",
+      "technique_name": "Domain Account",
+      "tactics": [
+        "Persistence"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.3",
+        "5.4",
+        "6.1",
+        "6.2",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1543",
+      "technique_name": "Create or Modify System Process",
+      "tactics": [
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "4.1",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1543.003",
+      "technique_name": "Windows Service",
+      "tactics": [
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "4.1",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1547",
+      "technique_name": "Boot or Logon Autostart Execution",
+      "tactics": [
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5",
+        "4.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1547.001",
+      "technique_name": "Registry Run Keys / Startup Folder",
+      "tactics": [
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5",
+        "4.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1546",
+      "technique_name": "Event Triggered Execution",
+      "tactics": [
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "4.1",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1556",
+      "technique_name": "Modify Authentication Process",
+      "tactics": [
+        "Credential Access",
+        "Defense Evasion",
+        "Persistence"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "5.2",
+        "5.4",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1068",
+      "technique_name": "Exploitation for Privilege Escalation",
+      "tactics": [
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "18.3",
+        "4.1",
+        "4.7",
+        "7.1",
+        "7.2",
+        "7.4"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1548",
+      "technique_name": "Abuse Elevation Control Mechanism",
+      "tactics": [
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "4.7",
+        "5.4",
+        "6.1",
+        "6.8",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1548.002",
+      "technique_name": "Bypass User Account Control",
+      "tactics": [
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "4.7",
+        "6.1",
+        "6.8",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1134",
+      "technique_name": "Access Token Manipulation",
+      "tactics": [
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "5.4",
+        "6.1",
+        "6.8",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1484",
+      "technique_name": "Domain or Tenant Policy Modification",
+      "tactics": [
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "5.4",
+        "6.1",
+        "6.2",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1070",
+      "technique_name": "Indicator Removal",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "8.11",
+        "8.2",
+        "8.5",
+        "8.9"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "PR.PS",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1070.001",
+      "technique_name": "Clear Windows Event Logs",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "8.11",
+        "8.2",
+        "8.5",
+        "8.9"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "PR.PS",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1070.004",
+      "technique_name": "File Deletion",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1036",
+      "technique_name": "Masquerading",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5",
+        "2.5",
+        "2.6",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1036.005",
+      "technique_name": "Match Legitimate Name or Location",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "2.5",
+        "2.6",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1562",
+      "technique_name": "Impair Defenses",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.2",
+        "13.1",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1562.001",
+      "technique_name": "Disable or Modify Tools",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.2",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1562.004",
+      "technique_name": "Disable or Modify System Firewall",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "4.5",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1027",
+      "technique_name": "Obfuscated Files or Information",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5",
+        "13.6"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1055",
+      "technique_name": "Process Injection",
+      "tactics": [
+        "Defense Evasion",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5",
+        "10.7",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1140",
+      "technique_name": "Deobfuscate/Decode Files or Information",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5",
+        "13.6"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1218",
+      "technique_name": "System Binary Proxy Execution",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "2.5",
+        "2.6",
+        "8.2",
+        "8.8"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1218.011",
+      "technique_name": "Rundll32",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "2.5",
+        "2.6",
+        "8.2",
+        "8.8"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1218.005",
+      "technique_name": "Mshta",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "2.5",
+        "2.6",
+        "8.2",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1553",
+      "technique_name": "Subvert Trust Controls",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.5",
+        "2.5",
+        "4.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1078.001",
+      "technique_name": "Default Accounts",
+      "tactics": [
+        "Initial Access",
+        "Persistence",
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "5.1",
+        "5.2",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.IR",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1078.002",
+      "technique_name": "Domain Accounts",
+      "tactics": [
+        "Initial Access",
+        "Persistence",
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "6.1",
+        "6.3",
+        "6.4",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.IR",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1078.003",
+      "technique_name": "Local Accounts",
+      "tactics": [
+        "Initial Access",
+        "Persistence",
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "6.1",
+        "6.3",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.IR",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1078.004",
+      "technique_name": "Cloud Accounts",
+      "tactics": [
+        "Initial Access",
+        "Persistence",
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "6.1",
+        "6.3",
+        "6.5",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.IR",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1110",
+      "technique_name": "Brute Force",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "6.3",
+        "6.4",
+        "6.5",
+        "8.11",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1110.001",
+      "technique_name": "Password Guessing",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "6.3",
+        "6.4",
+        "8.11",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1110.002",
+      "technique_name": "Password Cracking",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "5.2",
+        "5.3",
+        "5.4",
+        "6.5"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1110.003",
+      "technique_name": "Password Spraying",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "6.3",
+        "6.4",
+        "6.5",
+        "8.11",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1110.004",
+      "technique_name": "Credential Stuffing",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "6.3",
+        "6.4",
+        "6.5",
+        "8.11",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1003",
+      "technique_name": "OS Credential Dumping",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "10.5",
+        "5.2",
+        "5.4",
+        "6.1",
+        "6.2",
+        "6.8",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1003.001",
+      "technique_name": "LSASS Memory",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "10.5",
+        "5.2",
+        "5.4",
+        "6.1",
+        "6.8",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1003.002",
+      "technique_name": "Security Account Manager",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "5.2",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1003.003",
+      "technique_name": "NTDS",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "5.2",
+        "5.4",
+        "6.1",
+        "6.2",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1003.006",
+      "technique_name": "DCSync",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "5.3",
+        "5.4",
+        "6.1",
+        "6.2",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1558",
+      "technique_name": "Steal or Forge Kerberos Tickets",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "5.2",
+        "5.4",
+        "6.3",
+        "6.4",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA"
+      ]
+    },
+    {
+      "technique_id": "T1558.003",
+      "technique_name": "Kerberoasting",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "5.2",
+        "5.4",
+        "6.3",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1558.001",
+      "technique_name": "Golden Ticket",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "5.2",
+        "5.4",
+        "6.3",
+        "6.4",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1555",
+      "technique_name": "Credentials from Password Stores",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "3.3",
+        "4.1",
+        "5.2",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1555.003",
+      "technique_name": "Credentials from Web Browsers",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "5.2",
+        "9.1"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1552",
+      "technique_name": "Unsecured Credentials",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "3.12",
+        "3.3",
+        "5.2",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1552.001",
+      "technique_name": "Credentials In Files",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "3.12",
+        "3.3",
+        "5.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1557",
+      "technique_name": "Adversary-in-the-Middle",
+      "tactics": [
+        "Credential Access",
+        "Collection"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "12.6",
+        "13.1",
+        "13.6",
+        "6.3"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1539",
+      "technique_name": "Steal Web Session Cookie",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "16.11",
+        "5.2",
+        "9.1",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1528",
+      "technique_name": "Steal Application Access Token",
+      "tactics": [
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "16.11",
+        "5.2",
+        "6.1",
+        "6.3"
+      ],
+      "nist_csf_categories": [
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1087",
+      "technique_name": "Account Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "5.3",
+        "6.1",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1082",
+      "technique_name": "System Information Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1083",
+      "technique_name": "File and Directory Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "3.3",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1046",
+      "technique_name": "Network Service Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "1.1",
+        "12.1",
+        "13.1",
+        "13.3"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1135",
+      "technique_name": "Network Share Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "3.3",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1040",
+      "technique_name": "Network Sniffing",
+      "tactics": [
+        "Credential Access",
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "12.6",
+        "13.1",
+        "6.3"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1049",
+      "technique_name": "System Network Connections Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1016",
+      "technique_name": "System Network Configuration Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1018",
+      "technique_name": "Remote System Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "1.1",
+        "13.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1057",
+      "technique_name": "Process Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1069",
+      "technique_name": "Permission Groups Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "5.3",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1012",
+      "technique_name": "Query Registry",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1518",
+      "technique_name": "Software Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "2.1",
+        "2.2",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1518.001",
+      "technique_name": "Security Software Discovery",
+      "tactics": [
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "2.1",
+        "2.2",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM"
+      ]
+    },
+    {
+      "technique_id": "T1021",
+      "technique_name": "Remote Services",
+      "tactics": [
+        "Lateral Movement"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "12.7",
+        "13.1",
+        "13.4",
+        "4.1",
+        "4.2",
+        "6.1",
+        "6.3",
+        "6.4"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1021.001",
+      "technique_name": "Remote Desktop Protocol",
+      "tactics": [
+        "Lateral Movement"
+      ],
+      "cis_safeguards": [
+        "12.7",
+        "13.1",
+        "4.1",
+        "6.1",
+        "6.3",
+        "6.4"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1021.002",
+      "technique_name": "SMB/Windows Admin Shares",
+      "tactics": [
+        "Lateral Movement"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.4",
+        "4.1",
+        "4.2",
+        "6.1",
+        "6.3"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1021.003",
+      "technique_name": "Distributed Component Object Model",
+      "tactics": [
+        "Lateral Movement"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1021.004",
+      "technique_name": "SSH",
+      "tactics": [
+        "Lateral Movement"
+      ],
+      "cis_safeguards": [
+        "12.7",
+        "13.1",
+        "4.1",
+        "6.1",
+        "6.3",
+        "6.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1021.006",
+      "technique_name": "Windows Remote Management",
+      "tactics": [
+        "Lateral Movement"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "6.1",
+        "6.3",
+        "8.2",
+        "8.8"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1570",
+      "technique_name": "Lateral Tool Transfer",
+      "tactics": [
+        "Lateral Movement"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "2.5",
+        "6.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1080",
+      "technique_name": "Taint Shared Content",
+      "tactics": [
+        "Lateral Movement"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "3.3",
+        "6.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1550",
+      "technique_name": "Use Alternate Authentication Material",
+      "tactics": [
+        "Lateral Movement",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "5.2",
+        "6.3",
+        "6.4",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA"
+      ]
+    },
+    {
+      "technique_id": "T1550.002",
+      "technique_name": "Pass the Hash",
+      "tactics": [
+        "Lateral Movement",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "5.2",
+        "6.3",
+        "6.4",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1550.003",
+      "technique_name": "Pass the Ticket",
+      "tactics": [
+        "Lateral Movement",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "5.2",
+        "6.3",
+        "6.4",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1563",
+      "technique_name": "Remote Service Session Hijacking",
+      "tactics": [
+        "Lateral Movement"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "6.1",
+        "6.3",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.IR"
+      ]
+    },
+    {
+      "technique_id": "T1560",
+      "technique_name": "Archive Collected Data",
+      "tactics": [
+        "Collection"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "3.1",
+        "3.3",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1074",
+      "technique_name": "Data Staged",
+      "tactics": [
+        "Collection"
+      ],
+      "cis_safeguards": [
+        "3.1",
+        "3.3",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1005",
+      "technique_name": "Data from Local System",
+      "tactics": [
+        "Collection"
+      ],
+      "cis_safeguards": [
+        "3.1",
+        "3.3",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1039",
+      "technique_name": "Data from Network Shared Drive",
+      "tactics": [
+        "Collection"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "3.3",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1025",
+      "technique_name": "Data from Removable Media",
+      "tactics": [
+        "Collection"
+      ],
+      "cis_safeguards": [
+        "10.3",
+        "3.1",
+        "3.3",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1114",
+      "technique_name": "Email Collection",
+      "tactics": [
+        "Collection"
+      ],
+      "cis_safeguards": [
+        "3.1",
+        "3.3",
+        "8.2",
+        "9.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1113",
+      "technique_name": "Screen Capture",
+      "tactics": [
+        "Collection"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1056",
+      "technique_name": "Input Capture",
+      "tactics": [
+        "Collection",
+        "Credential Access"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5",
+        "5.2",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM",
+        "PR.AA",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1119",
+      "technique_name": "Automated Collection",
+      "tactics": [
+        "Collection"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "3.3",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS"
+      ]
+    },
+    {
+      "technique_id": "T1071",
+      "technique_name": "Application Layer Protocol",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "13.6",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1071.001",
+      "technique_name": "Web Protocols",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "13.6",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1071.004",
+      "technique_name": "DNS",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "13.6",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1573",
+      "technique_name": "Encrypted Channel",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "13.6"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1095",
+      "technique_name": "Non-Application Layer Protocol",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.6",
+        "4.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1572",
+      "technique_name": "Protocol Tunneling",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "13.6"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1090",
+      "technique_name": "Proxy",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1090.001",
+      "technique_name": "Internal Proxy",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.4"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1090.002",
+      "technique_name": "External Proxy",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1105",
+      "technique_name": "Ingress Tool Transfer",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "13.1",
+        "13.6",
+        "2.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1568",
+      "technique_name": "Dynamic Resolution",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "13.6",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1568.002",
+      "technique_name": "Domain Generation Algorithms",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "13.6",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1571",
+      "technique_name": "Non-Standard Port",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "4.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1132",
+      "technique_name": "Data Encoding",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "13.6"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1001",
+      "technique_name": "Data Obfuscation",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "13.6"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1219",
+      "technique_name": "Remote Access Software",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "2.5",
+        "4.5",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1102",
+      "technique_name": "Web Service",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1041",
+      "technique_name": "Exfiltration Over C2 Channel",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "13.8",
+        "3.1",
+        "3.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1048",
+      "technique_name": "Exfiltration Over Alternative Protocol",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "13.8",
+        "3.1",
+        "4.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1048.003",
+      "technique_name": "Exfiltration Over Unencrypted Non-C2 Protocol",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "13.8",
+        "3.1",
+        "4.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1567",
+      "technique_name": "Exfiltration Over Web Service",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "13.8",
+        "3.1",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1567.002",
+      "technique_name": "Exfiltration to Cloud Storage",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "13.8",
+        "3.1",
+        "9.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1029",
+      "technique_name": "Scheduled Transfer",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "3.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1030",
+      "technique_name": "Data Transfer Size Limits",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "3.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1537",
+      "technique_name": "Transfer Data to Cloud Account",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "3.1",
+        "6.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1020",
+      "technique_name": "Automated Exfiltration",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "13.1",
+        "13.3",
+        "13.8",
+        "3.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1486",
+      "technique_name": "Data Encrypted for Impact",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "11.1",
+        "11.2",
+        "11.3",
+        "11.4",
+        "11.5",
+        "17.1",
+        "17.4",
+        "3.1"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "PR.IR",
+        "RC.RP",
+        "RS.AN",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1490",
+      "technique_name": "Inhibit System Recovery",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "11.1",
+        "11.2",
+        "11.3",
+        "11.4",
+        "4.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "PR.IR",
+        "RC.RP",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1489",
+      "technique_name": "Service Stop",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "17.1",
+        "4.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "PR.IR",
+        "RC.RP",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1485",
+      "technique_name": "Data Destruction",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "11.1",
+        "11.2",
+        "11.3",
+        "11.4",
+        "11.5",
+        "3.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "RC.RP",
+        "RS.AN",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1491",
+      "technique_name": "Defacement",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "11.1",
+        "16.1",
+        "7.1"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "PR.IR",
+        "RC.RP",
+        "RS.AN",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1499",
+      "technique_name": "Endpoint Denial of Service",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.10"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "PR.IR",
+        "RC.RP",
+        "RS.AN",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1498",
+      "technique_name": "Network Denial of Service",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.10"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "PR.IR",
+        "RC.RP",
+        "RS.AN",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1531",
+      "technique_name": "Account Access Removal",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "17.1",
+        "5.1",
+        "5.3",
+        "6.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "PR.IR",
+        "RC.RP",
+        "RS.AN",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1565",
+      "technique_name": "Data Manipulation",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "11.1",
+        "3.1",
+        "3.2",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "PR.IR",
+        "RC.RP",
+        "RS.AN",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1071.002",
+      "technique_name": "File Transfer Protocols",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "13.6"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1071.003",
+      "technique_name": "Mail Protocols",
+      "tactics": [
+        "Command and Control"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "9.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1547.009",
+      "technique_name": "Shortcut Modification",
+      "tactics": [
+        "Persistence",
+        "Privilege Escalation"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "4.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1574",
+      "technique_name": "Hijack Execution Flow",
+      "tactics": [
+        "Persistence",
+        "Privilege Escalation",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "2.5",
+        "2.6",
+        "4.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "GV.OV",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1542",
+      "technique_name": "Pre-OS Boot",
+      "tactics": [
+        "Persistence",
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.5",
+        "4.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1112",
+      "technique_name": "Modify Registry",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "4.1",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1497",
+      "technique_name": "Virtualization/Sandbox Evasion",
+      "tactics": [
+        "Defense Evasion",
+        "Discovery"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "10.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "ID.AM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1564",
+      "technique_name": "Hide Artifacts",
+      "tactics": [
+        "Defense Evasion"
+      ],
+      "cis_safeguards": [
+        "10.1",
+        "8.2",
+        "8.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1197",
+      "technique_name": "BITS Jobs",
+      "tactics": [
+        "Defense Evasion",
+        "Persistence"
+      ],
+      "cis_safeguards": [
+        "2.5",
+        "4.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.AA",
+        "PR.PS"
+      ]
+    },
+    {
+      "technique_id": "T1048.001",
+      "technique_name": "Exfiltration Over Symmetric Encrypted Non-C2 Protocol",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "13.3",
+        "3.1",
+        "4.5"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1011",
+      "technique_name": "Exfiltration Over Other Network Medium",
+      "tactics": [
+        "Exfiltration"
+      ],
+      "cis_safeguards": [
+        "12.1",
+        "13.1",
+        "3.1"
+      ],
+      "nist_csf_categories": [
+        "DE.AE",
+        "DE.CM",
+        "PR.DS",
+        "PR.IR",
+        "RS.AN"
+      ]
+    },
+    {
+      "technique_id": "T1561",
+      "technique_name": "Disk Wipe",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "11.1",
+        "11.2",
+        "11.3",
+        "11.4",
+        "11.5",
+        "3.1"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "PR.IR",
+        "RC.RP",
+        "RS.AN",
+        "RS.MI"
+      ]
+    },
+    {
+      "technique_id": "T1529",
+      "technique_name": "System Shutdown/Reboot",
+      "tactics": [
+        "Impact"
+      ],
+      "cis_safeguards": [
+        "17.1",
+        "4.1",
+        "8.2"
+      ],
+      "nist_csf_categories": [
+        "PR.DS",
+        "PR.IR",
+        "RC.RP",
+        "RS.AN",
+        "RS.MI"
+      ]
+    }
+  ]
+}

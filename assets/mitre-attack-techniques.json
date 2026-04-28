@@ -1,0 +1,1442 @@
+[
+  {
+    "id": "T1078",
+    "name": "Valid Accounts",
+    "tactics": ["Initial Access", "Persistence", "Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may obtain and abuse credentials of existing accounts to gain initial access, persistence, privilege escalation, or defense evasion.",
+    "keywords": ["valid account", "legitimate credential", "default account", "service account", "domain account", "compromised credential"],
+    "detection": "Monitor for unusual account activity, logon attempts from atypical locations, and use of dormant or service accounts.",
+    "subtechniques": ["T1078.001", "T1078.002", "T1078.003", "T1078.004"]
+  },
+  {
+    "id": "T1133",
+    "name": "External Remote Services",
+    "tactics": ["Initial Access", "Persistence"],
+    "description": "Adversaries may leverage external-facing remote services such as VPNs, Citrix, and other access mechanisms to gain initial access or persist within a network.",
+    "keywords": ["vpn", "rdp", "remote access", "citrix", "external service", "remote desktop gateway"],
+    "detection": "Monitor for unusual remote service connections, especially from unexpected geographic locations or outside business hours.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1190",
+    "name": "Exploit Public-Facing Application",
+    "tactics": ["Initial Access"],
+    "description": "Adversaries may exploit vulnerabilities in internet-facing applications to gain initial access to a system.",
+    "keywords": ["exploit", "vulnerability", "web application", "cve", "rce", "public-facing", "injection", "sql injection"],
+    "detection": "Monitor web application logs for anomalous requests, error spikes, and known exploit signatures.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1566",
+    "name": "Phishing",
+    "tactics": ["Initial Access"],
+    "description": "Adversaries may send phishing messages to gain access to victim systems, often including malicious attachments or links.",
+    "keywords": ["phishing", "spearphishing", "email", "malicious attachment", "malicious link", "social engineering"],
+    "detection": "Monitor email gateways for suspicious attachments, URLs, and sender reputation anomalies.",
+    "subtechniques": ["T1566.001", "T1566.002", "T1566.003", "T1566.004"]
+  },
+  {
+    "id": "T1566.001",
+    "name": "Spearphishing Attachment",
+    "tactics": ["Initial Access"],
+    "description": "Adversaries may send spearphishing emails with malicious attachments to gain access to victim systems.",
+    "keywords": ["spearphishing", "attachment", "malicious document", "macro", "email attachment"],
+    "detection": "Monitor email for suspicious attachments, especially Office documents with macros or executable file types.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1566.002",
+    "name": "Spearphishing Link",
+    "tactics": ["Initial Access"],
+    "description": "Adversaries may send spearphishing emails with malicious links to direct victims to credential harvesting or exploit pages.",
+    "keywords": ["spearphishing", "malicious link", "phishing url", "credential harvesting", "fake login"],
+    "detection": "Monitor email for suspicious URLs, shortened links, and newly registered domains.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1199",
+    "name": "Trusted Relationship",
+    "tactics": ["Initial Access"],
+    "description": "Adversaries may breach organizations by exploiting access granted to trusted third parties such as IT service providers or contractors.",
+    "keywords": ["trusted relationship", "third party", "supply chain", "vendor access", "partner network"],
+    "detection": "Monitor for unusual activity from third-party accounts and connections from partner networks.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1195",
+    "name": "Supply Chain Compromise",
+    "tactics": ["Initial Access"],
+    "description": "Adversaries may manipulate products or delivery mechanisms prior to receipt by a final consumer to compromise data or systems.",
+    "keywords": ["supply chain", "software compromise", "trojanized update", "vendor compromise"],
+    "detection": "Verify software integrity via hashes and signatures; monitor for unexpected software update behavior.",
+    "subtechniques": ["T1195.001", "T1195.002", "T1195.003"]
+  },
+  {
+    "id": "T1189",
+    "name": "Drive-by Compromise",
+    "tactics": ["Initial Access"],
+    "description": "Adversaries may gain access through a user visiting a compromised website during normal browsing.",
+    "keywords": ["drive-by", "watering hole", "compromised website", "browser exploit", "malvertising"],
+    "detection": "Monitor browser process behavior, unexpected child processes, and network connections from browsers.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1059",
+    "name": "Command and Scripting Interpreter",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse command and script interpreters to execute commands, scripts, or binaries.",
+    "keywords": ["command line", "script", "interpreter", "shell", "execution", "cli"],
+    "detection": "Monitor process creation for command-line interpreters and log command-line arguments for analysis.",
+    "subtechniques": ["T1059.001", "T1059.002", "T1059.003", "T1059.004", "T1059.005", "T1059.006", "T1059.007", "T1059.008", "T1059.009"]
+  },
+  {
+    "id": "T1059.001",
+    "name": "PowerShell",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse PowerShell commands and scripts for execution, often leveraging its deep integration with Windows.",
+    "keywords": ["powershell", "powershell.exe", "invoke-expression", "invoke-command", "encodedcommand", "bypass", "iex"],
+    "detection": "Enable PowerShell script block logging and module logging; monitor for encoded commands and suspicious cmdlets.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1059.003",
+    "name": "Windows Command Shell",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse the Windows command shell (cmd.exe) for execution of commands and batch scripts.",
+    "keywords": ["cmd", "cmd.exe", "command prompt", "batch", "bat file", "command shell"],
+    "detection": "Monitor process creation for cmd.exe and log command-line arguments, especially from unusual parent processes.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1059.004",
+    "name": "Unix Shell",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse Unix shell commands and scripts for execution on Linux and macOS systems.",
+    "keywords": ["bash", "sh", "unix shell", "linux command", "/bin/sh", "/bin/bash", "shell script"],
+    "detection": "Monitor shell process creation and command-line arguments, especially from unusual parent processes or users.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1059.005",
+    "name": "Visual Basic",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse Visual Basic (VB) for execution, commonly through Office macros or VBScript.",
+    "keywords": ["vbscript", "vba", "macro", "visual basic", "wscript", "cscript"],
+    "detection": "Monitor for wscript.exe/cscript.exe execution and Office applications spawning unexpected child processes.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1059.006",
+    "name": "Python",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse Python commands and scripts for execution across multiple platforms.",
+    "keywords": ["python", "python.exe", "python3", "py script", "python interpreter"],
+    "detection": "Monitor for python process execution, especially from unexpected directories or parent processes.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1059.007",
+    "name": "JavaScript",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse JavaScript for execution via JScript, Node.js, or browser-based exploitation.",
+    "keywords": ["javascript", "jscript", "node.js", "wscript", "js file", ".js"],
+    "detection": "Monitor for wscript/cscript executing .js files and unusual Node.js processes.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1204",
+    "name": "User Execution",
+    "tactics": ["Execution"],
+    "description": "Adversaries may rely on a user to execute a malicious file or link, often delivered via phishing.",
+    "keywords": ["user execution", "click", "open file", "run attachment", "social engineering"],
+    "detection": "Monitor for suspicious file execution following email delivery or web downloads.",
+    "subtechniques": ["T1204.001", "T1204.002", "T1204.003"]
+  },
+  {
+    "id": "T1047",
+    "name": "Windows Management Instrumentation",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse WMI to execute commands and payloads on local and remote systems.",
+    "keywords": ["wmi", "wmic", "wmiprvse", "windows management instrumentation", "wql"],
+    "detection": "Monitor for WMI process creation (wmiprvse.exe) and WMI event subscriptions, especially remote WMI activity.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1053",
+    "name": "Scheduled Task/Job",
+    "tactics": ["Execution", "Persistence", "Privilege Escalation"],
+    "description": "Adversaries may abuse task scheduling to execute programs at system startup or on a scheduled basis for persistence.",
+    "keywords": ["scheduled task", "cron", "at job", "task scheduler", "schtasks", "crontab"],
+    "detection": "Monitor creation of scheduled tasks and cron jobs, especially those executing from unusual paths.",
+    "subtechniques": ["T1053.002", "T1053.003", "T1053.005", "T1053.006", "T1053.007"]
+  },
+  {
+    "id": "T1053.005",
+    "name": "Scheduled Task",
+    "tactics": ["Execution", "Persistence", "Privilege Escalation"],
+    "description": "Adversaries may abuse the Windows Task Scheduler to perform task scheduling for execution and persistence.",
+    "keywords": ["schtasks", "scheduled task", "task scheduler", "taskschd"],
+    "detection": "Monitor schtasks.exe usage and Windows Task Scheduler event logs for new or modified tasks.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1053.003",
+    "name": "Cron",
+    "tactics": ["Execution", "Persistence", "Privilege Escalation"],
+    "description": "Adversaries may abuse the cron utility to perform task scheduling for execution and persistence on Linux/macOS.",
+    "keywords": ["cron", "crontab", "cron job", "/etc/crontab", "/var/spool/cron"],
+    "detection": "Monitor crontab modifications and new cron job creation, especially for unusual commands or users.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1569",
+    "name": "System Services",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse system services or daemons to execute commands or programs.",
+    "keywords": ["service execution", "system service", "daemon", "sc.exe", "service control"],
+    "detection": "Monitor for new service installations and service control manager events.",
+    "subtechniques": ["T1569.001", "T1569.002"]
+  },
+  {
+    "id": "T1569.002",
+    "name": "Service Execution",
+    "tactics": ["Execution"],
+    "description": "Adversaries may abuse the Windows service control manager to execute malicious commands or payloads.",
+    "keywords": ["service execution", "sc.exe", "psexec", "service control manager"],
+    "detection": "Monitor for new service creation events and unusual service binary paths.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1098",
+    "name": "Account Manipulation",
+    "tactics": ["Persistence", "Privilege Escalation"],
+    "description": "Adversaries may manipulate accounts to maintain or elevate access, such as modifying credentials or permissions.",
+    "keywords": ["account manipulation", "password change", "permission change", "group membership", "role assignment", "ssh key"],
+    "detection": "Monitor for changes to account attributes, group memberships, and credential resets outside normal processes.",
+    "subtechniques": ["T1098.001", "T1098.002", "T1098.003", "T1098.004", "T1098.005"]
+  },
+  {
+    "id": "T1136",
+    "name": "Create Account",
+    "tactics": ["Persistence"],
+    "description": "Adversaries may create new accounts to maintain access to systems they have compromised.",
+    "keywords": ["create account", "new user", "add user", "net user", "useradd", "account creation"],
+    "detection": "Monitor for account creation events, especially on systems where new accounts are rare.",
+    "subtechniques": ["T1136.001", "T1136.002", "T1136.003"]
+  },
+  {
+    "id": "T1136.001",
+    "name": "Local Account",
+    "tactics": ["Persistence"],
+    "description": "Adversaries may create a local account to maintain access to a compromised system.",
+    "keywords": ["local account", "net user /add", "useradd", "new local user"],
+    "detection": "Monitor for local account creation events (Windows Event ID 4720, Linux useradd/adduser logs).",
+    "subtechniques": []
+  },
+  {
+    "id": "T1136.002",
+    "name": "Domain Account",
+    "tactics": ["Persistence"],
+    "description": "Adversaries may create domain accounts to maintain access within a Windows domain environment.",
+    "keywords": ["domain account", "active directory", "ad account", "domain user"],
+    "detection": "Monitor Active Directory for new account creation events and unexpected domain admin accounts.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1543",
+    "name": "Create or Modify System Process",
+    "tactics": ["Persistence", "Privilege Escalation"],
+    "description": "Adversaries may create or modify system-level processes to repeatedly execute malicious payloads.",
+    "keywords": ["system process", "service creation", "daemon", "systemd", "launchd"],
+    "detection": "Monitor for new or modified system services, daemons, and launch agents.",
+    "subtechniques": ["T1543.001", "T1543.002", "T1543.003", "T1543.004"]
+  },
+  {
+    "id": "T1543.003",
+    "name": "Windows Service",
+    "tactics": ["Persistence", "Privilege Escalation"],
+    "description": "Adversaries may create or modify Windows services to repeatedly execute malicious payloads as part of persistence.",
+    "keywords": ["windows service", "service creation", "sc create", "new-service", "service install"],
+    "detection": "Monitor for new service creation and modifications to existing service configurations.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1547",
+    "name": "Boot or Logon Autostart Execution",
+    "tactics": ["Persistence", "Privilege Escalation"],
+    "description": "Adversaries may configure system settings to automatically execute a program during boot or logon for persistence.",
+    "keywords": ["autostart", "startup", "boot", "logon", "autorun", "run key"],
+    "detection": "Monitor registry run keys, startup folders, and boot configuration for unauthorized entries.",
+    "subtechniques": ["T1547.001", "T1547.002", "T1547.003", "T1547.004", "T1547.005", "T1547.006", "T1547.008", "T1547.009", "T1547.010", "T1547.012", "T1547.013", "T1547.014", "T1547.015"]
+  },
+  {
+    "id": "T1547.001",
+    "name": "Registry Run Keys / Startup Folder",
+    "tactics": ["Persistence", "Privilege Escalation"],
+    "description": "Adversaries may use registry run keys or the startup folder to execute programs when a user logs on for persistence.",
+    "keywords": ["run key", "registry", "startup folder", "hkcu\\run", "hklm\\run", "autostart"],
+    "detection": "Monitor registry modifications to HKLM/HKCU Run keys and file creation in startup folders.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1546",
+    "name": "Event Triggered Execution",
+    "tactics": ["Persistence", "Privilege Escalation"],
+    "description": "Adversaries may establish persistence by configuring system mechanisms that trigger execution based on specific events.",
+    "keywords": ["event triggered", "wmi event", "trap", "accessibility features", ".bash_profile"],
+    "detection": "Monitor for WMI event subscriptions, modified accessibility binaries, and shell profile changes.",
+    "subtechniques": ["T1546.001", "T1546.002", "T1546.003", "T1546.004", "T1546.005", "T1546.006", "T1546.008", "T1546.010", "T1546.011", "T1546.012", "T1546.013", "T1546.014", "T1546.015", "T1546.016"]
+  },
+  {
+    "id": "T1556",
+    "name": "Modify Authentication Process",
+    "tactics": ["Credential Access", "Defense Evasion", "Persistence"],
+    "description": "Adversaries may modify authentication mechanisms to access user credentials or enable otherwise unwarranted access.",
+    "keywords": ["authentication modification", "password filter", "pluggable authentication", "hybrid identity"],
+    "detection": "Monitor for changes to authentication-related DLLs, PAM modules, and authentication configuration files.",
+    "subtechniques": ["T1556.001", "T1556.002", "T1556.003", "T1556.004", "T1556.005", "T1556.006", "T1556.007", "T1556.008"]
+  },
+  {
+    "id": "T1068",
+    "name": "Exploitation for Privilege Escalation",
+    "tactics": ["Privilege Escalation"],
+    "description": "Adversaries may exploit software vulnerabilities to escalate privileges on a system.",
+    "keywords": ["privilege escalation exploit", "local exploit", "kernel exploit", "cve", "elevation of privilege"],
+    "detection": "Monitor for unusual process behavior, crashes, and exploitation indicators such as unexpected SYSTEM processes.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1548",
+    "name": "Abuse Elevation Control Mechanism",
+    "tactics": ["Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may circumvent mechanisms designed to control elevated privileges to gain higher-level permissions.",
+    "keywords": ["uac bypass", "sudo", "elevation", "setuid", "setgid", "privilege abuse"],
+    "detection": "Monitor for UAC bypass techniques, unexpected sudo usage, and setuid/setgid binary modifications.",
+    "subtechniques": ["T1548.001", "T1548.002", "T1548.003", "T1548.004"]
+  },
+  {
+    "id": "T1548.002",
+    "name": "Bypass User Account Control",
+    "tactics": ["Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may bypass UAC mechanisms to elevate process privileges on a Windows system.",
+    "keywords": ["uac bypass", "user account control", "fodhelper", "eventvwr", "uac"],
+    "detection": "Monitor for common UAC bypass techniques such as DLL side-loading in auto-elevated processes.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1134",
+    "name": "Access Token Manipulation",
+    "tactics": ["Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may modify access tokens to operate under a different user or system security context.",
+    "keywords": ["access token", "token manipulation", "token impersonation", "token theft", "runas"],
+    "detection": "Monitor for token manipulation API calls and processes running under unexpected security contexts.",
+    "subtechniques": ["T1134.001", "T1134.002", "T1134.003", "T1134.004", "T1134.005"]
+  },
+  {
+    "id": "T1484",
+    "name": "Domain or Tenant Policy Modification",
+    "tactics": ["Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may modify domain or tenant-level policies to escalate privileges or evade defenses in enterprise environments.",
+    "keywords": ["group policy", "gpo", "domain policy", "tenant policy", "trust modification"],
+    "detection": "Monitor for GPO modifications, trust relationship changes, and tenant configuration changes.",
+    "subtechniques": ["T1484.001", "T1484.002"]
+  },
+  {
+    "id": "T1070",
+    "name": "Indicator Removal",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may delete or modify artifacts generated on a host system to remove evidence of their presence.",
+    "keywords": ["indicator removal", "log deletion", "clear logs", "evidence removal", "artifact cleanup", "timestomp"],
+    "detection": "Monitor for log clearing events, file deletions in sensitive directories, and timestamp modifications.",
+    "subtechniques": ["T1070.001", "T1070.002", "T1070.003", "T1070.004", "T1070.005", "T1070.006", "T1070.007", "T1070.008", "T1070.009"]
+  },
+  {
+    "id": "T1070.001",
+    "name": "Clear Windows Event Logs",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may clear Windows Event Logs to hide evidence of an intrusion.",
+    "keywords": ["clear event log", "wevtutil", "event log cleared", "1102", "security log clear"],
+    "detection": "Monitor for Windows Event ID 1102 (Security log cleared) and wevtutil usage.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1070.004",
+    "name": "File Deletion",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may delete files left behind by their activities to minimize their footprint.",
+    "keywords": ["file deletion", "del", "rm", "remove file", "cleanup", "delete artifact"],
+    "detection": "Monitor for deletion of files in temporary or staging directories, especially after malicious activity.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1036",
+    "name": "Masquerading",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may manipulate features of their artifacts to make them appear legitimate to users and security tools.",
+    "keywords": ["masquerading", "rename", "disguise", "impersonate process", "fake name", "filename mismatch"],
+    "detection": "Monitor for processes whose names do not match their binary paths and files with mismatched extensions.",
+    "subtechniques": ["T1036.001", "T1036.002", "T1036.003", "T1036.004", "T1036.005", "T1036.006", "T1036.007", "T1036.008"]
+  },
+  {
+    "id": "T1036.005",
+    "name": "Match Legitimate Name or Location",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may match or approximate names or locations of legitimate files to evade detection.",
+    "keywords": ["legitimate name", "process masquerade", "svchost", "name impersonation", "path mismatch"],
+    "detection": "Compare process binary paths against known legitimate locations for common system executables.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1562",
+    "name": "Impair Defenses",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may maliciously modify components of a victim environment to hinder or disable defensive mechanisms.",
+    "keywords": ["disable security", "impair defenses", "disable antivirus", "tamper protection", "disable firewall", "stop service"],
+    "detection": "Monitor for security tool process termination, service stops, and firewall rule modifications.",
+    "subtechniques": ["T1562.001", "T1562.002", "T1562.003", "T1562.004", "T1562.006", "T1562.007", "T1562.008", "T1562.009", "T1562.010", "T1562.012"]
+  },
+  {
+    "id": "T1562.001",
+    "name": "Disable or Modify Tools",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may disable security tools to avoid detection of their activities.",
+    "keywords": ["disable antivirus", "disable edr", "kill security process", "uninstall agent", "tamper protection"],
+    "detection": "Monitor for termination of security processes, modification of security tool configurations, and service stops.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1562.004",
+    "name": "Disable or Modify System Firewall",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may disable or modify the system firewall to bypass network-based filtering of malicious traffic.",
+    "keywords": ["disable firewall", "netsh", "iptables", "firewall rule", "ufw disable"],
+    "detection": "Monitor for firewall rule changes, firewall service stops, and netsh/iptables commands.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1027",
+    "name": "Obfuscated Files or Information",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may obfuscate payloads and files to make content difficult to discover or analyze.",
+    "keywords": ["obfuscation", "encoding", "encryption", "packing", "base64", "xor", "steganography"],
+    "detection": "Monitor for files with high entropy, encoded command-line arguments, and known obfuscation patterns.",
+    "subtechniques": ["T1027.001", "T1027.002", "T1027.003", "T1027.004", "T1027.005", "T1027.006", "T1027.007", "T1027.009", "T1027.010", "T1027.011", "T1027.012", "T1027.013"]
+  },
+  {
+    "id": "T1055",
+    "name": "Process Injection",
+    "tactics": ["Defense Evasion", "Privilege Escalation"],
+    "description": "Adversaries may inject code into processes to evade process-based defenses and possibly escalate privileges.",
+    "keywords": ["process injection", "dll injection", "code injection", "hollowing", "thread injection", "apc injection"],
+    "detection": "Monitor for API calls associated with process injection (WriteProcessMemory, CreateRemoteThread) and unusual process behavior.",
+    "subtechniques": ["T1055.001", "T1055.002", "T1055.003", "T1055.004", "T1055.005", "T1055.008", "T1055.009", "T1055.011", "T1055.012", "T1055.013", "T1055.014", "T1055.015"]
+  },
+  {
+    "id": "T1140",
+    "name": "Deobfuscate/Decode Files or Information",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may deobfuscate or decode files and information to reveal payloads for execution.",
+    "keywords": ["deobfuscate", "decode", "decrypt", "certutil", "base64 decode", "unpack"],
+    "detection": "Monitor for use of decoding utilities (certutil -decode, base64) and file writes following decode operations.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1218",
+    "name": "System Binary Proxy Execution",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may bypass process or signature-based defenses by proxying execution through trusted system binaries.",
+    "keywords": ["lolbin", "living off the land", "proxy execution", "mshta", "rundll32", "regsvr32", "certutil"],
+    "detection": "Monitor for system binaries executing with unusual command-line arguments or spawning unexpected child processes.",
+    "subtechniques": ["T1218.001", "T1218.002", "T1218.003", "T1218.004", "T1218.005", "T1218.007", "T1218.008", "T1218.009", "T1218.010", "T1218.011", "T1218.012", "T1218.013", "T1218.014"]
+  },
+  {
+    "id": "T1218.011",
+    "name": "Rundll32",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may abuse rundll32.exe to proxy execution of malicious code via loading DLLs.",
+    "keywords": ["rundll32", "dll execution", "rundll32.exe", "proxy execution"],
+    "detection": "Monitor rundll32.exe executions for unusual DLL paths and command-line arguments.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1218.005",
+    "name": "Mshta",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may abuse mshta.exe to execute malicious .HTA files and JavaScript or VBScript.",
+    "keywords": ["mshta", "hta", "mshta.exe", "html application"],
+    "detection": "Monitor for mshta.exe execution with unusual arguments or spawning child processes.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1553",
+    "name": "Subvert Trust Controls",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may undermine security controls that will either warn users or prevent execution of untrusted programs.",
+    "keywords": ["code signing", "trust controls", "mark of the web", "gatekeeper", "certificate"],
+    "detection": "Monitor for unsigned or invalidly signed binaries executing in protected environments.",
+    "subtechniques": ["T1553.001", "T1553.002", "T1553.003", "T1553.004", "T1553.005", "T1553.006"]
+  },
+  {
+    "id": "T1078.001",
+    "name": "Default Accounts",
+    "tactics": ["Initial Access", "Persistence", "Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may use default accounts built into systems or devices that have known default credentials.",
+    "keywords": ["default account", "default password", "default credential", "factory credential", "built-in account"],
+    "detection": "Monitor for authentication with known default accounts and enforce password changes on default credentials.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1078.002",
+    "name": "Domain Accounts",
+    "tactics": ["Initial Access", "Persistence", "Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may obtain and abuse credentials of domain accounts to gain access within an Active Directory environment.",
+    "keywords": ["domain account", "active directory account", "domain credential", "ad account", "domain logon"],
+    "detection": "Monitor for unusual domain account logons, especially from unexpected hosts or at unusual times.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1078.003",
+    "name": "Local Accounts",
+    "tactics": ["Initial Access", "Persistence", "Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may obtain and abuse credentials of local accounts to gain access to a system.",
+    "keywords": ["local account", "local credential", "local logon", "local user", "local administrator"],
+    "detection": "Monitor for local account logons from unusual sources, especially administrative local accounts.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1078.004",
+    "name": "Cloud Accounts",
+    "tactics": ["Initial Access", "Persistence", "Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may obtain and abuse credentials of cloud accounts to gain access to cloud-hosted resources.",
+    "keywords": ["cloud account", "aws iam", "azure ad", "gcp", "cloud credential", "saas account"],
+    "detection": "Monitor cloud authentication logs for unusual logon locations, impossible travel, and anomalous API usage.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1110",
+    "name": "Brute Force",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may use brute force techniques to attempt access to accounts when passwords are unknown or password hashes are obtained.",
+    "keywords": ["brute force", "password guess", "credential stuffing", "password spray", "dictionary attack", "login attempt"],
+    "detection": "Monitor for high volumes of failed authentication attempts, account lockouts, and distributed login patterns.",
+    "subtechniques": ["T1110.001", "T1110.002", "T1110.003", "T1110.004"]
+  },
+  {
+    "id": "T1110.001",
+    "name": "Password Guessing",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may guess passwords to attempt access to user accounts, often using common or likely passwords.",
+    "keywords": ["password guessing", "common password", "default password", "login attempt", "authentication failure"],
+    "detection": "Monitor for repeated failed login attempts against individual accounts from single or multiple sources.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1110.002",
+    "name": "Password Cracking",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may use password cracking to recover usable credentials from captured password hashes.",
+    "keywords": ["password cracking", "hash cracking", "hashcat", "john the ripper", "rainbow table"],
+    "detection": "Monitor for extraction of password hashes and credential databases from systems.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1110.003",
+    "name": "Password Spraying",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may use a single common password against many accounts to avoid account lockout when brute forcing credentials.",
+    "keywords": ["password spray", "password spraying", "spray attack", "single password many accounts"],
+    "detection": "Monitor for a single password being used against multiple accounts in a short timeframe.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1110.004",
+    "name": "Credential Stuffing",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may use previously compromised credential lists (combo lists) to attempt authentication across services.",
+    "keywords": ["credential stuffing", "combo list", "breach credentials", "credential reuse", "leaked password"],
+    "detection": "Monitor for login attempts from many different username/password pairs in a short window, especially from single IPs.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1003",
+    "name": "OS Credential Dumping",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may dump credentials from the OS to obtain account login and credential material for lateral movement.",
+    "keywords": ["credential dump", "password dump", "lsass", "sam", "ntds", "mimikatz", "hashdump"],
+    "detection": "Monitor for access to LSASS memory, SAM registry hive, and NTDS.dit file, and known credential dumping tools.",
+    "subtechniques": ["T1003.001", "T1003.002", "T1003.003", "T1003.004", "T1003.005", "T1003.006", "T1003.007", "T1003.008"]
+  },
+  {
+    "id": "T1003.001",
+    "name": "LSASS Memory",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may access LSASS process memory to extract credential material stored in memory.",
+    "keywords": ["lsass", "lsass.exe", "mimikatz", "procdump", "credential dump", "sekurlsa"],
+    "detection": "Monitor for processes accessing lsass.exe memory and tools like procdump targeting LSASS.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1003.002",
+    "name": "Security Account Manager",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may extract credential material from the Security Account Manager (SAM) database.",
+    "keywords": ["sam", "sam database", "sam hive", "reg save", "shadow copy"],
+    "detection": "Monitor for registry access to SAM hive and volume shadow copy access targeting SAM.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1003.003",
+    "name": "NTDS",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may extract credential material from the Active Directory domain database (NTDS.dit).",
+    "keywords": ["ntds", "ntds.dit", "domain controller", "ntdsutil", "dcsync", "active directory dump"],
+    "detection": "Monitor for ntdsutil usage, volume shadow copy access to NTDS.dit, and DCSync replication requests.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1003.006",
+    "name": "DCSync",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may abuse domain controller replication to extract credential data from Active Directory.",
+    "keywords": ["dcsync", "replication", "drsuapi", "domain replication", "mimikatz dcsync"],
+    "detection": "Monitor for directory replication requests (DsGetNCChanges) from non-domain-controller machines.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1558",
+    "name": "Steal or Forge Kerberos Tickets",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may steal or forge Kerberos tickets to enable lateral movement and access to resources.",
+    "keywords": ["kerberos", "ticket", "golden ticket", "silver ticket", "kerberoasting", "tgt", "tgs"],
+    "detection": "Monitor for unusual Kerberos ticket requests, RC4 encryption usage, and ticket granting anomalies.",
+    "subtechniques": ["T1558.001", "T1558.002", "T1558.003", "T1558.004"]
+  },
+  {
+    "id": "T1558.003",
+    "name": "Kerberoasting",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may abuse Kerberos by requesting service tickets for service accounts to crack offline.",
+    "keywords": ["kerberoasting", "service ticket", "tgs request", "spn", "service principal name"],
+    "detection": "Monitor for abnormal volumes of TGS-REQ requests, especially for service accounts with SPNs.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1558.001",
+    "name": "Golden Ticket",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may forge Kerberos TGTs (Golden Tickets) using the KRBTGT account hash to impersonate any user.",
+    "keywords": ["golden ticket", "krbtgt", "forged tgt", "kerberos forgery"],
+    "detection": "Monitor for TGTs with unusual lifetimes, ticket encryption mismatches, and event ID 4769 anomalies.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1555",
+    "name": "Credentials from Password Stores",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may search for common password storage locations to obtain user credentials.",
+    "keywords": ["password store", "credential store", "keychain", "credential manager", "password manager", "browser password"],
+    "detection": "Monitor for access to credential storage files, password manager databases, and browser credential stores.",
+    "subtechniques": ["T1555.001", "T1555.002", "T1555.003", "T1555.004", "T1555.005", "T1555.006"]
+  },
+  {
+    "id": "T1555.003",
+    "name": "Credentials from Web Browsers",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may acquire credentials from web browsers by reading files specific to the target browser.",
+    "keywords": ["browser credentials", "chrome passwords", "firefox credentials", "browser password", "login data"],
+    "detection": "Monitor for access to browser credential storage files and known browser credential extraction tools.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1552",
+    "name": "Unsecured Credentials",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may search for unsecured credentials in files, registries, or other storage locations.",
+    "keywords": ["unsecured credentials", "plaintext password", "password file", "credentials in files", "hardcoded password"],
+    "detection": "Monitor for searches through files for credential-related strings and access to known credential storage locations.",
+    "subtechniques": ["T1552.001", "T1552.002", "T1552.003", "T1552.004", "T1552.005", "T1552.006", "T1552.007", "T1552.008"]
+  },
+  {
+    "id": "T1552.001",
+    "name": "Credentials In Files",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may search local file systems for files containing passwords or other credentials.",
+    "keywords": ["password in file", "credential file", "configuration file", "password.txt", "credentials.xml"],
+    "detection": "Monitor for file access patterns targeting known configuration files that may contain credentials.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1557",
+    "name": "Adversary-in-the-Middle",
+    "tactics": ["Credential Access", "Collection"],
+    "description": "Adversaries may position themselves between two or more networked devices to intercept and manipulate traffic.",
+    "keywords": ["man in the middle", "mitm", "arp spoofing", "llmnr poisoning", "dns spoofing", "relay attack"],
+    "detection": "Monitor for ARP spoofing, LLMNR/NBT-NS responses from unexpected hosts, and certificate anomalies.",
+    "subtechniques": ["T1557.001", "T1557.002", "T1557.003"]
+  },
+  {
+    "id": "T1539",
+    "name": "Steal Web Session Cookie",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may steal web application session cookies to gain authenticated access as the user.",
+    "keywords": ["session cookie", "cookie theft", "session hijack", "web session", "cookie steal"],
+    "detection": "Monitor for access to browser cookie databases and network traffic containing stolen session tokens.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1528",
+    "name": "Steal Application Access Token",
+    "tactics": ["Credential Access"],
+    "description": "Adversaries may steal application access tokens (OAuth, API keys) to gain access to remote resources.",
+    "keywords": ["access token", "oauth token", "api key", "bearer token", "token theft", "refresh token"],
+    "detection": "Monitor for unusual token usage patterns, token requests from unexpected locations, and OAuth consent grants.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1087",
+    "name": "Account Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may attempt to get a listing of accounts on a system or within an environment.",
+    "keywords": ["account discovery", "user enumeration", "net user", "whoami", "get-aduser", "account listing"],
+    "detection": "Monitor for commands that enumerate users and accounts, especially from non-admin users.",
+    "subtechniques": ["T1087.001", "T1087.002", "T1087.003", "T1087.004"]
+  },
+  {
+    "id": "T1082",
+    "name": "System Information Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may attempt to get detailed information about the operating system and hardware.",
+    "keywords": ["system info", "systeminfo", "uname", "hostname", "os version", "hardware enumeration"],
+    "detection": "Monitor for execution of system information gathering commands, especially in rapid succession.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1083",
+    "name": "File and Directory Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may enumerate files and directories to find information of interest prior to collection.",
+    "keywords": ["file discovery", "directory listing", "dir", "ls", "find", "file enumeration", "tree"],
+    "detection": "Monitor for excessive file system enumeration commands, especially targeting sensitive directories.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1046",
+    "name": "Network Service Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may attempt to discover services running on remote hosts to identify exploitation opportunities.",
+    "keywords": ["port scan", "network scan", "nmap", "service discovery", "network enumeration", "service scan"],
+    "detection": "Monitor for network scanning activity, SYN scans, and connections to many ports on remote hosts.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1135",
+    "name": "Network Share Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may look for shared folders and drives on remote systems to identify targets for lateral movement.",
+    "keywords": ["network share", "smb share", "net share", "net view", "share enumeration", "file share"],
+    "detection": "Monitor for net share enumeration commands and SMB connection attempts to multiple hosts.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1040",
+    "name": "Network Sniffing",
+    "tactics": ["Credential Access", "Discovery"],
+    "description": "Adversaries may sniff network traffic to capture information passed over the network, including credentials.",
+    "keywords": ["network sniffing", "packet capture", "tcpdump", "wireshark", "promiscuous mode", "pcap"],
+    "detection": "Monitor for network interfaces being set to promiscuous mode and execution of packet capture tools.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1049",
+    "name": "System Network Connections Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may attempt to discover network connections to and from the compromised system.",
+    "keywords": ["netstat", "network connections", "ss", "established connections", "listening ports"],
+    "detection": "Monitor for execution of netstat, ss, and similar network connection enumeration commands.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1016",
+    "name": "System Network Configuration Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may look for details about the network configuration of systems they access.",
+    "keywords": ["network configuration", "ipconfig", "ifconfig", "ip addr", "route", "arp", "dns configuration"],
+    "detection": "Monitor for network configuration discovery commands, especially when run in sequence.",
+    "subtechniques": ["T1016.001", "T1016.002"]
+  },
+  {
+    "id": "T1018",
+    "name": "Remote System Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may attempt to discover other systems on the network that can be targeted for lateral movement.",
+    "keywords": ["remote system", "host discovery", "ping sweep", "net view", "arp scan", "dns enumeration"],
+    "detection": "Monitor for ping sweeps, ARP scans, and DNS queries indicative of network host discovery.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1057",
+    "name": "Process Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may attempt to get a list of running processes on a system to understand the software environment.",
+    "keywords": ["process list", "tasklist", "ps", "process discovery", "running processes", "get-process"],
+    "detection": "Monitor for process listing commands, especially when combined with other discovery activity.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1069",
+    "name": "Permission Groups Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may attempt to discover group and permission settings to identify privileged accounts.",
+    "keywords": ["group discovery", "net group", "net localgroup", "domain admins", "privilege group", "group membership"],
+    "detection": "Monitor for commands that enumerate group memberships, especially privileged groups.",
+    "subtechniques": ["T1069.001", "T1069.002", "T1069.003"]
+  },
+  {
+    "id": "T1012",
+    "name": "Query Registry",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may interact with the Windows Registry to gather information about the system and software.",
+    "keywords": ["registry query", "reg query", "registry read", "regedit", "registry enumeration"],
+    "detection": "Monitor for registry query operations targeting sensitive keys such as security settings and installed software.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1518",
+    "name": "Software Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may attempt to discover installed software and versions to identify targets for exploitation.",
+    "keywords": ["software discovery", "installed software", "software version", "application list", "program files"],
+    "detection": "Monitor for software enumeration commands and registry queries for installed applications.",
+    "subtechniques": ["T1518.001"]
+  },
+  {
+    "id": "T1518.001",
+    "name": "Security Software Discovery",
+    "tactics": ["Discovery"],
+    "description": "Adversaries may discover installed security software to inform decisions about how to proceed with an operation.",
+    "keywords": ["security software", "antivirus", "edr", "firewall", "security tool discovery"],
+    "detection": "Monitor for queries targeting security software processes, services, and registry keys.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1021",
+    "name": "Remote Services",
+    "tactics": ["Lateral Movement"],
+    "description": "Adversaries may use remote services such as RDP, SSH, SMB, or VNC to move laterally within a network.",
+    "keywords": ["remote service", "rdp", "ssh", "smb", "vnc", "winrm", "remote desktop", "lateral movement"],
+    "detection": "Monitor for unusual remote service connections, especially between internal workstations.",
+    "subtechniques": ["T1021.001", "T1021.002", "T1021.003", "T1021.004", "T1021.005", "T1021.006", "T1021.007", "T1021.008"]
+  },
+  {
+    "id": "T1021.001",
+    "name": "Remote Desktop Protocol",
+    "tactics": ["Lateral Movement"],
+    "description": "Adversaries may use RDP to log into systems remotely for lateral movement.",
+    "keywords": ["rdp", "remote desktop", "mstsc", "3389", "terminal services", "remote desktop protocol"],
+    "detection": "Monitor for RDP sessions from unusual source hosts, especially workstation-to-workstation connections.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1021.002",
+    "name": "SMB/Windows Admin Shares",
+    "tactics": ["Lateral Movement"],
+    "description": "Adversaries may use SMB and Windows admin shares to move laterally via file sharing or remote execution.",
+    "keywords": ["smb", "admin share", "c$", "admin$", "ipc$", "windows share", "445"],
+    "detection": "Monitor for connections to admin shares (C$, ADMIN$, IPC$) from unusual source hosts.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1021.003",
+    "name": "Distributed Component Object Model",
+    "tactics": ["Lateral Movement"],
+    "description": "Adversaries may use DCOM for lateral movement to execute code on remote systems.",
+    "keywords": ["dcom", "distributed com", "component object model", "mmc", "remote dcom"],
+    "detection": "Monitor for DCOM-related process creation on remote systems and unusual MMC activity.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1021.004",
+    "name": "SSH",
+    "tactics": ["Lateral Movement"],
+    "description": "Adversaries may use SSH to log into remote machines for lateral movement.",
+    "keywords": ["ssh", "secure shell", "ssh key", "scp", "sftp", "port 22"],
+    "detection": "Monitor for SSH connections between internal systems, especially from unexpected source hosts.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1021.006",
+    "name": "Windows Remote Management",
+    "tactics": ["Lateral Movement"],
+    "description": "Adversaries may use Windows Remote Management (WinRM) for remote execution and lateral movement.",
+    "keywords": ["winrm", "wsman", "windows remote management", "invoke-command", "enter-pssession", "5985", "5986"],
+    "detection": "Monitor for WinRM connections and remote PowerShell sessions between internal systems.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1570",
+    "name": "Lateral Tool Transfer",
+    "tactics": ["Lateral Movement"],
+    "description": "Adversaries may transfer tools or files between systems within a compromised environment for lateral movement.",
+    "keywords": ["tool transfer", "lateral transfer", "file copy", "scp", "smb copy", "internal transfer"],
+    "detection": "Monitor for file transfers between internal systems using SMB, SCP, or other protocols.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1080",
+    "name": "Taint Shared Content",
+    "tactics": ["Lateral Movement"],
+    "description": "Adversaries may taint shared content on network drives or repositories to move laterally when users access them.",
+    "keywords": ["taint shared content", "infected share", "malicious shortcut", "shared drive", "network share infection"],
+    "detection": "Monitor for modifications to files on network shares, especially executable or shortcut files.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1550",
+    "name": "Use Alternate Authentication Material",
+    "tactics": ["Lateral Movement", "Defense Evasion"],
+    "description": "Adversaries may use alternate authentication material such as hashes, tickets, or tokens to move laterally.",
+    "keywords": ["pass the hash", "pass the ticket", "alternate authentication", "pth", "ptt", "token replay"],
+    "detection": "Monitor for NTLM authentication anomalies, Kerberos ticket usage patterns, and pass-the-hash indicators.",
+    "subtechniques": ["T1550.001", "T1550.002", "T1550.003", "T1550.004"]
+  },
+  {
+    "id": "T1550.002",
+    "name": "Pass the Hash",
+    "tactics": ["Lateral Movement", "Defense Evasion"],
+    "description": "Adversaries may authenticate using stolen password hashes without knowing the plaintext password.",
+    "keywords": ["pass the hash", "pth", "ntlm hash", "hash authentication", "overpass the hash"],
+    "detection": "Monitor for NTLM logons where the account has no corresponding interactive logon and unusual logon type patterns.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1550.003",
+    "name": "Pass the Ticket",
+    "tactics": ["Lateral Movement", "Defense Evasion"],
+    "description": "Adversaries may authenticate using stolen Kerberos tickets without having access to an account password.",
+    "keywords": ["pass the ticket", "ptt", "kerberos ticket", "ticket reuse", "stolen ticket"],
+    "detection": "Monitor for Kerberos ticket usage from unexpected hosts and mismatched ticket-to-host relationships.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1563",
+    "name": "Remote Service Session Hijacking",
+    "tactics": ["Lateral Movement"],
+    "description": "Adversaries may hijack a legitimate user's remote service session to move laterally within an environment.",
+    "keywords": ["session hijack", "rdp hijack", "ssh hijack", "session takeover"],
+    "detection": "Monitor for session hijacking indicators such as tscon.exe usage and unexpected session switches.",
+    "subtechniques": ["T1563.001", "T1563.002"]
+  },
+  {
+    "id": "T1560",
+    "name": "Archive Collected Data",
+    "tactics": ["Collection"],
+    "description": "Adversaries may compress and encrypt collected data for exfiltration to reduce data size and avoid detection.",
+    "keywords": ["archive", "compress", "zip", "rar", "7zip", "tar", "data staging", "encrypted archive"],
+    "detection": "Monitor for execution of archiving utilities and creation of archive files in staging directories.",
+    "subtechniques": ["T1560.001", "T1560.002", "T1560.003"]
+  },
+  {
+    "id": "T1074",
+    "name": "Data Staged",
+    "tactics": ["Collection"],
+    "description": "Adversaries may stage collected data in a central location or directory prior to exfiltration.",
+    "keywords": ["data staging", "stage data", "collection directory", "staging folder", "central location"],
+    "detection": "Monitor for large file accumulations in temporary or unusual directories prior to exfiltration.",
+    "subtechniques": ["T1074.001", "T1074.002"]
+  },
+  {
+    "id": "T1005",
+    "name": "Data from Local System",
+    "tactics": ["Collection"],
+    "description": "Adversaries may search local system sources such as file systems and databases for data of interest.",
+    "keywords": ["local data", "file search", "data collection", "local files", "sensitive files"],
+    "detection": "Monitor for unusual file access patterns, especially bulk reads of sensitive file types.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1039",
+    "name": "Data from Network Shared Drive",
+    "tactics": ["Collection"],
+    "description": "Adversaries may collect data from network shared drives accessible via the compromised system.",
+    "keywords": ["network share data", "shared drive", "file share", "smb data", "mapped drive"],
+    "detection": "Monitor for bulk file access on network shares, especially from hosts that normally do not access them.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1025",
+    "name": "Data from Removable Media",
+    "tactics": ["Collection"],
+    "description": "Adversaries may collect data from removable media connected to a compromised system.",
+    "keywords": ["removable media", "usb", "usb drive", "external drive", "removable storage"],
+    "detection": "Monitor for USB device connections and bulk file access on removable media.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1114",
+    "name": "Email Collection",
+    "tactics": ["Collection"],
+    "description": "Adversaries may target user email to collect sensitive information from mailboxes.",
+    "keywords": ["email collection", "mailbox", "email harvesting", "outlook", "exchange", "mail forwarding"],
+    "detection": "Monitor for unusual mailbox access, email forwarding rules, and bulk email export operations.",
+    "subtechniques": ["T1114.001", "T1114.002", "T1114.003"]
+  },
+  {
+    "id": "T1113",
+    "name": "Screen Capture",
+    "tactics": ["Collection"],
+    "description": "Adversaries may capture screenshots of the desktop to collect information on the user's activities.",
+    "keywords": ["screenshot", "screen capture", "screengrab", "desktop capture", "printscreen"],
+    "detection": "Monitor for screen capture API calls and image file creation in temporary directories.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1056",
+    "name": "Input Capture",
+    "tactics": ["Collection", "Credential Access"],
+    "description": "Adversaries may capture user input to obtain credentials or collect information.",
+    "keywords": ["keylogger", "input capture", "keystroke logging", "credential capture", "keyboard hook"],
+    "detection": "Monitor for processes with SetWindowsHookEx calls and unusual input capture behavior.",
+    "subtechniques": ["T1056.001", "T1056.002", "T1056.003", "T1056.004"]
+  },
+  {
+    "id": "T1119",
+    "name": "Automated Collection",
+    "tactics": ["Collection"],
+    "description": "Adversaries may use automated techniques to collect internal data once established within a system or network.",
+    "keywords": ["automated collection", "scripted collection", "automated data gathering", "batch collection"],
+    "detection": "Monitor for scripts or processes that systematically access and collect files from multiple locations.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1071",
+    "name": "Application Layer Protocol",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may communicate using application layer protocols to avoid detection by blending with normal traffic.",
+    "keywords": ["application layer", "http", "https", "dns", "c2 protocol", "command and control protocol"],
+    "detection": "Monitor for unusual application layer protocol usage, anomalous request patterns, and beaconing behavior.",
+    "subtechniques": ["T1071.001", "T1071.002", "T1071.003", "T1071.004"]
+  },
+  {
+    "id": "T1071.001",
+    "name": "Web Protocols",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use HTTP/HTTPS for C2 communication to blend with normal web browsing traffic.",
+    "keywords": ["http c2", "https c2", "web protocol", "http beacon", "web traffic", "http callback"],
+    "detection": "Monitor for beaconing patterns in HTTP/HTTPS traffic, unusual user-agents, and connections to low-reputation domains.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1071.004",
+    "name": "DNS",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use DNS for C2 communication by encoding data in DNS queries and responses.",
+    "keywords": ["dns c2", "dns tunneling", "dns beacon", "dns exfiltration", "dns query", "subdomain encoding"],
+    "detection": "Monitor for high-volume DNS queries, long subdomain strings, unusual DNS record types, and queries to rare domains.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1573",
+    "name": "Encrypted Channel",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use encrypted channels for C2 communication to conceal traffic content from inspection.",
+    "keywords": ["encrypted channel", "ssl", "tls", "encrypted c2", "custom encryption", "aes"],
+    "detection": "Monitor for TLS connections to unusual destinations, self-signed certificates, and anomalous JA3/JA3S hashes.",
+    "subtechniques": ["T1573.001", "T1573.002"]
+  },
+  {
+    "id": "T1095",
+    "name": "Non-Application Layer Protocol",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use non-application layer protocols such as ICMP or raw sockets for C2 communication.",
+    "keywords": ["icmp", "raw socket", "non-standard protocol", "icmp tunnel", "udp c2", "protocol tunnel"],
+    "detection": "Monitor for unusual ICMP traffic volumes, large ICMP payloads, and unexpected raw socket usage.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1572",
+    "name": "Protocol Tunneling",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may tunnel network communications through another protocol to avoid detection or network filtering.",
+    "keywords": ["protocol tunneling", "ssh tunnel", "dns tunnel", "http tunnel", "port forwarding", "socks proxy"],
+    "detection": "Monitor for tunneling indicators such as DNS-over-HTTPS, SSH tunnels to external hosts, and encapsulated traffic.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1090",
+    "name": "Proxy",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use proxies to direct C2 traffic through an intermediary to avoid direct connections.",
+    "keywords": ["proxy", "socks", "reverse proxy", "multi-hop proxy", "redirector", "relay"],
+    "detection": "Monitor for proxy tool usage, connections through known proxy services, and multi-hop connection patterns.",
+    "subtechniques": ["T1090.001", "T1090.002", "T1090.003", "T1090.004"]
+  },
+  {
+    "id": "T1090.001",
+    "name": "Internal Proxy",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use an internal proxy to direct C2 traffic between compromised systems within a network.",
+    "keywords": ["internal proxy", "internal relay", "pivot", "internal redirector"],
+    "detection": "Monitor for internal hosts relaying traffic and unusual internal-to-internal connections.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1090.002",
+    "name": "External Proxy",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use an external proxy to act as an intermediary for C2 connections.",
+    "keywords": ["external proxy", "cloud proxy", "redirector", "external relay", "c2 redirect"],
+    "detection": "Monitor for connections to known proxy services, VPS providers, and cloud-hosted redirectors.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1105",
+    "name": "Ingress Tool Transfer",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may transfer tools or files from an external system into a compromised environment.",
+    "keywords": ["tool transfer", "download", "wget", "curl", "certutil", "bitsadmin", "file download", "payload delivery"],
+    "detection": "Monitor for file downloads via command-line tools (certutil, bitsadmin, wget, curl) and unusual binary drops.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1568",
+    "name": "Dynamic Resolution",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may dynamically establish connections to C2 infrastructure using dynamic resolution techniques.",
+    "keywords": ["dynamic dns", "dga", "domain generation algorithm", "fast flux", "dynamic resolution"],
+    "detection": "Monitor for DNS queries to algorithmically generated domains and rapid domain changes.",
+    "subtechniques": ["T1568.001", "T1568.002", "T1568.003"]
+  },
+  {
+    "id": "T1568.002",
+    "name": "Domain Generation Algorithms",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use DGAs to dynamically generate domains for C2, making infrastructure harder to block.",
+    "keywords": ["dga", "domain generation", "algorithmically generated domain", "random domain"],
+    "detection": "Monitor DNS queries for patterns consistent with DGA: high entropy domain names, rapid queries to non-existent domains.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1571",
+    "name": "Non-Standard Port",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use non-standard ports for C2 communication to bypass port-based filtering.",
+    "keywords": ["non-standard port", "unusual port", "high port", "unexpected port", "port misuse"],
+    "detection": "Monitor for services running on unexpected ports and protocol-port mismatches.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1132",
+    "name": "Data Encoding",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may encode data in C2 communications to make the content less conspicuous.",
+    "keywords": ["data encoding", "base64 encoding", "encoded c2", "xor encoding", "custom encoding"],
+    "detection": "Monitor for base64 or other encoded data in network traffic, especially in HTTP headers or DNS queries.",
+    "subtechniques": ["T1132.001", "T1132.002"]
+  },
+  {
+    "id": "T1001",
+    "name": "Data Obfuscation",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may obfuscate C2 traffic to make it more difficult to detect and analyze.",
+    "keywords": ["c2 obfuscation", "traffic obfuscation", "junk data", "protocol impersonation", "steganography c2"],
+    "detection": "Monitor for unusual traffic patterns, protocol anomalies, and steganographic indicators in network traffic.",
+    "subtechniques": ["T1001.001", "T1001.002", "T1001.003"]
+  },
+  {
+    "id": "T1219",
+    "name": "Remote Access Software",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use legitimate remote access tools like TeamViewer, AnyDesk, or LogMeIn as C2 channels.",
+    "keywords": ["remote access tool", "teamviewer", "anydesk", "logmein", "remote administration", "rat"],
+    "detection": "Monitor for installation and execution of remote access tools not approved by the organization.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1102",
+    "name": "Web Service",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use legitimate web services such as social media or cloud storage for C2 communication.",
+    "keywords": ["web service c2", "dead drop", "social media c2", "cloud storage c2", "pastebin", "github c2"],
+    "detection": "Monitor for unusual patterns of access to web services that could indicate C2, such as periodic polling.",
+    "subtechniques": ["T1102.001", "T1102.002", "T1102.003"]
+  },
+  {
+    "id": "T1041",
+    "name": "Exfiltration Over C2 Channel",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may steal data by exfiltrating it over the existing command and control channel.",
+    "keywords": ["exfiltration", "data theft", "c2 exfiltration", "data exfiltration", "data steal"],
+    "detection": "Monitor for large outbound data transfers over known C2 channels and upload spikes.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1048",
+    "name": "Exfiltration Over Alternative Protocol",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may exfiltrate data using a protocol different from the existing C2 channel.",
+    "keywords": ["alternative protocol", "dns exfiltration", "ftp exfiltration", "smtp exfiltration", "icmp exfiltration"],
+    "detection": "Monitor for unusual outbound protocol usage, especially DNS, FTP, or ICMP with large payloads.",
+    "subtechniques": ["T1048.001", "T1048.002", "T1048.003"]
+  },
+  {
+    "id": "T1048.003",
+    "name": "Exfiltration Over Unencrypted Non-C2 Protocol",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may exfiltrate data over an unencrypted non-C2 protocol such as FTP, HTTP, or DNS.",
+    "keywords": ["unencrypted exfiltration", "ftp upload", "http post", "dns exfil", "cleartext exfiltration"],
+    "detection": "Monitor for outbound FTP transfers, HTTP POST requests with large bodies, and DNS queries with encoded data.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1567",
+    "name": "Exfiltration Over Web Service",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may exfiltrate data to cloud storage or web services to blend with normal traffic.",
+    "keywords": ["cloud exfiltration", "web service exfiltration", "cloud upload", "dropbox", "google drive", "onedrive", "mega"],
+    "detection": "Monitor for large uploads to cloud storage services, especially from hosts that do not normally use them.",
+    "subtechniques": ["T1567.001", "T1567.002", "T1567.003", "T1567.004"]
+  },
+  {
+    "id": "T1567.002",
+    "name": "Exfiltration to Cloud Storage",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may exfiltrate data to cloud storage services such as Dropbox, Google Drive, or OneDrive.",
+    "keywords": ["cloud storage upload", "dropbox exfil", "google drive upload", "onedrive exfil", "s3 upload"],
+    "detection": "Monitor for unusual uploads to cloud storage APIs and large data transfers to cloud providers.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1029",
+    "name": "Scheduled Transfer",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may schedule data exfiltration to occur at specific intervals to blend with normal traffic patterns.",
+    "keywords": ["scheduled transfer", "timed exfiltration", "periodic upload", "scheduled upload", "interval transfer"],
+    "detection": "Monitor for periodic outbound transfers that follow a regular timing pattern.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1030",
+    "name": "Data Transfer Size Limits",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may exfiltrate data in small chunks to avoid triggering data loss prevention alerts.",
+    "keywords": ["small transfer", "chunked exfiltration", "data size limit", "slow exfiltration", "low and slow"],
+    "detection": "Monitor for sustained small outbound transfers to the same destination over extended periods.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1537",
+    "name": "Transfer Data to Cloud Account",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may exfiltrate data by transferring it to a cloud account they control, such as an attacker-owned AWS S3 bucket.",
+    "keywords": ["cloud account transfer", "s3 exfiltration", "cloud-to-cloud", "storage transfer", "cross-account"],
+    "detection": "Monitor for cloud storage transfers to external or unrecognized accounts and cross-account data copies.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1020",
+    "name": "Automated Exfiltration",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may exfiltrate data using automated processing after being gathered during collection.",
+    "keywords": ["automated exfiltration", "auto upload", "scripted exfiltration", "automated data theft"],
+    "detection": "Monitor for automated scripts or processes that package and transmit data to external destinations.",
+    "subtechniques": ["T1020.001"]
+  },
+  {
+    "id": "T1486",
+    "name": "Data Encrypted for Impact",
+    "tactics": ["Impact"],
+    "description": "Adversaries may encrypt data on target systems to interrupt availability and hold data for ransom.",
+    "keywords": ["ransomware", "encryption", "crypto locker", "file encryption", "ransom note", "data encrypted"],
+    "detection": "Monitor for mass file encryption operations, known ransomware file extensions, and ransom note creation.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1490",
+    "name": "Inhibit System Recovery",
+    "tactics": ["Impact"],
+    "description": "Adversaries may delete or disable system recovery features to prevent restoration after an attack.",
+    "keywords": ["delete shadow copies", "vssadmin", "bcdedit", "wbadmin", "disable recovery", "backup deletion"],
+    "detection": "Monitor for vssadmin, wbadmin, and bcdedit commands that delete shadow copies or disable recovery.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1489",
+    "name": "Service Stop",
+    "tactics": ["Impact"],
+    "description": "Adversaries may stop or disable services on a system to render those services unavailable to legitimate users.",
+    "keywords": ["service stop", "stop service", "net stop", "sc stop", "disable service", "kill service"],
+    "detection": "Monitor for bulk service stop operations, especially targeting security, database, or backup services.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1485",
+    "name": "Data Destruction",
+    "tactics": ["Impact"],
+    "description": "Adversaries may destroy data and files on systems to interrupt availability and disrupt operations.",
+    "keywords": ["data destruction", "wipe", "data wipe", "file destruction", "disk wipe", "format"],
+    "detection": "Monitor for bulk file deletion, disk wiping utilities, and MBR/partition table modifications.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1491",
+    "name": "Defacement",
+    "tactics": ["Impact"],
+    "description": "Adversaries may modify visual content to deliver messaging, intimidate, or claim credit for an intrusion.",
+    "keywords": ["defacement", "web defacement", "website modification", "deface", "graffiti"],
+    "detection": "Monitor for unauthorized changes to web content, internal portals, and desktop wallpaper modifications.",
+    "subtechniques": ["T1491.001", "T1491.002"]
+  },
+  {
+    "id": "T1499",
+    "name": "Endpoint Denial of Service",
+    "tactics": ["Impact"],
+    "description": "Adversaries may perform endpoint denial of service attacks to degrade or block availability of services.",
+    "keywords": ["dos", "denial of service", "resource exhaustion", "service flood", "application dos"],
+    "detection": "Monitor for resource exhaustion patterns, abnormal traffic spikes, and application performance degradation.",
+    "subtechniques": ["T1499.001", "T1499.002", "T1499.003", "T1499.004"]
+  },
+  {
+    "id": "T1498",
+    "name": "Network Denial of Service",
+    "tactics": ["Impact"],
+    "description": "Adversaries may perform network denial of service attacks to degrade or block network availability.",
+    "keywords": ["network dos", "ddos", "distributed denial of service", "flood attack", "bandwidth exhaustion"],
+    "detection": "Monitor for abnormal network traffic volumes, SYN floods, and amplification attack indicators.",
+    "subtechniques": ["T1498.001", "T1498.002"]
+  },
+  {
+    "id": "T1531",
+    "name": "Account Access Removal",
+    "tactics": ["Impact"],
+    "description": "Adversaries may interrupt availability by inhibiting access to accounts used by legitimate users.",
+    "keywords": ["account lockout", "password change", "account disable", "access removal", "lock out user"],
+    "detection": "Monitor for bulk password changes, account disabling events, and group membership removals.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1565",
+    "name": "Data Manipulation",
+    "tactics": ["Impact"],
+    "description": "Adversaries may manipulate data to affect business processes, influence outcomes, or hide activity.",
+    "keywords": ["data manipulation", "data tampering", "data integrity", "record modification", "database manipulation"],
+    "detection": "Monitor for unauthorized database modifications, file integrity changes, and data validation failures.",
+    "subtechniques": ["T1565.001", "T1565.002", "T1565.003"]
+  },
+  {
+    "id": "T1071.002",
+    "name": "File Transfer Protocols",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use file transfer protocols such as FTP or TFTP for C2 communication.",
+    "keywords": ["ftp", "tftp", "file transfer", "ftp c2", "sftp c2"],
+    "detection": "Monitor for unusual FTP/TFTP connections to external hosts, especially from non-standard source systems.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1071.003",
+    "name": "Mail Protocols",
+    "tactics": ["Command and Control"],
+    "description": "Adversaries may use email protocols such as SMTP, POP3, or IMAP for C2 communication.",
+    "keywords": ["smtp c2", "email c2", "imap c2", "pop3 c2", "mail protocol", "email beacon"],
+    "detection": "Monitor for unusual email protocol traffic patterns, especially SMTP connections from non-mail servers.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1547.009",
+    "name": "Shortcut Modification",
+    "tactics": ["Persistence", "Privilege Escalation"],
+    "description": "Adversaries may modify shortcuts to execute their own tools instead of the intended application.",
+    "keywords": ["shortcut modification", "lnk file", "desktop shortcut", "modified shortcut"],
+    "detection": "Monitor for changes to .lnk files in startup folders and desktop directories.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1574",
+    "name": "Hijack Execution Flow",
+    "tactics": ["Persistence", "Privilege Escalation", "Defense Evasion"],
+    "description": "Adversaries may hijack the way operating systems run programs to execute their own malicious payloads.",
+    "keywords": ["dll hijacking", "dll side-loading", "path interception", "dylib hijacking", "ld_preload"],
+    "detection": "Monitor for DLL loads from unusual paths, path interception opportunities, and modified library search orders.",
+    "subtechniques": ["T1574.001", "T1574.002", "T1574.004", "T1574.005", "T1574.006", "T1574.007", "T1574.008", "T1574.009", "T1574.010", "T1574.011", "T1574.012", "T1574.013"]
+  },
+  {
+    "id": "T1542",
+    "name": "Pre-OS Boot",
+    "tactics": ["Persistence", "Defense Evasion"],
+    "description": "Adversaries may abuse pre-OS boot mechanisms to persist on systems and evade detection below the OS level.",
+    "keywords": ["bootkit", "uefi", "bios", "mbr", "pre-os boot", "firmware persistence"],
+    "detection": "Monitor for firmware modifications, MBR changes, and boot configuration anomalies.",
+    "subtechniques": ["T1542.001", "T1542.002", "T1542.003", "T1542.004", "T1542.005"]
+  },
+  {
+    "id": "T1112",
+    "name": "Modify Registry",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may modify the Windows Registry to hide configuration, persist, or enable further attacks.",
+    "keywords": ["registry modification", "reg add", "registry edit", "regedit", "registry key", "registry value"],
+    "detection": "Monitor for registry modifications to sensitive keys used for persistence and security configuration.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1497",
+    "name": "Virtualization/Sandbox Evasion",
+    "tactics": ["Defense Evasion", "Discovery"],
+    "description": "Adversaries may employ techniques to detect and avoid virtualization and sandbox environments used for analysis.",
+    "keywords": ["sandbox evasion", "vm detection", "anti-analysis", "anti-sandbox", "environment check"],
+    "detection": "Monitor for sandbox detection techniques such as checking for VM artifacts, sleep timers, and user interaction checks.",
+    "subtechniques": ["T1497.001", "T1497.002", "T1497.003"]
+  },
+  {
+    "id": "T1564",
+    "name": "Hide Artifacts",
+    "tactics": ["Defense Evasion"],
+    "description": "Adversaries may attempt to hide artifacts associated with their behaviors to evade detection.",
+    "keywords": ["hidden files", "hidden directory", "attrib +h", "alternate data stream", "hidden window", "ads"],
+    "detection": "Monitor for creation of hidden files and directories, alternate data streams, and hidden windows.",
+    "subtechniques": ["T1564.001", "T1564.002", "T1564.003", "T1564.004", "T1564.005", "T1564.006", "T1564.007", "T1564.008", "T1564.009", "T1564.010", "T1564.011"]
+  },
+  {
+    "id": "T1197",
+    "name": "BITS Jobs",
+    "tactics": ["Defense Evasion", "Persistence"],
+    "description": "Adversaries may abuse BITS jobs for persistent file transfer and to execute code after OS reboot.",
+    "keywords": ["bits", "bitsadmin", "background intelligent transfer", "bits job", "bits transfer"],
+    "detection": "Monitor for unusual BITS job creation with bitsadmin or PowerShell and BITS jobs downloading from external URLs.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1048.001",
+    "name": "Exfiltration Over Symmetric Encrypted Non-C2 Protocol",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may exfiltrate data over a symmetrically encrypted non-C2 protocol to avoid detection.",
+    "keywords": ["encrypted exfiltration", "encrypted transfer", "symmetric encryption", "aes exfiltration"],
+    "detection": "Monitor for encrypted connections to unusual external destinations on non-standard ports.",
+    "subtechniques": []
+  },
+  {
+    "id": "T1011",
+    "name": "Exfiltration Over Other Network Medium",
+    "tactics": ["Exfiltration"],
+    "description": "Adversaries may exfiltrate data over a different network medium than the main C2 channel, such as WiFi or Bluetooth.",
+    "keywords": ["other network medium", "wifi exfiltration", "bluetooth exfiltration", "alternate network"],
+    "detection": "Monitor for unexpected wireless or alternate network interface activation and data transfers.",
+    "subtechniques": ["T1011.001"]
+  },
+  {
+    "id": "T1561",
+    "name": "Disk Wipe",
+    "tactics": ["Impact"],
+    "description": "Adversaries may wipe or corrupt disk data and structures to interrupt system availability.",
+    "keywords": ["disk wipe", "mbr wipe", "partition wipe", "disk destruction", "drive wipe"],
+    "detection": "Monitor for disk wiping tools, MBR modifications, and raw disk write operations.",
+    "subtechniques": ["T1561.001", "T1561.002"]
+  },
+  {
+    "id": "T1529",
+    "name": "System Shutdown/Reboot",
+    "tactics": ["Impact"],
+    "description": "Adversaries may shutdown or reboot systems to interrupt access or aid in destruction of evidence.",
+    "keywords": ["shutdown", "reboot", "restart", "system shutdown", "forced reboot"],
+    "detection": "Monitor for unexpected shutdown and reboot commands, especially following suspicious activity.",
+    "subtechniques": []
+  }
+]
