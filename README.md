@@ -1,4 +1,4 @@
-# PTS-CASA: CyberAnalysis with Structured Agents
+# Agent Kyle: CyberAnalysis with Structured Agents
 
 > Multi-agent cybersecurity investigation system: six specialized AI agents, nine investigation types, four security frameworks, one analyst-ready report.
 
