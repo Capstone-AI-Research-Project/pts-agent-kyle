@@ -1,10 +1,16 @@
 # PTS-CASA: CyberAnalysis with Structured Agents
 
-A multi-agent cybersecurity investigation system built for local or cloud deployment. Six specialized AI agents analyze security events across 9 investigation types, match findings against four real security framework datasets, and produce NIST SP 800-92 investigation reports — all orchestrated through n8n workflows with an Overseer that cross-correlates findings into a unified analyst-ready report.
+> Multi-agent cybersecurity investigation system: six specialized AI agents, nine investigation types, four security frameworks, one analyst-ready report.
+
+## Project Overview
+
+`PTS-CASA` (**P**roject **T**wilight **S**ynapse - **C**yber**A**nalysis with **S**tructured **A**gents) is a multi-agent cybersecurity investigation system built on the same local Docker / n8n / Ollama / Open WebUI stack established by [Project-Twilight-Synapse](https://github.com/Capstone-AI-Research-Project/Project-Twilight-Synapse). Six specialized AI agents - orchestrated through n8n workflows and powered entirely by local Ollama models - analyze security events across nine investigation types, match findings against four real security-framework datasets (MITRE ATT&CK, MITRE CAR, NIST CSF 2.0, CIS Controls v8.1.2), and produce NIST SP 800-92-aligned investigation reports.
+
+An **Overseer** agent then cross-correlates all sub-reports into a unified, analyst-ready output. The pipeline is designed to run fully offline, no third-party LLM API calls and is deployable to either an AWS EC2 instance or a homelab Proxmox host.
 
 ## Architecture
 
-**Master Workflow (v2 — 9 nodes, single-path pipeline):**
+**Master Workflow (v2 - 9 nodes, single-path pipeline):**
 ```
 Analyst Query
     |
@@ -55,11 +61,11 @@ Net Analyst ─┘             ─> NIST CSF Mapper ─> CIS Controls Mapper
 | Agent | Ollama Model | Base | Role |
 |-------|-------------|------|------|
 | Router | `casa-router` | phi3:3.8b | Fast query classification to investigation type |
-| Log Analyst | `casa-log-analyst` | qwen2.5:14b | Morgan Chen — NIST SP 800-92 log analysis |
-| Network Analyst | `casa-network-analyst` | qwen2.5:14b | Jordan Rivers — Traffic and beaconing detection |
-| PurpleTeamMapper | `casa-purple-mapper` | phi3:3.8b | Alex Reyes — Validates framework mappings with evidence |
+| Log Analyst | `casa-log-analyst` | qwen2.5:14b | Morgan Chen - NIST SP 800-92 log analysis |
+| Network Analyst | `casa-network-analyst` | qwen2.5:14b | Jordan Rivers - Traffic and beaconing detection |
+| PurpleTeamMapper | `casa-purple-mapper` | phi3:3.8b | Alex Reyes - Validates framework mappings with evidence |
 | Synthesizer | `casa-synthesizer` | qwen2.5:7b | Combines single-path findings into structured report |
-| **Overseer** | **`casa-overseer`** | **qwen2.5:14b** | **Final synthesis — cross-correlates all sub-reports into unified analyst report** |
+| **Overseer** | **`casa-overseer`** | **qwen2.5:14b** | **Final synthesis - cross-correlates all sub-reports into unified analyst report** |
 
 ## Investigation Types
 
@@ -79,7 +85,7 @@ When a query matches multiple types (e.g., logs showing both lateral movement an
 
 ## Framework Integration
 
-The pipeline uses **deterministic lookups** against real framework data — LLMs provide reasoning, structured data provides facts:
+The pipeline uses **deterministic lookups** against real framework data - LLMs provide reasoning, structured data provides facts:
 
 | Framework | Asset | Coverage |
 |-----------|-------|----------|
@@ -91,11 +97,11 @@ The pipeline uses **deterministic lookups** against real framework data — LLMs
 
 ### What each framework contributes to the report
 
-- **MITRE ATT&CK** — identifies the specific adversary techniques observed (T-codes)
-- **MITRE CAR Coverage** — for each matched technique, shows how many community detections exist; flags zero-coverage techniques as highest-priority detection engineering gaps
-- **NIST CSF 2.0** — maps findings to security function areas (Govern, Identify, Protect, Detect, Respond, Recover) for executive-level classification
-- **CIS Controls v8.1.2** — produces prioritized, actionable safeguard recommendations; IG1 safeguards are surfaced as "quick wins"
-- **Technique-to-Controls Map** — deterministic mapping from identified MITRE techniques to the specific CIS safeguards and NIST categories that address them (replaces keyword-only matching)
+- **MITRE ATT&CK**: identifies the specific adversary techniques observed (T-codes)
+- **MITRE CAR Coverage**: for each matched technique, shows how many community detections exist; flags zero-coverage techniques as highest-priority detection engineering gaps
+- **NIST CSF 2.0**: maps findings to security function areas (Govern, Identify, Protect, Detect, Respond, Recover) for executive-level classification
+- **CIS Controls v8.1.2**: produces prioritized, actionable safeguard recommendations; IG1 safeguards are surfaced as "quick wins"
+- **Technique-to-Controls Map**: deterministic mapping from identified MITRE techniques to the specific CIS safeguards and NIST categories that address them (replaces keyword-only matching)
 
 ## Report Output
 
@@ -107,7 +113,7 @@ Each investigation produces a structured report with Overseer synthesis:
 3. MITRE ATT&CK Mapping   — combined techniques from all analysis paths with detection coverage
 4. NIST CSF 2.0           — incident classification by security function
 5. CIS Controls v8.1.2    — technique-mapped safeguard recommendations with IG1 quick wins
-6. Evidence Chain          — investigation flow from query to report
+6. Evidence Chain         — investigation flow from query to report
 ```
 
 ---
@@ -116,7 +122,7 @@ Each investigation produces a structured report with Overseer synthesis:
 
 ### Prerequisites
 - Docker and Docker Compose
-- 16GB+ RAM (64GB recommended — see [Memory Requirements](#memory-requirements))
+- 16GB+ RAM (64GB recommended - see [Memory Requirements](#memory-requirements))
 - 4+ CPU cores (16 recommended)
 - 100GB storage
 
@@ -150,8 +156,8 @@ This script:
 2. Creates all 6 CASA agent models from Modelfiles
 3. Verifies framework data assets are accessible in the n8n container
 
-### Step 4: Verify models (optional but recommended)
-
+### Step 4: Verify models 
+_*optional but recommended_
 ```bash
 bash scripts/test-models.sh
 ```
@@ -258,32 +264,32 @@ pts-casa/
 │   ├── mitre-attack-techniques.json        # 160 MITRE ATT&CK Enterprise techniques
 │   ├── mitre-to-controls-map.json          # Technique → CIS + NIST deterministic mappings
 │   ├── car-analytic-coverage.json          # 588 techniques with detection counts
-│   ├── nist-csf-2.0.json                  # NIST CSF 2.0 complete framework
-│   ├── cis-controls-v8.1.2.json           # CIS Controls v8.1.2 — 153 safeguards
-│   └── report-template.json               # Report section definitions
+│   ├── nist-csf-2.0.json                   # NIST CSF 2.0 complete framework
+│   ├── cis-controls-v8.1.2.json            # CIS Controls v8.1.2 — 153 safeguards
+│   └── report-template.json                # Report section definitions
 ├── functions/
-│   └── casa_pipe.py                       # Open WebUI Pipe function
-├── modelfiles/                             # Ollama Modelfiles (6 agents)
-│   ├── casa-router.Modelfile              # phi3:3.8b — query classifier
-│   ├── casa-log-analyst.Modelfile         # qwen2.5:14b — log analysis
-│   ├── casa-network-analyst.Modelfile     # qwen2.5:14b — network analysis
-│   ├── casa-purple-mapper.Modelfile       # phi3:3.8b — framework validation
-│   ├── casa-synthesizer.Modelfile         # qwen2.5:7b — single-path report synthesis
-│   └── casa-overseer.Modelfile            # qwen2.5:14b — final cross-report synthesis
-├── logs/                                   # Sample log files for testing
-│   ├── SAMPLE-QUERIES.md                  # 14 ready-to-use test scenarios
-│   ├── auth-anomaly-host.log              # Sample logs for each investigation type
+│   └── casa_pipe.py                        # Open WebUI Pipe function
+├── modelfiles/                              # Ollama Modelfiles (6 agents)
+│   ├── casa-router.Modelfile               # phi3:3.8b — query classifier
+│   ├── casa-log-analyst.Modelfile          # qwen2.5:14b — log analysis
+│   ├── casa-network-analyst.Modelfile      # qwen2.5:14b — network analysis
+│   ├── casa-purple-mapper.Modelfile        # phi3:3.8b — framework validation
+│   ├── casa-synthesizer.Modelfile          # qwen2.5:7b — single-path report synthesis
+│   └── casa-overseer.Modelfile             # qwen2.5:14b — final cross-report synthesis
+├── logs/                                    # Sample log files for testing
+│   ├── SAMPLE-QUERIES.md                   # 14 ready-to-use test scenarios
+│   ├── auth-anomaly-host.log               # Sample logs for each investigation type
 │   ├── auth-anomaly-network.log
-│   └── ...                                # (18 log files total)
+│   └── ...                                 # (18 log files total)
 ├── scripts/
-│   ├── build-models.sh                    # Pull base models + create all 6 CASA agents
-│   ├── test-models.sh                     # Smoke test all agents
-│   ├── build-technique-controls-map.py    # Regenerate technique-to-controls mapping
-│   ├── convert-car-coverage.js            # Regenerate CAR coverage from source CSV
-│   └── convert-cis-controls.py            # Regenerate CIS controls from source Excel
-├── workflows/                              # n8n workflow definitions
-│   ├── casa-master.json                   # Master v2 (9 nodes — single-path with Overseer)
-│   ├── casa-auth-anomaly.json             # Sub-workflow (11 nodes each)
+│   ├── build-models.sh                     # Pull base models + create all 6 CASA agents
+│   ├── test-models.sh                      # Smoke test all agents
+│   ├── build-technique-controls-map.py     # Regenerate technique-to-controls mapping
+│   ├── convert-car-coverage.js             # Regenerate CAR coverage from source CSV
+│   └── convert-cis-controls.py             # Regenerate CIS controls from source Excel
+├── workflows/                               # n8n workflow definitions
+│   ├── casa-master.json                    # Master v2 (9 nodes — single-path with Overseer)
+│   ├── casa-auth-anomaly.json              # Sub-workflow (11 nodes each)
 │   ├── casa-beaconing.json
 │   ├── casa-exfiltration.json
 │   ├── casa-lateral-movement.json
@@ -293,12 +299,12 @@ pts-casa/
 │   ├── casa-insider-threat.json
 │   └── casa-vulnerability-exploitation.json
 ├── docs/
-│   ├── PTS-CASA-AWS-Provisioning-Guide.md # AWS EC2 deployment guide
-│   └── n8n-CyberAnalysis-Architecture.md  # Original design spec (historical)
-├── docker-compose.yml                      # Full stack (Ollama, Open WebUI, n8n, PostgreSQL, Redis)
-├── Dockerfile.runners                      # n8n task runners
-├── .env.example                            # Environment configuration template
-└── CHANGELOG.md                            # Version history
+│   ├── PTS-CASA-AWS-Provisioning-Guide.md  # AWS EC2 deployment guide
+│   └── n8n-CyberAnalysis-Architecture.md   # Original design spec (historical)
+├── docker-compose.yml                       # Full stack (Ollama, Open WebUI, n8n, PostgreSQL, Redis)
+├── Dockerfile.runners                       # n8n task runners
+├── .env.example                             # Environment configuration template
+└── CHANGELOG.md                             # Version history
 ```
 
 ## Deployment Options
@@ -330,3 +336,19 @@ See [docs/PTS-CASA-AWS-Provisioning-Guide.md](docs/PTS-CASA-AWS-Provisioning-Gui
 | **MITRE ATT&CK** | Technique identification via deterministic lookup against Enterprise framework |
 | **MITRE CAR** | Detection coverage from community analytic repositories |
 | **CIS Controls v8.1.2** | Technique-mapped safeguard recommendations with Implementation Group prioritization |
+
+## Authors
+
+| Name | GitHub Profile |
+|------|----------------|
+| Kyle Versluis | [![GitHub](https://img.shields.io/badge/GitHub-ktalons-181717?style=for-the-badge&logo=github)](https://github.com/ktalons) |
+| Spencer Nicol | [![GitHub](https://img.shields.io/badge/GitHub-snicol1-181717?style=for-the-badge&logo=github)](https://github.com/snicol1) |
+
+## Related projects
+
+- [Project-Twilight-Synapse](https://github.com/Capstone-AI-Research-Project/Project-Twilight-Synapse) - original foundation project that established the Docker / n8n / Ollama / Open WebUI stack PTS-CASA extends.
+- [pts-agent-karen](https://github.com/Capstone-AI-Research-Project/pts-agent-karen) - sibling research agent under the same naming convention; focuses on log and PCAP behavior detection via Weaviate semantic search against MITRE ATT&CK.
+
+## License
+
+This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
