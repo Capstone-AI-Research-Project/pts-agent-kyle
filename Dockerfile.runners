@@ -1,0 +1,20 @@
+FROM n8nio/runners:latest
+
+USER root
+
+# JavaScript Security Libs (optional but helpful)
+RUN cd /opt/runners/task-runner-javascript && pnpm add moment uuid axios jose
+
+# Use the runner and install custom python libraries
+
+RUN cd /opt/runners/task-runner-python && uv pip install \
+    beautifulsoup4 \
+    requests \
+    scapy \
+    dnspython \
+    python-whois \
+    cryptography \
+    shodan \
+    tldextract
+
+USER runner
