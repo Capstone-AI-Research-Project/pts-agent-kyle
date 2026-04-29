@@ -83,7 +83,7 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "={{ {\"auth_anomaly\": \"xrthIEYN9VJXHKDK\", \"beaconing\": \"UunAKNrgbTN5Aczt\", \"exfiltration\": \"SvYHfUD0NORPbTwr\", \"lateral_movement\": \"yDy35R2WLGL4cHJi\", \"privilege_escalation\": \"REPLACE_WITH_ACTUAL_ID\", \"persistence\": \"REPLACE_WITH_ACTUAL_ID\", \"ransomware\": \"REPLACE_WITH_ACTUAL_ID\", \"insider_threat\": \"REPLACE_WITH_ACTUAL_ID\", \"vulnerability_exploitation\": \"REPLACE_WITH_ACTUAL_ID\"}[$json.investigation_type] }}",
+          "value": "={{ {\"auth_anomaly\": \"REPLACE_WITH_ACTUAL_ID\", \"beaconing\": \"REPLACE_WITH_ACTUAL_ID\", \"exfiltration\": \"REPLACE_WITH_ACTUAL_ID\", \"lateral_movement\": \"REPLACE_WITH_ACTUAL_ID\", \"privilege_escalation\": \"REPLACE_WITH_ACTUAL_ID\", \"persistence\": \"REPLACE_WITH_ACTUAL_ID\", \"ransomware\": \"REPLACE_WITH_ACTUAL_ID\", \"insider_threat\": \"REPLACE_WITH_ACTUAL_ID\", \"vulnerability_exploitation\": \"REPLACE_WITH_ACTUAL_ID\"}[$json.investigation_type] }}",
           "mode": "id"
         }
       },
