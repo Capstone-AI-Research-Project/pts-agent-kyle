@@ -129,8 +129,8 @@ Each investigation produces a structured report with Overseer synthesis:
 ### Step 1: Clone and configure
 
 ```bash
-git clone https://github.com/ktalons/pts-casa.git
-cd pts-casa
+git clone https://github.com/Capstone-AI-Research-Project/pts-agent-kyle.git
+cd pts-agent-kyle
 
 cp .env.example .env
 # Edit .env — set passwords, timezone, tune Ollama for your hardware
@@ -171,7 +171,7 @@ Open n8n at `http://localhost:5678` (credentials from your `.env` file).
 **Import the 9 sub-workflows first:**
 
 1. Go to **Workflows > Import from File**
-2. Import each `workflows/casa-*.json` file **except** `casa-master.json`
+2. Import each `workflows/casa-*.json` file **except** `casa-master-v2.json`
 3. For each imported sub-workflow:
    - Open the **Execute Workflow Trigger** node and ensure **Input data mode** is set to **Accept all data**
    - If the sub-workflow contains a **Merge** node, ensure its mode is set to **Append**
@@ -180,7 +180,7 @@ Open n8n at `http://localhost:5678` (credentials from your `.env` file).
 
 **Import the master workflow:**
 
-5. Import `workflows/casa-master.json`
+5. Import `workflows/casa-master-v2.json`
 6. Open the **Dynamic Sub-Workflow Router** node
 7. In the `workflowId` expression, replace each `REPLACE_WITH_ACTUAL_ID` with the real workflow IDs you noted:
    ```
@@ -259,7 +259,7 @@ Sample queries and log files are provided in the `logs/` directory. See `logs/SA
 ## File Structure
 
 ```
-pts-casa/
+pts-agent-kyle/
 ├── assets/                                  # Framework data (auto-mounted into n8n)
 │   ├── mitre-attack-techniques.json        # 160 MITRE ATT&CK Enterprise techniques
 │   ├── mitre-to-controls-map.json          # Technique → CIS + NIST deterministic mappings
@@ -288,7 +288,7 @@ pts-casa/
 │   ├── convert-car-coverage.js             # Regenerate CAR coverage from source CSV
 │   └── convert-cis-controls.py             # Regenerate CIS controls from source Excel
 ├── workflows/                               # n8n workflow definitions
-│   ├── casa-master.json                    # Master v2 (9 nodes — single-path with Overseer)
+│   ├── casa-master-v2.json                 # Master v2 (9 nodes — single-path with Overseer)
 │   ├── casa-auth-anomaly.json              # Sub-workflow (11 nodes each)
 │   ├── casa-beaconing.json
 │   ├── casa-exfiltration.json
